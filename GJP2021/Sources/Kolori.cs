@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Apos.Shapes;
+using System;
+using GJP2021.Sources.Characters;
 using GJP2021.Sources.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -10,7 +12,7 @@ namespace GJP2021.Sources
 {
     public class Kolori : Game
     {
-        public GraphicsDeviceManager Graphics;
+        public readonly GraphicsDeviceManager Graphics;
         public SpriteBatch SpriteBatch;
         public ShapeBatch ShapeBatch;
         public SpriteFont SpriteFont;
@@ -21,9 +23,9 @@ namespace GJP2021.Sources
         public Kolori()
         {
             Content.RootDirectory = "Content/Resources";
-            IsMouseVisible = true;
             Graphics = new GraphicsDeviceManager(this);
-            Window.AllowUserResizing = false;
+            IsMouseVisible = true;
+            Window.AllowUserResizing = true;
             Window.Title = "Kolori";
         }
 
@@ -42,6 +44,12 @@ namespace GJP2021.Sources
             TextureMap.Add("button_normal", Content.Load<Texture2D>("Textures/button_normal"));
             TextureMap.Add("button_hover", Content.Load<Texture2D>("Textures/button_hover"));
             TextureMap.Add("button_pressed", Content.Load<Texture2D>("Textures/button_pressed"));
+            TextureMap.Add("eraser", Content.Load<Texture2D>("Textures/eraser"));
+
+            foreach (var color in Enum.GetNames(typeof(Player.PlayerColor)))
+            {
+                TextureMap.Add("player_" + color.ToLower(), Content.Load<Texture2D>("Textures/Player/player_" + color.ToLower()));
+            }
 
             SoundMap.Add("button_press", Content.Load<SoundEffect>("Sounds/button_press"));
             SoundMap.Add("button_release", Content.Load<SoundEffect>("Sounds/button_release"));
@@ -64,5 +72,16 @@ namespace GJP2021.Sources
             
             base.Draw(gameTime);
         }
+
+        public int GetWindowWidth()
+        {
+            return Window.ClientBounds.Width;
+        }
+
+        public int GetWindowHeight()
+        {
+            return Window.ClientBounds.Height;
+        }
+        
     }
 }
