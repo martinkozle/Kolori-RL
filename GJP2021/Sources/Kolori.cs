@@ -9,7 +9,7 @@ namespace GJP2021.Sources
 {
     public class Kolori : Game
     {
-        public GraphicsDeviceManager Graphics;
+        public readonly GraphicsDeviceManager Graphics;
         public SpriteBatch SpriteBatch;
         public SpriteFont SpriteFont;
         public GameStateManager GameStateManager;
