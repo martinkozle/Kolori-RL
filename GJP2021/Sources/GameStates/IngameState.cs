@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using GJP2021.Sources.Paint;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace GJP2021.Sources.GameStates
 {
@@ -6,29 +8,32 @@ namespace GJP2021.Sources.GameStates
     {
         public static readonly IngameState Instance = new();
         private Kolori _game;
-        private static readonly Color BgColor = new(115F/255F, 190F/255F, 211F/255F);
+        private static readonly Color BgColor = Color.White;
+        private static PaintCircles _paintCircles;
+        private static PaintPeriodicSpawner _periodicPaintSpawner;
 
         public void Update(GameTime gameTime)
         {
-            
+            _paintCircles.Update(gameTime);
+            var mouseX = Mouse.GetState().X;
+            var mouseY = Mouse.GetState().Y;
+            _periodicPaintSpawner.Update(gameTime, _paintCircles, mouseX, mouseY);
         }
 
         public void Draw(GameTime gameTime)
         {
             _game.GraphicsDevice.Clear(BgColor);
 
-            _game.SpriteBatch.Begin();
-
             //TODO DRAWING GOES HERE
-            
-            _game.SpriteBatch.End();
+
+            _paintCircles.Draw(_game);
         }
 
         public void Initialize(Kolori game)
         {
             _game = game;
+            _paintCircles = new PaintCircles();
+            _periodicPaintSpawner = new PaintPeriodicSpawner(PaintCircle.Red, 25, 5, 20, 0.05F, 0.1F,5);
         }
-        
     }
-    
 }

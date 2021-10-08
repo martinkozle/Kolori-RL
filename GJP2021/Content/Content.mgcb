@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Resources/AposShapesEffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Resources/AposShapesEffect.fx
+
 #begin Resources/Fonts/lunchds.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -31,18 +37,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Resources/Sounds/button_release.wav
-
-#begin Resources/Textures/button_hover.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Resources/Textures/button_hover.png
 
 #begin Resources/Textures/button_hover.png
 /importer:TextureImporter
