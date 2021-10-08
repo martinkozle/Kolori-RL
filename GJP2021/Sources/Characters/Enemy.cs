@@ -5,15 +5,14 @@ namespace GJP2021.Sources.Characters
 {
     public class Enemy
     {
-        private Enemy _enemy;
         private float _xPos;
         private float _yPos;
-        private float speed;
+        private float _speed;
         private readonly Kolori _game;
 
         public Enemy(float xPos, float yPos, float speed, Kolori game)
         {
-            this.speed = speed;
+            _speed = speed;
             _xPos = xPos;
             _yPos = yPos;
             _game = game;
@@ -31,25 +30,25 @@ namespace GJP2021.Sources.Characters
             }
             if (playerPosX > _xPos)
             {
-                _xPos = (_xPos + speed * (width / h)*delta);
+                _xPos = _xPos + _speed * (width / h)*delta;
             }
             //this.yPos += this.speed * (width / (width + height));
             //this.xPos += this.speed * (height / (width + height));
 
             else if (playerPosX < _xPos)
             {
-                _xPos = (_xPos - speed * (width / h)*delta);
+                _xPos = _xPos - _speed * (width / h)*delta;
             }
 
 //
             if (playerPosY > _yPos)
             {
-                _yPos = (_yPos + speed * (height / h)*delta);
+                _yPos += _speed * (height / h)*delta;
             }
 //
             else if (playerPosY < _yPos)
             {
-                _yPos = (_yPos - speed * (height / h)*delta);
+                _yPos -= _speed * (height / h)*delta;
             }
 
             //this.xPos = MathHelper.Lerp(this.xPos, playerPosX, this.lerp);
@@ -58,13 +57,9 @@ namespace GJP2021.Sources.Characters
 
         public void Draw(GameTime gameTime)
         {
-            _game.SpriteBatch.Draw(Kolori.TextureMap["enemy"], new Vector2(_xPos, _yPos), null,
+            _game.SpriteBatch.Draw(Kolori.TextureMap["eraser"], new Vector2(_xPos, _yPos), null,
                 Color.White);
         }
-
-        public void Initialize(Enemy enemy)
-        {
-            _enemy = enemy;
-        }
+        
     }
 }

@@ -11,20 +11,28 @@ namespace GJP2021.Sources.Characters
 {
     internal class Player
     {
-        private readonly Texture2D _baseTexture;
+        public enum PlayerColor
+        {
+            BLUE,
+            GREEN,
+            ORANGE,
+            PINK,
+            PURPLE,
+            RED,
+            YELLOW
+        }
+
         private readonly float _speed;
         private readonly float _maxAccel;
         private readonly Vector2 _bounds;
         private Vector2 _position;
         private readonly Action _action;
-        private Texture2D _playerTexture;
+        private PlayerColor _playerColor = PlayerColor.RED;
 
-        private Player(float x, float y, Texture2D baseTexture, Action action, Texture2D playerTexture, float speed, float maxAccel, Vector2 bounds)
+        private Player(float x, float y, Action action, float speed, float maxAccel, Vector2 bounds)
         {
             _position = new Vector2(x, y);
             _action = action;
-            _baseTexture = baseTexture;
-            _playerTexture = _baseTexture;
             _speed = speed;
             _maxAccel = maxAccel;
             _bounds = bounds;
@@ -54,10 +62,10 @@ namespace GJP2021.Sources.Characters
                 _position.Y -= _speed;
             }
 
-            if (_position.Y >= _bounds.Y-16f)
-                _position.Y = _bounds.Y-16f;
-            if (_position.X >= _bounds.X-16f)
-                _position.X = _bounds.X-16f;
+            if (_position.Y >= _bounds.Y - 32f)
+                _position.Y = _bounds.Y - 32f;
+            if (_position.X >= _bounds.X - 32f)
+                _position.X = _bounds.X - 32f;
             if (_position.Y <= 0)
                 _position.Y = 0;
             if (_position.X <= 0)
@@ -66,7 +74,7 @@ namespace GJP2021.Sources.Characters
 
         public void DrawPositioned(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_playerTexture, _position, Color.White);
+            spriteBatch.Draw(Kolori.TextureMap["player_" + _playerColor.ToString().ToLower()], _position, Color.White);
         }
         public static PlayerBuilder Builder()
         {
@@ -79,8 +87,6 @@ namespace GJP2021.Sources.Characters
             private float _speed;
             private float _maxAccel;
             private Vector2 _bounds;
-            private Texture2D _baseTexture;
-            private Texture2D _playerTexture;
             private Action _action;
 
             internal PlayerBuilder()
@@ -89,8 +95,6 @@ namespace GJP2021.Sources.Characters
                 _y = 0;
                 _speed = 0f;
                 _maxAccel = 0f;
-                _baseTexture = Kolori.TextureMap["player"];
-                _playerTexture = _baseTexture;
                 _action = () => { };
             }
 
@@ -124,10 +128,10 @@ namespace GJP2021.Sources.Characters
                 _action = action;
                 return this;
             }
-
+            
             public Player Build()
             {
-                return new(_x, _y, _baseTexture, _action, _playerTexture, _speed, _maxAccel, _bounds);
+                return new(_x, _y, _action, _speed, _maxAccel, _bounds);
             }
         }
     }
