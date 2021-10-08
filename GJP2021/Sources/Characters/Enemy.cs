@@ -12,11 +12,9 @@ namespace GJP2021.Sources.Characters
         private float yPos;
         private float speed;
         private Kolori game;
-        private float lerp;
 
-        public Enemy(float xPos, float yPos, float speed, Kolori game, float lerp)
+        public Enemy(float xPos, float yPos, float speed, Kolori game)
         {
-            this.lerp = lerp;
             this.speed = speed;
             this.xPos = xPos;
             this.yPos = yPos;
@@ -29,6 +27,10 @@ namespace GJP2021.Sources.Characters
             var width = Math.Abs(this.xPos - playerPosX);
             var height = Math.Abs(this.yPos - playerPosY);
             var h = (float)Math.Sqrt(Math.Pow(width, 2) + Math.Pow(height, 2));
+            if (playerPosX == this.xPos && playerPosY == this.yPos)
+            {
+                return;
+            }
             if (playerPosX > this.xPos)
             {
                 this.xPos = (this.xPos + this.speed * (width / h)*delta);
