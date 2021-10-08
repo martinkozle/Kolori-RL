@@ -1,3 +1,4 @@
+using GJP2021.Sources.Paint;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,9 @@ namespace GJP2021.Sources.GameStates
     {
         public static readonly IngameState Instance = new ();
         private Kolori _game;
+        private static readonly Color BgColor = Color.White;
+        private static PaintCircles _paintCircles;
+        private static PaintPeriodicSpawner _periodicPaintSpawner;
         private Player _player;
         private static readonly Color BgColor = new (115F/255F, 190F/255F, 211F/255F);
         private int _lastSpawnEnemy;
@@ -21,6 +25,10 @@ namespace GJP2021.Sources.GameStates
 
         public void Update(GameTime gameTime)
         {
+            _paintCircles.Update(gameTime);
+            var mouseX = Mouse.GetState().X;
+            var mouseY = Mouse.GetState().Y;
+            _periodicPaintSpawner.Update(gameTime, _paintCircles, mouseX, mouseY);
             //_enemy.Update(gameTime,Mouse.GetState().X,Mouse.GetState().Y);
             if (Mouse.GetState().LeftButton == ButtonState.Pressed &&
                 gameTime.TotalGameTime.Seconds - _lastSpawnEnemy >= 0.1)
@@ -41,7 +49,7 @@ namespace GJP2021.Sources.GameStates
         public void Draw(GameTime gameTime)
         {
             _game.GraphicsDevice.Clear(BgColor);
-
+            _paintCircles.Draw(_game);
             _game.SpriteBatch.Begin();
 
             //_enemy.Draw(gameTime);
@@ -51,7 +59,6 @@ namespace GJP2021.Sources.GameStates
             }
 
             //_enemy.Draw(gameTime);
-            //TODO DRAWING GOES HERE
             _player.DrawPositioned(_game.SpriteBatch);
 
             _game.SpriteBatch.End();
@@ -60,8 +67,10 @@ namespace GJP2021.Sources.GameStates
         public void Initialize(Kolori game)
         {
             _game = game;
+            _paintCircles = new PaintCircles();
+            _periodicPaintSpawner = new PaintPeriodicSpawner(PaintCircle.Red, 25, 5, 20, 0.05F, 0.1F,5);
             //_enemy= new Enemy(100, 100, 10, _game);
-            _enemies.Add(new Enemy(Mouse.GetState().X+new Random().Next(100), Mouse.GetState().Y + new Random().Next(100), 2.5F, _game));
+            _enemies.Add(new Enemy(Mouse.GetState().X + new Random().Next(100), Mouse.GetState().Y + new Random().Next(100), 2.5F, _game));
             //_enemy=new Enemy(200,200,3F,game,0.025F);
             _player = Player.Builder()
                 .SetPosition(0, 0)
