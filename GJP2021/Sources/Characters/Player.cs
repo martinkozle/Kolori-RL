@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GJP2021.Sources.Characters
 {
-    class Player
+    internal class Player
     {
         private readonly Texture2D _baseTexture;
         private readonly float _speed;
