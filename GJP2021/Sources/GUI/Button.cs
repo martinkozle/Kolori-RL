@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,13 +14,15 @@ namespace GJP2021.Sources.GUI
         private readonly Texture2D _pressedTexture;
         private readonly SoundEffect _pressSound;
         private readonly SoundEffect _releaseSound;
-        private readonly Vector2 _position;
         private readonly Action _action;
+        private readonly Func<int> _x;
+        private readonly Func<int> _y;
         private Texture2D _currentTexture;
 
-        private Button(int x, int y, Texture2D normalTexture, Texture2D hoveredTexture, Texture2D pressedTexture, SoundEffect pressSound, SoundEffect releaseSound, Action action)
+        private Button(Func<int> x, Func<int> y, Texture2D normalTexture, Texture2D hoveredTexture, Texture2D pressedTexture, SoundEffect pressSound, SoundEffect releaseSound, Action action)
         {
-            _position = new Vector2(x, y);
+            _x = x;
+            _y = y;
             _normalTexture = normalTexture;
             _hoveredTexture = hoveredTexture;
             _pressedTexture = pressedTexture;
@@ -32,7 +35,7 @@ namespace GJP2021.Sources.GUI
         public void Update()
         {
             var mouseState = Mouse.GetState();
-            if (Utils.IsInsideBox(mouseState.Position, _position, new Vector2(_currentTexture.Width, _currentTexture.Height)))
+            if (Utils.IsInsideBox(mouseState.Position, GetPosition(), new Vector2(_currentTexture.Width, _currentTexture.Height)))
             {
                 if (mouseState.LeftButton == ButtonState.Released)
                 {
@@ -59,7 +62,12 @@ namespace GJP2021.Sources.GUI
         
         public void DrawPositioned(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_currentTexture, _position, Color.White);
+            spriteBatch.Draw(_currentTexture, GetPosition(), Color.White);
+        }
+
+        private Vector2 GetPosition()
+        {
+            return new(_x.Invoke(), _y.Invoke());
         }
 
         public void Click()
@@ -74,19 +82,19 @@ namespace GJP2021.Sources.GUI
 
         public class ButtonBuilder
         {
-            private int _x;
-            private int _y;
             private Texture2D _normalTexture;
             private Texture2D _hoveredTexture;
             private Texture2D _pressedTexture;
             private SoundEffect _pressSound;
             private SoundEffect _releaseSound;
             private Action _action;
+            private Func<int> _x;
+            private Func<int> _y;
 
             internal ButtonBuilder()
             {
-                _x = 0;
-                _y = 0;
+                _x = () => 0;
+                _y = () => 0;
                 _normalTexture = Kolori.TextureMap["button_normal"];
                 _hoveredTexture = Kolori.TextureMap["button_hover"];
                 _pressedTexture = Kolori.TextureMap["button_pressed"];
@@ -95,25 +103,44 @@ namespace GJP2021.Sources.GUI
                 _action = () => {};
             }
             
-            public ButtonBuilder SetPosition(int x, int y)
+            public ButtonBuilder SetPosition(Func<int> x, Func<int> y)
             {
                 _x = x;
                 _y = y;
                 return this;
             }
 
-            public ButtonBuilder CenterHorizontally(int panelWidth)
+            public ButtonBuilder SetPosition(int x, int y)
             {
-                _x = (panelWidth - _normalTexture.Width) / 2;
+                _x = () => x;
+                _y = () => y;
+                return this;
+            }
+            
+            public ButtonBuilder CenterHorizontally(Func<int> boundaryWidth)
+            {
+                _x = () => (boundaryWidth.Invoke() - _normalTexture.Width) / 2;
                 return this;
             }
 
-            public ButtonBuilder CenterVertically(int panelHeight)
+            public ButtonBuilder CenterHorizontally(int boundaryWidth)
             {
-                _y = (panelHeight - _normalTexture.Height) / 2;
+                _x = () => (boundaryWidth - _normalTexture.Width) / 2;
                 return this;
             }
 
+            public ButtonBuilder CenterVertically(Func<int> boundaryHeight)
+            {
+                _y = () => (boundaryHeight.Invoke() - _normalTexture.Height) / 2;
+                return this;
+            }
+
+            public ButtonBuilder CenterVertically(int boundaryHeight)
+            {
+                _y = () => (boundaryHeight - _normalTexture.Height) / 2;
+                return this;
+            }
+            
             public ButtonBuilder SetSound(string soundName)
             {
                 if (!Kolori.SoundMap.ContainsKey(soundName + "_release") ||

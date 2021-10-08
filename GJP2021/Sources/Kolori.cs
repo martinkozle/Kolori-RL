@@ -19,9 +19,9 @@ namespace GJP2021.Sources
         public Kolori()
         {
             Content.RootDirectory = "Content/Resources";
-            IsMouseVisible = true;
             Graphics = new GraphicsDeviceManager(this);
-            Window.AllowUserResizing = false;
+            IsMouseVisible = true;
+            Window.AllowUserResizing = true;
             Window.Title = "Kolori";
         }
 
@@ -61,5 +61,16 @@ namespace GJP2021.Sources
             
             base.Draw(gameTime);
         }
+
+        public int GetWindowWidth()
+        {
+            return Window.ClientBounds.Width;
+        }
+
+        public int GetWindowHeight()
+        {
+            return Window.ClientBounds.Height;
+        }
+        
     }
 }

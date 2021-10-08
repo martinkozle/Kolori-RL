@@ -32,7 +32,7 @@ namespace GJP2021.Sources.GameStates
 
             _startButton = Button.Builder()
                 .SetPosition(16, 16)
-                .CenterHorizontally(_game.Graphics.PreferredBackBufferWidth)
+                .CenterHorizontally(_game.GetWindowWidth)
                 .SetSound("button")
                 .SetAction(
                     () =>

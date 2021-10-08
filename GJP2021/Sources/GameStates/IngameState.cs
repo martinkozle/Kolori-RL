@@ -10,7 +10,6 @@ namespace GJP2021.Sources.GameStates
 
         public void Update(GameTime gameTime)
         {
-            
         }
 
         public void Draw(GameTime gameTime)
