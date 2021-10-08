@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using GJP2021.Sources.Characters;
 using GJP2021.Sources.GameStates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -39,8 +41,12 @@ namespace GJP2021.Sources
             TextureMap.Add("button_normal", Content.Load<Texture2D>("Textures/button_normal"));
             TextureMap.Add("button_hover", Content.Load<Texture2D>("Textures/button_hover"));
             TextureMap.Add("button_pressed", Content.Load<Texture2D>("Textures/button_pressed"));
-            TextureMap.Add("enemy", Content.Load<Texture2D>("Textures/enemy"));
-            TextureMap.Add("player", Content.Load<Texture2D>("Textures/reddie"));
+            TextureMap.Add("eraser", Content.Load<Texture2D>("Textures/eraser"));
+
+            foreach (var color in Enum.GetNames(typeof(Player.PlayerColor)))
+            {
+                TextureMap.Add("player_" + color.ToLower(), Content.Load<Texture2D>("Textures/Player/player_" + color.ToLower()));
+            }
 
             SoundMap.Add("button_press", Content.Load<SoundEffect>("Sounds/button_press"));
             SoundMap.Add("button_release", Content.Load<SoundEffect>("Sounds/button_release"));
