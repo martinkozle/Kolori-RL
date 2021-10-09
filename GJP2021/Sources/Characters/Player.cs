@@ -25,7 +25,6 @@ namespace GJP2021.Sources.Characters
         private readonly Vector2 _bounds;
         public Vector2 Position;
         private PlayerColor _playerColor = PlayerColor.RED;
-        private readonly PaintCircles _paintCircles;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
 
         private Player(float x, float y, float maxSpeed, float acceleration, Vector2 bounds)
@@ -34,13 +33,12 @@ namespace GJP2021.Sources.Characters
             _maxSpeed = maxSpeed;
             _acceleration = acceleration;
             _bounds = bounds;
-            _paintCircles = new PaintCircles();
             _speedX = 0;
             _speedY = 0;
             _dragCoefficient = 0.5f;
             _dragConstant = 80;
             _periodicPaintSpawner =
-                new PaintPeriodicSpawner(PaintCircle.Red, new Color(128, 64, 32), 25, 5, 20, 0.05F, 0.1F, 5);
+                new PaintPeriodicSpawner(PaintCircle.Red, new Color(128, 64, 32), 35, 10, 30, 0.05F, 0.1F, 120);
         }
 
         public Vector2 GetSpeedVector()
@@ -48,11 +46,10 @@ namespace GJP2021.Sources.Characters
             return new Vector2(_speedX, _speedY);
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, PaintCircles paintCircles)
         {
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
-            _paintCircles.Update(gameTime);
-            _periodicPaintSpawner.Update(gameTime, _paintCircles, Position);
+            _periodicPaintSpawner.Update(gameTime, paintCircles, Position);
 
             HandleAcceleration(gameTime);
 
@@ -142,11 +139,6 @@ namespace GJP2021.Sources.Characters
         private Texture2D GetTexture()
         {
             return Kolori.TextureMap["player_" + _playerColor.ToString().ToLower()];
-        }
-
-        public void DrawShapeBatch(ShapeBatch batch)
-        {
-            _paintCircles.Draw(batch);
         }
 
         public static PlayerBuilder Builder()

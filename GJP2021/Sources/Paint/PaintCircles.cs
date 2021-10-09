@@ -7,7 +7,7 @@ namespace GJP2021.Sources.Paint
 {
     public class PaintCircles
     {
-        private List<PaintCircle> _paintCircles;
+        private readonly List<PaintCircle> _paintCircles;
 
         public PaintCircles()
         {
@@ -20,8 +20,8 @@ namespace GJP2021.Sources.Paint
             {
                 paintCircle.Update(gameTime);
             }
-
-            _paintCircles = _paintCircles.Where(pc => !pc.IsDone()).ToList();
+            
+            _paintCircles.RemoveAll(pc => pc.IsDone());
         }
 
         public void Draw(ShapeBatch batch)

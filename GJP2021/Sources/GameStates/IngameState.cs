@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GJP2021.Sources.Characters;
+using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -14,6 +15,7 @@ namespace GJP2021.Sources.GameStates
         private Player _player;
         private float _lastSpawnEnemy;
         private Random _randomGenerator;
+        private PaintCircles _paintCircles;
 
         private readonly List<Enemy> _enemies = new();
 
@@ -30,19 +32,21 @@ namespace GJP2021.Sources.GameStates
 
             _enemies.RemoveAll(el => el.MarkedForDelete);
 
+            _player.Update(gameTime, _paintCircles);
+            
             foreach (var enemy in _enemies)
             {
-                enemy.Update(gameTime, _player.Position.X, _player.Position.Y);
+                enemy.Update(gameTime, _player.Position.X, _player.Position.Y, _paintCircles);
             }
-
-            _player.Update(gameTime);
+            
+            _paintCircles.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)
         {
             _game.GraphicsDevice.Clear(BgColor);
 
-            _player.DrawShapeBatch(_game.ShapeBatch);
+            _paintCircles.Draw(_game.ShapeBatch);
 
             _game.SpriteBatch.Begin();
 
@@ -72,6 +76,7 @@ namespace GJP2021.Sources.GameStates
                 .SetBounds(new Vector2(_game.GetWindowWidth(),
                     _game.GetWindowHeight()))
                 .Build();
+            _paintCircles = new PaintCircles();
             _enemySpawnPoint = new List<Vector2>
             {
                 new(-50, -50),
