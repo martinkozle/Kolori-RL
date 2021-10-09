@@ -10,6 +10,7 @@ namespace GJP2021.Sources.GameStates
     public class IngameState : IGameState
     {
         public static readonly IngameState Instance = new();
+        
         private static readonly Color BgColor = Color.White;
         private Player _player;
         private float _lastSpawnEnemy;
@@ -19,13 +20,19 @@ namespace GJP2021.Sources.GameStates
         private PaintCircles _paintCircles;
 
 
-        private readonly List<Enemy> _enemies = new();
-        private readonly List<PaintBucket> _paintBuckets = new();
+        private List<Enemy> _enemies = new();
+        private List<PaintBucket> _paintBuckets = new();
 
         private List<Vector2> _enemySpawnPoint;
 
         public void Update(GameTime gameTime)
         {
+            if (!_player.IsAlive())
+            {
+                Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
+                Initialize();
+            }
+
             if (Mouse.GetState().LeftButton == ButtonState.Pressed &&
                 gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 0.1)
             {
@@ -99,9 +106,13 @@ namespace GJP2021.Sources.GameStates
             //    Color.Green);
             //Kolori.Instance.ShapeBatch.End();
         }
-
+        
         public void Initialize()
         {
+            _enemies = new List<Enemy>(); 
+            _paintBuckets = new List<PaintBucket>();
+            _lastSpawnEnemy = 0;
+            _lastSpawnBucket = 0;
             _randomGenerator = new Random();
             //_paintBucket=new PaintBucket(new Vector2(100,100),_randomGenerator,Kolori.Instance);
             _paintBuckets.Add(new PaintBucket(

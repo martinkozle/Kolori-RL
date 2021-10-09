@@ -5,12 +5,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace GJP2021.Sources.GameStates
 {
-    public class MenuState : IGameState
+    public class GameOverState : IGameState
     {
-        public static readonly MenuState Instance = new();
+        public static readonly GameOverState Instance = new();
         private static readonly Color BgColor = new(9F / 255F, 10F / 255F, 20F / 255F);
-        private readonly List<Button> _buttons = new();
-
+        private List<Button> _buttons;
         public void Update(GameTime gameTime)
         {
             foreach (var button in _buttons)
@@ -38,14 +37,10 @@ namespace GJP2021.Sources.GameStates
             Kolori.Instance.SpriteBatch.End();
         }
 
-        private static Texture2D GetLogoTexture()
-        {
-            return Kolori.Instance.TextureMap["logo"];
-        }
-
         public void Initialize()
         {
             var logoTexture = GetLogoTexture();
+            _buttons = new List<Button>();;
             //Start
             _buttons.Add(Button.Builder()
                 .SetPosition(0, logoTexture.Height + 64 + 64)
@@ -69,6 +64,11 @@ namespace GJP2021.Sources.GameStates
                     () => { Kolori.Instance.Exit(); })
                 .Build()
             );
+        }
+
+        private static Texture2D GetLogoTexture()
+        {
+            return Kolori.Instance.TextureMap["game_over"];
         }
     }
 }
