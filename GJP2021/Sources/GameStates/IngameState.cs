@@ -29,7 +29,7 @@ namespace GJP2021.Sources.GameStates
             if (Mouse.GetState().LeftButton == ButtonState.Pressed &&
                 gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 0.1)
             {
-                _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 130F));
+                _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
                 _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
             }
             if (Mouse.GetState().RightButton == ButtonState.Pressed &&
@@ -47,8 +47,6 @@ namespace GJP2021.Sources.GameStates
 
             _enemies.RemoveAll(el => el.MarkedForDeletion);
 
-            _player.Update(gameTime, _paintCircles);
-            
             foreach (var enemy in _enemies)
             {
                 enemy.Update(gameTime, _player, _paintCircles);
@@ -113,7 +111,7 @@ namespace GJP2021.Sources.GameStates
             );
             _player = Player.Builder()
                 .SetPosition(0, 0)
-                .SetMaxSpeed(150f)
+                .SetMaxSpeed(225f)
                 .SetAcceleration(450f)
                 .SetBounds(new Vector2(Kolori.Instance.GetWindowWidth(),
                     Kolori.Instance.GetWindowHeight()))
@@ -127,7 +125,7 @@ namespace GJP2021.Sources.GameStates
                 new(Kolori.Instance.GetWindowWidth() + 50, Kolori.Instance.GetWindowHeight() + 50)
             };
 
-            _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 130F));
+            _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
         }
     }
 }
