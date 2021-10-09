@@ -77,8 +77,13 @@ namespace GJP2021.Sources.GameStates
             _game.GraphicsDevice.Clear(BgColor);
 
             _paintCircles.Draw(_game.ShapeBatch);
-
+            
             _game.SpriteBatch.Begin();
+            
+            foreach (var bucket in _paintBuckets)
+            {
+                bucket.Draw(gameTime);
+            }
 
             foreach (var enemy in _enemies)
             {
@@ -86,11 +91,6 @@ namespace GJP2021.Sources.GameStates
             }
 
             _player.Draw(_game.SpriteBatch);
-
-            foreach (var bucket in _paintBuckets)
-            {
-                bucket.Draw(gameTime);
-            }
             
             _player.DrawHealth(_game.SpriteBatch);
             

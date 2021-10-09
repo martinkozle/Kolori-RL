@@ -49,7 +49,8 @@ namespace GJP2021.Sources.Characters
 
         public void Draw(GameTime gameTime)
         {
-            _game.SpriteBatch.Draw(GetTexture(), _position,Color.White);
+            var texture = GetTexture();
+            _game.SpriteBatch.Draw(texture, _position - new Vector2(texture.Width / 2F, texture.Height / 2F),Color.White);
         }
     }
 }
