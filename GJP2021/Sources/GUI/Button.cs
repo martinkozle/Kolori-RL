@@ -16,7 +16,7 @@ namespace GJP2021.Sources.GUI
         private readonly Action _action;
         private readonly Func<int> _x;
         private readonly Func<int> _y;
-        private Texture2D _currentTexture;
+        public Texture2D CurrentTexture { get; private set; }
 
         private Button(Func<int> x, Func<int> y, Texture2D normalTexture, Texture2D hoveredTexture, Texture2D pressedTexture, SoundEffect pressSound, SoundEffect releaseSound, Action action)
         {
@@ -25,7 +25,7 @@ namespace GJP2021.Sources.GUI
             _normalTexture = normalTexture;
             _hoveredTexture = hoveredTexture;
             _pressedTexture = pressedTexture;
-            _currentTexture = _normalTexture;
+            CurrentTexture = _normalTexture;
             _pressSound = pressSound;
             _releaseSound = releaseSound;
             _action = action;
@@ -33,35 +33,43 @@ namespace GJP2021.Sources.GUI
 
         public void Update()
         {
+            if (CurrentTexture == null)
+            {
+                return;
+            }
             var mouseState = Mouse.GetState();
-            if (Utils.IsInsideBox(mouseState.Position, GetPosition(), new Vector2(_currentTexture.Width, _currentTexture.Height)))
+            if (Utils.IsInsideBox(mouseState.Position, GetPosition(), new Vector2(CurrentTexture.Width, CurrentTexture.Height)))
             {
                 if (mouseState.LeftButton == ButtonState.Released)
                 {
-                    if (_currentTexture == _pressedTexture) {
+                    if (CurrentTexture == _pressedTexture) {
                         _releaseSound.Play();
                         Click();
                     }
-                    _currentTexture = _hoveredTexture;
-                } else if (_currentTexture == _hoveredTexture)
+                    CurrentTexture = _hoveredTexture;
+                } else if (CurrentTexture == _hoveredTexture)
                 {
                     _pressSound.Play();
-                    _currentTexture = _pressedTexture;
+                    CurrentTexture = _pressedTexture;
                 }
             }
             else
             {
-                if (_currentTexture == _pressedTexture)
+                if (CurrentTexture == _pressedTexture)
                 {
                     _releaseSound.Play();
                 }
-                _currentTexture = _normalTexture;
+                CurrentTexture = _normalTexture;
             }
         }
         
         public void DrawPositioned(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_currentTexture, GetPosition(), Color.White);
+            if (CurrentTexture == null)
+            {
+                return;
+            }
+            spriteBatch.Draw(CurrentTexture, GetPosition(), Color.White);
         }
 
         private Vector2 GetPosition()
@@ -94,9 +102,6 @@ namespace GJP2021.Sources.GUI
             {
                 _x = () => 0;
                 _y = () => 0;
-                _normalTexture = Kolori.TextureMap["button_normal"];
-                _hoveredTexture = Kolori.TextureMap["button_hover"];
-                _pressedTexture = Kolori.TextureMap["button_pressed"];
                 _pressSound = null;
                 _releaseSound = null;
                 _action = () => {};
@@ -152,12 +157,12 @@ namespace GJP2021.Sources.GUI
 
             public ButtonBuilder SetTexture(string textureName)
             {
-                if (!Kolori.TextureMap.ContainsKey(textureName + "_normal") ||
-                    !Kolori.TextureMap.ContainsKey(textureName + "_hover") ||
-                    !Kolori.TextureMap.ContainsKey(textureName + "_pressed")) return this;
-                _normalTexture = Kolori.TextureMap[textureName + "_normal"];
-                _hoveredTexture = Kolori.TextureMap[textureName + "_hover"];
-                _pressedTexture = Kolori.TextureMap[textureName + "_pressed"];
+                if (!Kolori.TextureMap.ContainsKey(textureName + "_button_normal") ||
+                    !Kolori.TextureMap.ContainsKey(textureName + "_button_hover") ||
+                    !Kolori.TextureMap.ContainsKey(textureName + "_button_pressed")) return this;
+                _normalTexture = Kolori.TextureMap[textureName + "_button_normal"];
+                _hoveredTexture = Kolori.TextureMap[textureName + "_button_hover"];
+                _pressedTexture = Kolori.TextureMap[textureName + "_button_pressed"];
 
                 return this;
             }
