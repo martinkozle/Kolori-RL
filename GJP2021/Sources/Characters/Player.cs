@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using Apos.Shapes;
+using System.Diagnostics;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,6 +19,7 @@ namespace GJP2021.Sources.Characters
         private PaintColors _playerColor;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
         private readonly Random _randomGenerator = new();
+        private float _timer = 0;
 
         private Player(float x, float y, float maxSpeed, float acceleration, Vector2 bounds)
         {
@@ -42,7 +42,7 @@ namespace GJP2021.Sources.Characters
 
         public Vector2 GetSpeedVector()
         {
-            return new Vector2(_speedX, _speedY);
+            return new(_speedX, _speedY);
         }
 
         public void DrawHealth(SpriteBatch spriteBatch)
@@ -76,6 +76,12 @@ namespace GJP2021.Sources.Characters
         {
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
             _periodicPaintSpawner.Update(gameTime, paintCircles, Position);
+            _timer += delta;
+            if (_timer >= 0.2)
+            {
+                _timer = 0;
+                Damage(0.1F);
+            }
 
             HandleAcceleration(gameTime);
 
@@ -159,7 +165,13 @@ namespace GJP2021.Sources.Characters
         
         public void SetColor(PaintColors playerColor)
         {
+            Heal(MaxHealth);
             _playerColor = playerColor;
+        }
+
+        private void Heal(float amount)
+        {
+            _health = Math.Min(MaxHealth, amount);
         }
 
         public static PlayerBuilder Builder()
@@ -212,5 +224,11 @@ namespace GJP2021.Sources.Characters
                 return new(_x, _y, _maxSpeed, _acceleration, _bounds);
             }
         }
+
+        public void Damage(float amount)
+        {
+            _health -= amount;
+        }
+        
     }
 }

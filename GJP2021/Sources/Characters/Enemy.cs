@@ -9,7 +9,7 @@ namespace GJP2021.Sources.Characters
     {
         private Vector2 _position;
         private readonly float _speed;
-        public bool MarkedForDelete;
+        public bool MarkedForDeletion;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
 
 
@@ -20,17 +20,12 @@ namespace GJP2021.Sources.Characters
             _periodicPaintSpawner =
                 new PaintPeriodicSpawner(new Color(255, 255, 255), new Color(0, 0, 0), 0, 20, 20, 0.05F, 0.1F, 120);
 
-            MarkedForDelete = false;
+            MarkedForDeletion = false;
         }
-
-        public void Update(GameTime gameTime, Vector2 playerPos, PaintCircles paintCircles)
+        
+        public void Update(GameTime gameTime, Player player, PaintCircles paintCircles)
         {
-            var (x, y) = playerPos;
-            Update(gameTime, x, y, paintCircles);
-        }
-
-        public void Update(GameTime gameTime, float playerPosX, float playerPosY, PaintCircles paintCircles)
-        {
+            var (playerPosX, playerPosY) = player.Position;
             _periodicPaintSpawner.Update(gameTime, paintCircles, _position);
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
             var width = Math.Abs(_position.X - playerPosX);
@@ -38,7 +33,8 @@ namespace GJP2021.Sources.Characters
             var h = (float) Math.Sqrt(Math.Pow(width, 2) + Math.Pow(height, 2));
             if (Math.Abs(playerPosX - _position.X) < 20 && Math.Abs(playerPosY - _position.Y) < 20)
             {
-                MarkedForDelete = true;
+                player.Damage(5F);
+                MarkedForDeletion = true;
             }
 
             if (playerPosX > _position.X)

@@ -45,13 +45,13 @@ namespace GJP2021.Sources.GameStates
                 _lastSpawnBucket = (float) gameTime.TotalGameTime.TotalSeconds;
             }
 
-            _enemies.RemoveAll(el => el.MarkedForDelete);
+            _enemies.RemoveAll(el => el.MarkedForDeletion);
 
             _player.Update(gameTime, _paintCircles);
             
             foreach (var enemy in _enemies)
             {
-                enemy.Update(gameTime, _player.Position, _paintCircles);
+                enemy.Update(gameTime, _player, _paintCircles);
             }
             
             _paintCircles.Update(gameTime);
