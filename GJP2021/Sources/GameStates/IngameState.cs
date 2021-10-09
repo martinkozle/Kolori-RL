@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GJP2021.Sources.Characters;
 using Microsoft.Xna.Framework;
@@ -13,25 +14,29 @@ namespace GJP2021.Sources.GameStates
         private Kolori _game;
         private Player _player;
         private static readonly Color BgColor = new (115F/255F, 190F/255F, 211F/255F);
-        private int _lastSpawnEnemy;
+        private float _lastSpawnEnemy;
+        private Random _randomGenerator;
 
-        private readonly List<Enemy> _enemies = new();
+        private readonly List<Enemy> _enemies = new ();
+
         //private Enemy _enemy;
-
+        private List<Vector2> _enemySpawnPoint;
 
         public void Update(GameTime gameTime)
         {
             //_enemy.Update(gameTime,Mouse.GetState().X,Mouse.GetState().Y);
             if (Mouse.GetState().LeftButton == ButtonState.Pressed &&
-                gameTime.TotalGameTime.Seconds - _lastSpawnEnemy >= 0.1)
+                gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 0.1)
             {
-                _enemies.Add(new Enemy(Mouse.GetState().X+new Random().Next(100), Mouse.GetState().Y+new Random().Next(100), 2.5F, _game));
-                _lastSpawnEnemy = gameTime.TotalGameTime.Seconds;
+                _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 2.5F, _game));
+                _lastSpawnEnemy = (float)gameTime.TotalGameTime.TotalSeconds;
             }
+
+            _enemies.RemoveAll(el => el.markedForDelete);
 
             foreach (var enemy in _enemies)
             {
-                enemy.Update(gameTime, Mouse.GetState().X, Mouse.GetState().Y);
+                enemy.Update(gameTime, _player.GetPos().X, _player.GetPos().Y);
             }
             // _enemy.Update(gameTime,Mouse.GetState().X,Mouse.GetState().Y);
 
@@ -44,13 +49,12 @@ namespace GJP2021.Sources.GameStates
 
             _game.SpriteBatch.Begin();
 
-            //_enemy.Draw(gameTime);
             foreach (var enemy in _enemies)
             {
                 enemy.Draw(gameTime);
             }
 
-            //_enemy.Draw(gameTime);
+            
             //TODO DRAWING GOES HERE
             _player.DrawPositioned(_game.SpriteBatch);
 
@@ -59,17 +63,25 @@ namespace GJP2021.Sources.GameStates
 
         public void Initialize(Kolori game)
         {
+            _randomGenerator = new Random();
             _game = game;
-            //_enemy= new Enemy(100, 100, 10, _game);
-            _enemies.Add(new Enemy(Mouse.GetState().X+new Random().Next(100), Mouse.GetState().Y + new Random().Next(100), 2.5F, _game));
-            //_enemy=new Enemy(200,200,3F,game,0.025F);
             _player = Player.Builder()
                 .SetPosition(0, 0)
                 .SetSpeed(2f)
                 .SetMaxAcceleration(6f)
-                .SetBounds(new Vector2(_game.Graphics.PreferredBackBufferWidth,
-                    _game.Graphics.PreferredBackBufferHeight))
+                .SetBounds(new Vector2(_game.GetWindowWidth(),
+                    _game.GetWindowHeight()))
                 .Build();
+            _enemySpawnPoint = new List<Vector2>
+            {
+                new Vector2(-50, -50), 
+                new Vector2(-50, _game.GetWindowHeight()+50),
+                new Vector2(_game.GetWindowWidth()+50, -50),
+                new Vector2(_game.GetWindowWidth()+50, _game.GetWindowHeight()+50)
+            };
+
+
+            _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 2.5F, _game));
         }
     }
 }
