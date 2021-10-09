@@ -28,7 +28,7 @@ namespace GJP2021.Sources.Characters
         public void Update(GameTime gameTime, Vector2 playerPos, PaintCircles paintCircles)
         {
             var (x, y) = playerPos;
-            Update(gameTime, x, y);
+            Update(gameTime, x, y, paintCircles);
         }
 
         public void Update(GameTime gameTime, float playerPosX, float playerPosY, PaintCircles paintCircles)
@@ -72,7 +72,7 @@ namespace GJP2021.Sources.Characters
 
         private Texture2D GetTexture()
         {
-            return Kolori.TextureMap["eraser"];
+            return Kolori.Instance.TextureMap["eraser"];
         }
     }
 }

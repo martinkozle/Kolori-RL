@@ -66,7 +66,7 @@ namespace GJP2021.Sources.GameStates
                 }
                 
             }
-            _player.Update(gameTime);
+            _player.Update(gameTime, _paintCircles);
             
             _paintBuckets.RemoveAll(pb => pb.MarkedForDeleteion);
             
@@ -92,12 +92,14 @@ namespace GJP2021.Sources.GameStates
                 bucket.Draw(gameTime);
             }
             
+            _player.DrawHealth(_game.SpriteBatch);
+            
             _game.SpriteBatch.End();
 
-            _game.ShapeBatch.Begin();
-            //_game.ShapeBatch.DrawLine(_player.Position, _player.Position + _player.GetSpeedVector(), 2, Color.Green,
+            //_game.ShapeBatch.Begin();
+            //_game.ShapeBatch.DrawLine(_player.Posi/tion, _player.Position + _player.GetSpeedVector(), 2, Color.Green,
             //    Color.Green);
-            _game.ShapeBatch.End();
+            //_game.ShapeBatch.End();
         }
 
         public void Initialize(Kolori game)

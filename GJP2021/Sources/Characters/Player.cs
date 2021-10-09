@@ -19,7 +19,6 @@ namespace GJP2021.Sources.Characters
         private const float MaxHealth = 100F;
         private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["healthbar"];
         private PaintColors _playerColor;
-        private readonly PaintCircles _paintCircles;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
         private readonly Random _randomGenerator = new();
 
@@ -72,7 +71,6 @@ namespace GJP2021.Sources.Characters
             var texture = GetTexture();
             spriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
                 Color.White);
-            DrawHealth(spriteBatch);
         }
 
         public void Update(GameTime gameTime, PaintCircles paintCircles)
