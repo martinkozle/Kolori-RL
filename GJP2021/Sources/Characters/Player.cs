@@ -35,7 +35,8 @@ namespace GJP2021.Sources.Characters
             _maxAcceleration = maxAcceleration;
             _bounds = bounds;
             _paintCircles = new PaintCircles();
-            _periodicPaintSpawner = new PaintPeriodicSpawner(PaintCircle.Red, new Color(128, 64, 32), 25, 5, 20, 0.05F, 0.1F,5);
+            _periodicPaintSpawner =
+                new PaintPeriodicSpawner(PaintCircle.Red, new Color(128, 64, 32), 25, 5, 20, 0.05F, 0.1F, 5);
         }
 
         public Vector2 GetPos()
@@ -45,14 +46,16 @@ namespace GJP2021.Sources.Characters
 
         public void Update(GameTime gameTime)
         {
+            var texture = GetTexture();
+            var x = _position.X + texture.Width / 2F;
+            var y = _position.Y + texture.Height / 2F;
             _paintCircles.Update(gameTime);
-            _periodicPaintSpawner.Update(gameTime, _paintCircles, _position);
+            _periodicPaintSpawner.Update(gameTime, _paintCircles, new Vector2(x, y));
 
             HandleInput();
 
             _position.Y = Math.Clamp(_position.Y, 0, _bounds.Y - 32F);
             _position.X = Math.Clamp(_position.X, 0, _bounds.X - 32F);
-
         }
 
         private void HandleInput()
@@ -82,17 +85,22 @@ namespace GJP2021.Sources.Characters
 
         public void DrawPositioned(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Kolori.TextureMap["player_" + _playerColor.ToString().ToLower()], _position, Color.White);
+            spriteBatch.Draw(GetTexture(), _position, Color.White);
+        }
+
+        private Texture2D GetTexture()
+        {
+            return Kolori.TextureMap["player_" + _playerColor.ToString().ToLower()];
         }
 
         public void DrawShapeBatch(ShapeBatch batch)
         {
-            _paintCircles.Draw(batch);            
+            _paintCircles.Draw(batch);
         }
 
         public static PlayerBuilder Builder()
         {
-            return new();
+            return new ();
         }
 
         public class PlayerBuilder
@@ -135,10 +143,10 @@ namespace GJP2021.Sources.Characters
                 _bounds = bounds;
                 return this;
             }
-            
+
             public Player Build()
             {
-                return new(_x, _y, _speed, _maxAcceleration, _bounds);
+                return new (_x, _y, _speed, _maxAcceleration, _bounds);
             }
         }
     }
