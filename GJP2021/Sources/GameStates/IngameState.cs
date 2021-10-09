@@ -50,11 +50,11 @@ namespace GJP2021.Sources.GameStates
 
             foreach (var enemy in _enemies)
             {
-                enemy.Update(gameTime, _player.GetPos().X, _player.GetPos().Y);
+                enemy.Update(gameTime, _player.Position);
             }
             foreach (var bucket in _paintBuckets )
             {
-                bucket.Update(gameTime,_player.GetPos());
+                bucket.Update(gameTime,_player.Position);
                 if (bucket.MarkedForDeleteion)
                 {
                     _player.setColor(bucket.GetPaintBucketColor());
@@ -80,14 +80,13 @@ namespace GJP2021.Sources.GameStates
                 enemy.Draw(gameTime);
             }
 
+            _player.Draw(_game.SpriteBatch);
+
             foreach (var bucket in _paintBuckets)
             {
                 bucket.Draw(gameTime);
             }
             
-            _player.DrawPositioned(_game.SpriteBatch);
-            
-
             _game.SpriteBatch.End();
         }
 

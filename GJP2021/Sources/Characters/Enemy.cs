@@ -19,6 +19,12 @@ namespace GJP2021.Sources.Characters
             MarkedForDelete = false;
         }
 
+        public void Update(GameTime gameTime, Vector2 playerPos)
+        {
+            var (x, y) = playerPos;
+            Update(gameTime, x, y);
+        }
+
         public void Update(GameTime gameTime, float playerPosX, float playerPosY)
         {
             var delta = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
@@ -52,7 +58,7 @@ namespace GJP2021.Sources.Characters
 
         public void Draw(GameTime gameTime)
         {
-            _game.SpriteBatch.Draw(Kolori.TextureMap["eraser"], _position, null,
+            _game.SpriteBatch.Draw(Kolori.Instance.TextureMap["eraser"], _position, null,
                 Color.White);
         }
     }

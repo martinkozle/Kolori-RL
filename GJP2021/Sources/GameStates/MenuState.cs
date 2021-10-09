@@ -41,11 +41,11 @@ namespace GJP2021.Sources.GameStates
         public void Initialize(Kolori game)
         {
             _game = game;
-            _logoTexture = Kolori.TextureMap["logo"];
+            _logoTexture = Kolori.Instance.TextureMap["logo"];
 
             //Start
             _buttons.Add(Button.Builder()
-                .SetPosition(0, _logoTexture.Height + 64 + 32)
+                .SetPosition(0, _logoTexture.Height + 64 + 64)
                 .CenterHorizontally(_game.GetWindowWidth)
                 //.CenterVertically(() => _game.GetWindowHeight() - 96 + 192)
                 .SetSound("button")

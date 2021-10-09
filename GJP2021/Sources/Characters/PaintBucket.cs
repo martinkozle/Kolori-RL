@@ -12,7 +12,6 @@ namespace GJP2021.Sources.Characters
         private Vector2 _position;
         private PaintColors _color;
         private Random _randomGenerator;
-        private Texture2D _texture2D;
         public bool MarkedForDeleteion;
         private Kolori _game;
 
@@ -26,23 +25,12 @@ namespace GJP2021.Sources.Characters
                     randomGenerator.Next(
                         Enum.GetValues(typeof(PaintColors)).Length)
                 );
-            setColor();
             MarkedForDeleteion = false;
         }
 
-        private void setColor()
+        private Texture2D GetTexture()
         {
-            _texture2D = _color switch
-            {
-                PaintColors.BLUE => Kolori.TextureMap["blue_bucket"],
-                PaintColors.RED => Kolori.TextureMap["red_bucket"],
-                PaintColors.GREEN => Kolori.TextureMap["green_bucket"],
-                PaintColors.ORANGE => Kolori.TextureMap["orange_bucket"],
-                PaintColors.PINK => Kolori.TextureMap["pink_bucket"],
-                PaintColors.PURPLE => Kolori.TextureMap["purple_bucket"],
-                PaintColors.YELLOW => Kolori.TextureMap["yellow_bucket"],
-                _ => _texture2D
-            };
+            return Kolori.Instance.TextureMap[_color.ToString().ToLower() + "_bucket"];
         }
 
         public PaintColors GetPaintBucketColor()
@@ -52,8 +40,8 @@ namespace GJP2021.Sources.Characters
 
         public void Update(GameTime gameTime, Vector2 playerPos)
         {
-            var distance = new Vector2(Math.Abs(_position.X - playerPos.X), Math.Abs(_position.Y - playerPos.Y));
-            if (distance.X < 20 && distance.Y < 20)
+            var (x, y) = new Vector2(Math.Abs(_position.X - playerPos.X), Math.Abs(_position.Y - playerPos.Y));
+            if (x < 20 && y < 20)
             {
                 MarkedForDeleteion = true;
             }
@@ -61,7 +49,7 @@ namespace GJP2021.Sources.Characters
 
         public void Draw(GameTime gameTime)
         {
-            _game.SpriteBatch.Draw(_texture2D, _position,Color.White);
+            _game.SpriteBatch.Draw(GetTexture(), _position,Color.White);
         }
     }
 }

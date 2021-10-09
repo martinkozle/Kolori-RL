@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Apos.Shapes;
 using GJP2021.Content.Resources.Textures;
@@ -11,21 +11,21 @@ namespace GJP2021.Sources.Characters
 {
     public class Player
     {
-        
-
         private readonly float _speed;
         private readonly float _maxAcceleration;
         private readonly Vector2 _bounds;
-        private Vector2 _position;
+        public Vector2 Position;
+        private float _health = 100F;
+        private const float MaxHealth = 100F;
+        private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["healthbar"];
         private PaintColors _playerColor;
-        private Texture2D _playerTexture2D;
         private readonly PaintCircles _paintCircles;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
-        private readonly Random _randomGenerator = new Random();
+        private readonly Random _randomGenerator = new();
 
         private Player(float x, float y, float speed, float maxAcceleration, Vector2 bounds)
         {
-            _position = new Vector2(x, y);
+            Position = new Vector2(x, y);
             _speed = speed;
             _maxAcceleration = maxAcceleration;
             _bounds = bounds;
@@ -40,23 +40,46 @@ namespace GJP2021.Sources.Characters
             GetTexture();
         }
 
-        public Vector2 GetPos()
+        public void DrawHealth(SpriteBatch spriteBatch)
         {
-            return _position;
+            var texture = GetHealthTexture();
+            const int x = 16;
+            var y = Kolori.Instance.GetWindowHeight() - 92 - 16;
+
+            var colorIndex = Array.IndexOf(Enum.GetValues(_playerColor.GetType()), _playerColor);
+            var colorOffset = colorIndex * 38;
+
+            //Empty Health Bar
+            spriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 288, 88), Color.White);
+            
+            //Bucket fluid
+            spriteBatch.Draw(texture, new Vector2(x + 40, y + 12), new Rectangle(238, 88 + colorOffset, 26, 36), Color.White);
+            
+            //Health
+            var healthPercent = (int) Math.Floor(238F * (_health / MaxHealth));
+            spriteBatch.Draw(texture, new Vector2(x + 46, y + 46), new Rectangle(0, 88 + colorOffset, healthPercent, 38), Color.White);
         }
 
-        public void Update(GameTime gameTime)
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(GetTexture(), Position, Color.White);
+            DrawHealth(spriteBatch);
+        }
+        
+      public void Update(GameTime gameTime)
         {
             var texture = GetTexture();
-            var x = _position.X + texture.Width / 2F;
-            var y = _position.Y + texture.Height / 2F;
+            var x = Position.X + texture.Width / 2F;
+            var y = Position.Y + texture.Height / 2F;
             _paintCircles.Update(gameTime);
+
             _periodicPaintSpawner.Update(gameTime, _paintCircles, new Vector2(x, y));
 
             HandleInput();
 
-            _position.Y = Math.Clamp(_position.Y, 0, _bounds.Y - 32F);
-            _position.X = Math.Clamp(_position.X, 0, _bounds.X - 32F);
+            Position.Y = Math.Clamp(Position.Y, 0, _bounds.Y - 32F);
+            Position.X = Math.Clamp(Position.X, 0, _bounds.X - 32F);
+
         }
 
         private void HandleInput()
@@ -65,46 +88,27 @@ namespace GJP2021.Sources.Characters
 
             if (keyState.IsKeyDown(Keys.A))
             {
-                _position.X -= _speed;
+                Position.X -= _speed;
             }
 
             if (keyState.IsKeyDown(Keys.S))
             {
-                _position.Y += _speed;
+                Position.Y += _speed;
             }
 
             if (keyState.IsKeyDown(Keys.D))
             {
-                _position.X += _speed;
+                Position.X += _speed;
             }
 
             if (keyState.IsKeyDown(Keys.W))
             {
-                _position.Y -= _speed;
+                Position.Y -= _speed;
             }
         }
-
-        public void DrawPositioned(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(GetTexture(), _position, Color.White);
-        }
-
-        private Texture2D GetTexture()
-        {
-            _playerTexture2D = _playerColor switch
-            {
-                PaintColors.BLUE => Kolori.TextureMap["player_blue"],
-                PaintColors.RED => Kolori.TextureMap["player_red"],
-                PaintColors.GREEN => Kolori.TextureMap["player_green"],
-                PaintColors.ORANGE => Kolori.TextureMap["player_orange"],
-                PaintColors.PINK => Kolori.TextureMap["player_pink"],
-                PaintColors.PURPLE => Kolori.TextureMap["player_purple"],
-                PaintColors.YELLOW => Kolori.TextureMap["player_yellow"],
-                _ => _playerTexture2D
-            };
-            return _playerTexture2D;
-        }
-
+        
+        private Texture2D GetTexture() => Kolori.Instance.TextureMap["player_" + _playerColor.ToString().ToLower()];
+        
         public void setColor(PaintColors playerColor)
         {
             _playerColor = playerColor;
