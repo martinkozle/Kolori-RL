@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using Apos.Shapes;
 using System;
-using GJP2021.Sources.Characters;
 using GJP2021.Sources.GameStates;
+using LilyPath;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,7 +13,7 @@ namespace GJP2021.Sources
     {
         public readonly GraphicsDeviceManager Graphics;
         public SpriteBatch SpriteBatch;
-        public ShapeBatch ShapeBatch;
+        public DrawBatch DrawBatch;
         public SpriteFont SpriteFont;
         public GameStateManager GameStateManager;
         public Dictionary<string, Texture2D> TextureMap { get; } = new();
@@ -44,7 +43,7 @@ namespace GJP2021.Sources
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-            ShapeBatch = new ShapeBatch(GraphicsDevice, Content);
+            DrawBatch = new DrawBatch(GraphicsDevice);
             SpriteFont = Content.Load<SpriteFont>("Fonts/lunchds");
 
             TextureMap.Add("start_button_normal", Content.Load<Texture2D>("Textures/Buttons/start_button_normal"));
