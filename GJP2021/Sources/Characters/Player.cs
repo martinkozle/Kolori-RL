@@ -38,6 +38,11 @@ namespace GJP2021.Sources.Characters
             _bounds = bounds;
         }
 
+        public Vector2 GetPos()
+        {
+            return _position;
+        }
+
         public void Update(GameTime gameTime)
         {
             var keyState = Keyboard.GetState();
