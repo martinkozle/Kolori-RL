@@ -8,8 +8,9 @@ namespace GJP2021.Sources.Paint
         private Color _color;
         private readonly float _maxDistance, _minSize, _maxSize, _dropDuration, _fadeDuration;
         private readonly Random _random;
+        private readonly Color _colorRanges;
 
-        public PaintSpawner(Color color, float maxDistance, float minSize, float maxSize, float dropDuration = 0.2f,
+        public PaintSpawner(Color color, Color colorRanges, float maxDistance, float minSize, float maxSize, float dropDuration = 0.2f,
             float fadeDuration = 5)
         {
             _color = color;
@@ -19,6 +20,7 @@ namespace GJP2021.Sources.Paint
             _dropDuration = dropDuration;
             _fadeDuration = fadeDuration;
             _random = new Random();
+            _colorRanges = colorRanges;
         }
 
         public void SetColor(Color color)
@@ -33,7 +35,11 @@ namespace GJP2021.Sources.Paint
             var xOffset = (float) Math.Cos(angle) * distance;
             var yOffset = (float) Math.Sin(angle) * distance;
             var radius = (float) _random.NextDouble() * (_maxSize - _minSize) + _minSize;
-            return new PaintCircle(x + xOffset, y + yOffset, radius, _color, _dropDuration, _fadeDuration);
+            var r = Math.Clamp(_color.R + _random.Next(_colorRanges.R + 1) - _colorRanges.R / 2, 0, 255);
+            var g = Math.Clamp(_color.G + _random.Next(_colorRanges.G + 1) - _colorRanges.G / 2, 0, 255);
+            var b = Math.Clamp(_color.B + _random.Next(_colorRanges.B + 1) - _colorRanges.B / 2, 0, 255);
+            var color = new Color(r, g, b);
+            return new PaintCircle(x + xOffset, y + yOffset, radius, color, _dropDuration, _fadeDuration);
         }
     }
 }

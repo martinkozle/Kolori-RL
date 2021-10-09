@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Apos.Shapes;
 using Microsoft.Xna.Framework;
 
 namespace GJP2021.Sources.Paint
 {
     public class PaintCircles
     {
-        private static List<PaintCircle> _paintCircles;
+        private List<PaintCircle> _paintCircles;
 
         public PaintCircles()
         {
@@ -23,15 +24,15 @@ namespace GJP2021.Sources.Paint
             _paintCircles = _paintCircles.Where(pc => !pc.IsDone()).ToList();
         }
 
-        public void Draw(Kolori game)
+        public void Draw(ShapeBatch batch)
         {
-            game.ShapeBatch.Begin();
+            batch.Begin();
             foreach (var paintCircle in _paintCircles)
             {
-                paintCircle.Draw(game);
+                paintCircle.Draw(batch);
             }
 
-            game.ShapeBatch.End();
+            batch.End();
         }
 
         public void Add(PaintCircle paintCircle)
