@@ -18,7 +18,7 @@ namespace GJP2021.Sources.Characters
             _speed = speed;
             _position = position;
             _periodicPaintSpawner =
-                new PaintPeriodicSpawner(new Color(255, 255, 255), new Color(0, 0, 0), 0, 20, 20, 0.05F, 0.1F, 120);
+                new PaintPeriodicSpawner(new Color(255, 255, 255), new Color(0, 0, 0), 0, 20, 20, 0.05F, 0.1F, 120, false);
 
             MarkedForDeletion = false;
         }
