@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
+using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GJP2021.Sources.Characters
 {
@@ -10,24 +11,30 @@ namespace GJP2021.Sources.Characters
         private readonly float _speed;
         private readonly Kolori _game;
         public bool MarkedForDelete;
+        private readonly PaintPeriodicSpawner _periodicPaintSpawner;
+
 
         public Enemy(Vector2 position, float speed, Kolori game)
         {
             _speed = speed;
             _position = position;
             _game = game;
+            _periodicPaintSpawner =
+                new PaintPeriodicSpawner(new Color(255, 255, 255), new Color(0, 0, 0), 0, 20, 20, 0.05F, 0.1F, 120);
+
             MarkedForDelete = false;
         }
 
-        public void Update(GameTime gameTime, Vector2 playerPos)
+        public void Update(GameTime gameTime, Vector2 playerPos, PaintCircles paintCircles)
         {
             var (x, y) = playerPos;
             Update(gameTime, x, y);
         }
 
-        public void Update(GameTime gameTime, float playerPosX, float playerPosY)
+        public void Update(GameTime gameTime, float playerPosX, float playerPosY, PaintCircles paintCircles)
         {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
+            _periodicPaintSpawner.Update(gameTime, paintCircles, _position);
+            var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
             var width = Math.Abs(_position.X - playerPosX);
             var height = Math.Abs(_position.Y - playerPosY);
             var h = (float) Math.Sqrt(Math.Pow(width, 2) + Math.Pow(height, 2));
@@ -58,8 +65,14 @@ namespace GJP2021.Sources.Characters
 
         public void Draw(GameTime gameTime)
         {
-            _game.SpriteBatch.Draw(Kolori.Instance.TextureMap["eraser"], _position, null,
+            var texture = GetTexture();
+            _game.SpriteBatch.Draw(GetTexture(), _position - new Vector2(texture.Width / 2F, texture.Height / 2F), null,
                 Color.White);
+        }
+
+        private Texture2D GetTexture()
+        {
+            return Kolori.TextureMap["eraser"];
         }
     }
 }
