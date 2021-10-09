@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+using Apos.Shapes;
+using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace GJP2021.Sources.Characters
 {
-    internal class Player
+    public class Player
     {
         public enum PlayerColor
         {
@@ -23,19 +21,21 @@ namespace GJP2021.Sources.Characters
         }
 
         private readonly float _speed;
-        private readonly float _maxAccel;
+        private readonly float _maxAcceleration;
         private readonly Vector2 _bounds;
         private Vector2 _position;
-        private readonly Action _action;
         private PlayerColor _playerColor = PlayerColor.RED;
+        private readonly PaintCircles _paintCircles;
+        private readonly PaintPeriodicSpawner _periodicPaintSpawner;
 
-        private Player(float x, float y, Action action, float speed, float maxAccel, Vector2 bounds)
+        private Player(float x, float y, float speed, float maxAcceleration, Vector2 bounds)
         {
             _position = new Vector2(x, y);
-            _action = action;
             _speed = speed;
-            _maxAccel = maxAccel;
+            _maxAcceleration = maxAcceleration;
             _bounds = bounds;
+            _paintCircles = new PaintCircles();
+            _periodicPaintSpawner = new PaintPeriodicSpawner(PaintCircle.Red, new Color(128, 64, 32), 25, 5, 20, 0.05F, 0.1F,5);
         }
 
         public Vector2 GetPos()
@@ -44,6 +44,18 @@ namespace GJP2021.Sources.Characters
         }
 
         public void Update(GameTime gameTime)
+        {
+            _paintCircles.Update(gameTime);
+            _periodicPaintSpawner.Update(gameTime, _paintCircles, _position);
+
+            HandleInput();
+
+            _position.Y = Math.Clamp(_position.Y, 0, _bounds.Y - 32F);
+            _position.X = Math.Clamp(_position.X, 0, _bounds.X - 32F);
+
+        }
+
+        private void HandleInput()
         {
             var keyState = Keyboard.GetState();
 
@@ -66,41 +78,37 @@ namespace GJP2021.Sources.Characters
             {
                 _position.Y -= _speed;
             }
-
-            if (_position.Y >= _bounds.Y - 32f)
-                _position.Y = _bounds.Y - 32f;
-            if (_position.X >= _bounds.X - 32f)
-                _position.X = _bounds.X - 32f;
-            if (_position.Y <= 0)
-                _position.Y = 0;
-            if (_position.X <= 0)
-                _position.X = 0;
         }
 
         public void DrawPositioned(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Kolori.TextureMap["player_" + _playerColor.ToString().ToLower()], _position, Color.White);
         }
+
+        public void DrawShapeBatch(ShapeBatch batch)
+        {
+            _paintCircles.Draw(batch);            
+        }
+
         public static PlayerBuilder Builder()
         {
             return new();
         }
+
         public class PlayerBuilder
         {
             private float _x;
             private float _y;
             private float _speed;
-            private float _maxAccel;
+            private float _maxAcceleration;
             private Vector2 _bounds;
-            private Action _action;
 
             internal PlayerBuilder()
             {
                 _x = 0;
                 _y = 0;
                 _speed = 0f;
-                _maxAccel = 0f;
-                _action = () => { };
+                _maxAcceleration = 0f;
             }
 
             public PlayerBuilder SetPosition(float x, float y)
@@ -110,9 +118,9 @@ namespace GJP2021.Sources.Characters
                 return this;
             }
 
-            public PlayerBuilder SetMaxAcceleration(float maxAccel)
+            public PlayerBuilder SetMaxAcceleration(float maxAcceleration)
             {
-                _maxAccel = maxAccel;
+                _maxAcceleration = maxAcceleration;
                 return this;
             }
 
@@ -127,16 +135,10 @@ namespace GJP2021.Sources.Characters
                 _bounds = bounds;
                 return this;
             }
-
-            public PlayerBuilder SetAction(Action action)
-            {
-                _action = action;
-                return this;
-            }
             
             public Player Build()
             {
-                return new(_x, _y, _action, _speed, _maxAccel, _bounds);
+                return new(_x, _y, _speed, _maxAcceleration, _bounds);
             }
         }
     }

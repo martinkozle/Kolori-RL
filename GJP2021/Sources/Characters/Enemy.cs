@@ -9,14 +9,14 @@ namespace GJP2021.Sources.Characters
         private Vector2 _position;
         private readonly float _speed;
         private readonly Kolori _game;
-        public bool markedForDelete;
+        public bool MarkedForDelete;
 
         public Enemy(Vector2 position, float speed, Kolori game)
         {
             _speed = speed;
             _position = position;
             _game = game;
-            markedForDelete = false;
+            MarkedForDelete = false;
         }
 
         public void Update(GameTime gameTime, float playerPosX, float playerPosY)
@@ -27,27 +27,23 @@ namespace GJP2021.Sources.Characters
             var h = (float) Math.Sqrt(Math.Pow(width, 2) + Math.Pow(height, 2));
             if (Math.Abs(playerPosX - _position.X) < 20 && Math.Abs(playerPosY - _position.Y) < 20)
             {
-                markedForDelete = true;
+                MarkedForDelete = true;
             }
 
             if (playerPosX > _position.X)
             {
                 _position.X += _speed * (width / h) * delta;
             }
-            //this.yPos += this.speed * (width / (width + height));
-            //this.xPos += this.speed * (height / (width + height));
 
             else if (playerPosX < _position.X)
             {
                 _position.X -= _speed * (width / h) * delta;
             }
 
-//
             if (playerPosY > _position.Y)
             {
                 _position.Y += _speed * (height / h) * delta;
             }
-//
             else if (playerPosY < _position.Y)
             {
                 _position.Y -= _speed * (height / h) * delta;
