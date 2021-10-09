@@ -14,10 +14,14 @@ namespace GJP2021.Sources.GameStates
         private static readonly Color BgColor = Color.White;
         private Player _player;
         private float _lastSpawnEnemy;
+        private float _lastSpawnBucket;
+
         private Random _randomGenerator;
         private PaintCircles _paintCircles;
 
+
         private readonly List<Enemy> _enemies = new();
+        private List<PaintBucket> _paintBuckets = new List<PaintBucket>();
 
         private List<Vector2> _enemySpawnPoint;
 
@@ -29,6 +33,19 @@ namespace GJP2021.Sources.GameStates
                 _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 130F, _game));
                 _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
             }
+            if (Mouse.GetState().RightButton == ButtonState.Pressed &&
+                gameTime.TotalGameTime.TotalSeconds - _lastSpawnBucket >= 0.1)
+            {
+                _paintBuckets.Add(new PaintBucket(
+                    new Vector2(
+                        _randomGenerator.Next(0, _game.GetWindowHeight()),
+                        _randomGenerator.Next(0, _game.GetWindowHeight())
+                    ),
+                    _randomGenerator,
+                    _game)
+                );
+                _lastSpawnBucket = (float) gameTime.TotalGameTime.TotalSeconds;
+            }
 
             _enemies.RemoveAll(el => el.MarkedForDelete);
 
@@ -36,10 +53,23 @@ namespace GJP2021.Sources.GameStates
             
             foreach (var enemy in _enemies)
             {
-                enemy.Update(gameTime, _player.Position.X, _player.Position.Y, _paintCircles);
+                enemy.Update(gameTime, _player.Position, _paintCircles);
             }
             
             _paintCircles.Update(gameTime);
+            foreach (var bucket in _paintBuckets )
+            {
+                bucket.Update(gameTime,_player.Position);
+                if (bucket.MarkedForDeleteion)
+                {
+                    _player.SetColor(bucket.GetPaintBucketColor());
+                }
+                
+            }
+            _player.Update(gameTime);
+            
+            _paintBuckets.RemoveAll(pb => pb.MarkedForDeleteion);
+            
         }
 
         public void Draw(GameTime gameTime)
@@ -55,8 +85,13 @@ namespace GJP2021.Sources.GameStates
                 enemy.Draw(gameTime);
             }
 
-            _player.DrawPositioned(_game.SpriteBatch);
+            _player.Draw(_game.SpriteBatch);
 
+            foreach (var bucket in _paintBuckets)
+            {
+                bucket.Draw(gameTime);
+            }
+            
             _game.SpriteBatch.End();
 
             _game.ShapeBatch.Begin();
@@ -69,6 +104,15 @@ namespace GJP2021.Sources.GameStates
         {
             _randomGenerator = new Random();
             _game = game;
+            //_paintBucket=new PaintBucket(new Vector2(100,100),_randomGenerator,_game);
+            _paintBuckets.Add(new PaintBucket(
+                new Vector2(
+                    _randomGenerator.Next(0, _game.GetWindowHeight()),
+                    _randomGenerator.Next(0, _game.GetWindowHeight())
+                ),
+                _randomGenerator,
+                _game)
+            );
             _player = Player.Builder()
                 .SetPosition(0, 0)
                 .SetMaxSpeed(150f)

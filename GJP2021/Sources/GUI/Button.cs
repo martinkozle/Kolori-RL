@@ -147,22 +147,22 @@ namespace GJP2021.Sources.GUI
             
             public ButtonBuilder SetSound(string soundName)
             {
-                if (!Kolori.SoundMap.ContainsKey(soundName + "_release") ||
-                    !Kolori.SoundMap.ContainsKey(soundName + "_press")) return this;
-                _pressSound = Kolori.SoundMap[soundName + "_press"];
-                _releaseSound = Kolori.SoundMap[soundName + "_release"];
+                if (!Kolori.Instance.SoundMap.ContainsKey(soundName + "_release") ||
+                    !Kolori.Instance.SoundMap.ContainsKey(soundName + "_press")) return this;
+                _pressSound = Kolori.Instance.SoundMap[soundName + "_press"];
+                _releaseSound = Kolori.Instance.SoundMap[soundName + "_release"];
 
                 return this;
             }
 
             public ButtonBuilder SetTexture(string textureName)
             {
-                if (!Kolori.TextureMap.ContainsKey(textureName + "_button_normal") ||
-                    !Kolori.TextureMap.ContainsKey(textureName + "_button_hover") ||
-                    !Kolori.TextureMap.ContainsKey(textureName + "_button_pressed")) return this;
-                _normalTexture = Kolori.TextureMap[textureName + "_button_normal"];
-                _hoveredTexture = Kolori.TextureMap[textureName + "_button_hover"];
-                _pressedTexture = Kolori.TextureMap[textureName + "_button_pressed"];
+                if (!Kolori.Instance.TextureMap.ContainsKey(textureName + "_button_normal") ||
+                    !Kolori.Instance.TextureMap.ContainsKey(textureName + "_button_hover") ||
+                    !Kolori.Instance.TextureMap.ContainsKey(textureName + "_button_pressed")) return this;
+                _normalTexture = Kolori.Instance.TextureMap[textureName + "_button_normal"];
+                _hoveredTexture = Kolori.Instance.TextureMap[textureName + "_button_hover"];
+                _pressedTexture = Kolori.Instance.TextureMap[textureName + "_button_pressed"];
 
                 return this;
             }

@@ -25,6 +25,12 @@ namespace GJP2021.Sources.Characters
             MarkedForDelete = false;
         }
 
+        public void Update(GameTime gameTime, Vector2 playerPos, PaintCircles paintCircles)
+        {
+            var (x, y) = playerPos;
+            Update(gameTime, x, y);
+        }
+
         public void Update(GameTime gameTime, float playerPosX, float playerPosY, PaintCircles paintCircles)
         {
             _periodicPaintSpawner.Update(gameTime, paintCircles, _position);

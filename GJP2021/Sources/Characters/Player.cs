@@ -1,5 +1,7 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using Apos.Shapes;
+using GJP2021.Content.Resources.Textures;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,23 +11,17 @@ namespace GJP2021.Sources.Characters
 {
     public class Player
     {
-        public enum PlayerColor
-        {
-            BLUE,
-            GREEN,
-            ORANGE,
-            PINK,
-            PURPLE,
-            RED,
-            YELLOW
-        }
-
         private float _speedX, _speedY;
         private readonly float _maxSpeed, _acceleration, _dragCoefficient, _dragConstant;
         private readonly Vector2 _bounds;
         public Vector2 Position;
-        private PlayerColor _playerColor = PlayerColor.RED;
+        private float _health = 100F;
+        private const float MaxHealth = 100F;
+        private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["healthbar"];
+        private PaintColors _playerColor;
+        private readonly PaintCircles _paintCircles;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
+        private readonly Random _randomGenerator = new();
 
         private Player(float x, float y, float maxSpeed, float acceleration, Vector2 bounds)
         {
@@ -39,11 +35,44 @@ namespace GJP2021.Sources.Characters
             _dragConstant = 80;
             _periodicPaintSpawner =
                 new PaintPeriodicSpawner(PaintCircle.Red, new Color(128, 64, 32), 35, 10, 30, 0.05F, 0.1F, 120);
+            _playerColor = (PaintColors) Enum.GetValues(typeof(PaintColors))
+                .GetValue(
+                    _randomGenerator.Next(
+                        Enum.GetValues(typeof(PaintColors)).Length)
+                );
         }
 
         public Vector2 GetSpeedVector()
         {
             return new Vector2(_speedX, _speedY);
+        }
+
+        public void DrawHealth(SpriteBatch spriteBatch)
+        {
+            var texture = GetHealthTexture();
+            const int x = 16;
+            var y = Kolori.Instance.GetWindowHeight() - 92 - 16;
+
+            var colorIndex = Array.IndexOf(Enum.GetValues(_playerColor.GetType()), _playerColor);
+            var colorOffset = colorIndex * 38;
+
+            //Empty Health Bar
+            spriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 288, 88), Color.White);
+            
+            //Bucket fluid
+            spriteBatch.Draw(texture, new Vector2(x + 40, y + 12), new Rectangle(238, 88 + colorOffset, 26, 36), Color.White);
+            
+            //Health
+            var healthPercent = (int) Math.Floor(238F * (_health / MaxHealth));
+            spriteBatch.Draw(texture, new Vector2(x + 46, y + 46), new Rectangle(0, 88 + colorOffset, healthPercent, 38), Color.White);
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            var texture = GetTexture();
+            spriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
+                Color.White);
+            DrawHealth(spriteBatch);
         }
 
         public void Update(GameTime gameTime, PaintCircles paintCircles)
@@ -128,17 +157,12 @@ namespace GJP2021.Sources.Characters
             _speedX = Math.Clamp(_speedX, -_maxSpeed * biasX, _maxSpeed * biasX);
             _speedY = Math.Clamp(_speedY, -_maxSpeed * biasY, _maxSpeed * biasY);
         }
-
-        public void DrawPositioned(SpriteBatch spriteBatch)
+        
+        private Texture2D GetTexture() => Kolori.Instance.TextureMap["player_" + _playerColor.ToString().ToLower()];
+        
+        public void SetColor(PaintColors playerColor)
         {
-            var texture = GetTexture();
-            spriteBatch.Draw(GetTexture(), Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
-                Color.White);
-        }
-
-        private Texture2D GetTexture()
-        {
-            return Kolori.TextureMap["player_" + _playerColor.ToString().ToLower()];
+            _playerColor = playerColor;
         }
 
         public static PlayerBuilder Builder()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Apos.Shapes;
+using GJP2021.Content.Resources.Textures;
 using GJP2021.Sources.Characters;
 using Microsoft.Xna.Framework;
 
@@ -9,7 +10,7 @@ namespace GJP2021.Sources.Paint
     public class PaintCircle
     {
         public static readonly Color Red = new(230, 0, 0);
-        public static readonly Dictionary<Player.PlayerColor, Color> ColorMap = new();
+        public static readonly Dictionary<PaintColors, Color> ColorMap = new();
 
         private readonly Vector2 _center;
         private readonly float _radius;
@@ -24,7 +25,7 @@ namespace GJP2021.Sources.Paint
 
         static PaintCircle()
         {
-            ColorMap.Add(Player.PlayerColor.RED, new Color(230, 10, 0));
+            ColorMap.Add(PaintColors.RED, new Color(230, 10, 0));
         }
         
         public PaintCircle(float x, float y, float radius, Color color, float dropDuration = 0.05f, float fadeDuration = 5)
