@@ -32,12 +32,8 @@ namespace GJP2021.Sources.Characters
             _dragCoefficient = 0.5f;
             _dragConstant = 80;
             _periodicPaintSpawner =
-                new PaintPeriodicSpawner(PaintCircle.Red, new Color(128, 64, 32), 35, 10, 30, 0.05F, 0.1F, 120);
-            _playerColor = (PaintColors) Enum.GetValues(typeof(PaintColors))
-                .GetValue(
-                    _randomGenerator.Next(
-                        Enum.GetValues(typeof(PaintColors)).Length)
-                );
+                new PaintPeriodicSpawner(PaintCircle.Red, new Color(32, 32, 32), 35, 10, 30, 0.05F, 0.1F, 120);
+            _playerColor = PaintColors.RED;
         }
 
         public Vector2 GetSpeedVector()
@@ -167,6 +163,7 @@ namespace GJP2021.Sources.Characters
         {
             Heal(MaxHealth);
             _playerColor = playerColor;
+            _periodicPaintSpawner.SetColor(PaintCircle.ColorMap[playerColor]);
         }
 
         private void Heal(float amount)

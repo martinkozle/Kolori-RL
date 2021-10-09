@@ -17,8 +17,7 @@ namespace GJP2021.Sources.GameStates
 
         private Random _randomGenerator;
         private PaintCircles _paintCircles;
-
-
+        
         private readonly List<Enemy> _enemies = new();
         private readonly List<PaintBucket> _paintBuckets = new();
 
@@ -32,6 +31,7 @@ namespace GJP2021.Sources.GameStates
                 _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
                 _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
             }
+
             if (Mouse.GetState().RightButton == ButtonState.Pressed &&
                 gameTime.TotalGameTime.TotalSeconds - _lastSpawnBucket >= 0.1)
             {
@@ -51,31 +51,30 @@ namespace GJP2021.Sources.GameStates
             {
                 enemy.Update(gameTime, _player, _paintCircles);
             }
-            
+
             _paintCircles.Update(gameTime);
-            foreach (var bucket in _paintBuckets )
+            foreach (var bucket in _paintBuckets)
             {
-                bucket.Update(gameTime,_player.Position);
+                bucket.Update(gameTime, _player.Position);
                 if (bucket.MarkedForDeletion)
                 {
                     _player.SetColor(bucket.GetPaintBucketColor());
                 }
-                
             }
+
             _player.Update(gameTime, _paintCircles);
-            
+
             _paintBuckets.RemoveAll(pb => pb.MarkedForDeletion);
-            
         }
 
         public void Draw(GameTime gameTime)
         {
             Kolori.Instance.GraphicsDevice.Clear(BgColor);
 
-            _paintCircles.Draw(Kolori.Instance.ShapeBatch);
-            
+            _paintCircles.Draw(Kolori.Instance.DrawBatch);
+
             Kolori.Instance.SpriteBatch.Begin();
-            
+
             foreach (var bucket in _paintBuckets)
             {
                 bucket.Draw(gameTime);
@@ -87,9 +86,9 @@ namespace GJP2021.Sources.GameStates
             }
 
             _player.Draw(Kolori.Instance.SpriteBatch);
-            
+
             _player.DrawHealth(Kolori.Instance.SpriteBatch);
-            
+
             Kolori.Instance.SpriteBatch.End();
 
             //Kolori.Instance.ShapeBatch.Begin();

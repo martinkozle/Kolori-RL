@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Apos.Shapes;
+using LilyPath;
 using Microsoft.Xna.Framework;
 
 namespace GJP2021.Sources.Paint
@@ -23,7 +23,7 @@ namespace GJP2021.Sources.Paint
             _paintCircles.RemoveAll(pc => pc.IsDone());
         }
 
-        public void Draw(ShapeBatch batch)
+        public void Draw(DrawBatch batch)
         {
             batch.Begin();
             foreach (var paintCircle in _paintCircles)
