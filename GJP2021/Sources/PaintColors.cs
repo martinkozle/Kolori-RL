@@ -1,4 +1,4 @@
-﻿namespace GJP2021.Content.Resources.Textures
+﻿namespace GJP2021.Sources
 {
     public enum PaintColors
     {

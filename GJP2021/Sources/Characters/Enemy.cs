@@ -9,16 +9,14 @@ namespace GJP2021.Sources.Characters
     {
         private Vector2 _position;
         private readonly float _speed;
-        private readonly Kolori _game;
         public bool MarkedForDelete;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
 
 
-        public Enemy(Vector2 position, float speed, Kolori game)
+        public Enemy(Vector2 position, float speed)
         {
             _speed = speed;
             _position = position;
-            _game = game;
             _periodicPaintSpawner =
                 new PaintPeriodicSpawner(new Color(255, 255, 255), new Color(0, 0, 0), 0, 20, 20, 0.05F, 0.1F, 120);
 
@@ -66,7 +64,7 @@ namespace GJP2021.Sources.Characters
         public void Draw(GameTime gameTime)
         {
             var texture = GetTexture();
-            _game.SpriteBatch.Draw(GetTexture(), _position - new Vector2(texture.Width / 2F, texture.Height / 2F), null,
+            Kolori.Instance.SpriteBatch.Draw(GetTexture(), _position - new Vector2(texture.Width / 2F, texture.Height / 2F), null,
                 Color.White);
         }
 

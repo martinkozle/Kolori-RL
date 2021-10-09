@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Apos.Shapes;
-using GJP2021.Content.Resources.Textures;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

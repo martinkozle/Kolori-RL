@@ -5,11 +5,9 @@ namespace GJP2021.Sources.GameStates
     public class GameStateManager
     {
         private IGameState _currentGameState;
-        private readonly Kolori _game;
 
-        public GameStateManager(Kolori game)
+        public GameStateManager()
         {
-            _game = game;
             SetGameState(MenuState.Instance);
         }
 
@@ -26,7 +24,7 @@ namespace GJP2021.Sources.GameStates
         public void SetGameState(IGameState state)
         {
             _currentGameState = state;
-            _currentGameState.Initialize(_game);
+            _currentGameState.Initialize();
         }
 
     }

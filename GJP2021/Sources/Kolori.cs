@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Apos.Shapes;
 using System;
-using GJP2021.Content.Resources.Textures;
 using GJP2021.Sources.Characters;
 using GJP2021.Sources.GameStates;
 using Microsoft.Xna.Framework;
@@ -35,7 +34,7 @@ namespace GJP2021.Sources
         protected override void Initialize()
         {
             base.Initialize();
-            GameStateManager = new GameStateManager(this);
+            GameStateManager = new GameStateManager();
             Graphics.IsFullScreen = false;
             Graphics.PreferredBackBufferWidth = 800;
             Graphics.PreferredBackBufferHeight = 800;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using GJP2021.Content.Resources.Textures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,12 +11,10 @@ namespace GJP2021.Sources.Characters
         private Vector2 _position;
         private PaintColors _color;
         private Random _randomGenerator;
-        public bool MarkedForDeleteion;
-        private Kolori _game;
+        public bool MarkedForDeletion;
 
-        public PaintBucket(Vector2 position, Random randomGenerator, Kolori game)
+        public PaintBucket(Vector2 position, Random randomGenerator)
         {
-            _game = game;
             _position = position;
             _randomGenerator = randomGenerator;
             _color = (PaintColors) Enum.GetValues(typeof(PaintColors))
@@ -25,7 +22,7 @@ namespace GJP2021.Sources.Characters
                     randomGenerator.Next(
                         Enum.GetValues(typeof(PaintColors)).Length)
                 );
-            MarkedForDeleteion = false;
+            MarkedForDeletion = false;
         }
 
         private Texture2D GetTexture()
@@ -40,17 +37,18 @@ namespace GJP2021.Sources.Characters
 
         public void Update(GameTime gameTime, Vector2 playerPos)
         {
-            var (x, y) = new Vector2(Math.Abs(_position.X - playerPos.X), Math.Abs(_position.Y - playerPos.Y));
+            var (playerX, playerY) = playerPos;
+            var (x, y) = new Vector2(Math.Abs(_position.X - playerX), Math.Abs(_position.Y - playerY));
             if (x < 20 && y < 20)
             {
-                MarkedForDeleteion = true;
+                MarkedForDeletion = true;
             }
         }
 
         public void Draw(GameTime gameTime)
         {
             var texture = GetTexture();
-            _game.SpriteBatch.Draw(texture, _position - new Vector2(texture.Width / 2F, texture.Height / 2F),Color.White);
+            Kolori.Instance.SpriteBatch.Draw(texture, _position - new Vector2(texture.Width / 2F, texture.Height / 2F),Color.White);
         }
     }
 }
