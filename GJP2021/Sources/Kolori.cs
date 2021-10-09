@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Apos.Shapes;
 using System;
+using GJP2021.Content.Resources.Textures;
 using GJP2021.Sources.Characters;
 using GJP2021.Sources.GameStates;
 using Microsoft.Xna.Framework;
@@ -56,8 +57,15 @@ namespace GJP2021.Sources
             TextureMap.Add("logo", Content.Load<Texture2D>("Textures/kolori"));
 
             TextureMap.Add("eraser", Content.Load<Texture2D>("Textures/eraser"));
+            TextureMap.Add("blue_bucket", Content.Load<Texture2D>("Textures/Buckets/blue_bucket"));
+            TextureMap.Add("green_bucket", Content.Load<Texture2D>("Textures/Buckets/green_bucket"));
+            TextureMap.Add("orange_bucket", Content.Load<Texture2D>("Textures/Buckets/orange_bucket"));
+            TextureMap.Add("pink_bucket", Content.Load<Texture2D>("Textures/Buckets/pink_bucket"));
+            TextureMap.Add("purple_bucket", Content.Load<Texture2D>("Textures/Buckets/purple_bucket"));
+            TextureMap.Add("red_bucket", Content.Load<Texture2D>("Textures/Buckets/red_bucket"));
+            TextureMap.Add("yellow_bucket", Content.Load<Texture2D>("Textures/Buckets/yellow_bucket"));
 
-            foreach (var color in Enum.GetNames(typeof(Player.PlayerColor)))
+            foreach (var color in Enum.GetNames(typeof(PaintColors)))
             {
                 TextureMap.Add("player_" + color.ToLower(),
                     Content.Load<Texture2D>("Textures/Player/player_" + color.ToLower()));

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Apos.Shapes;
+using GJP2021.Content.Resources.Textures;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,24 +11,17 @@ namespace GJP2021.Sources.Characters
 {
     public class Player
     {
-        public enum PlayerColor
-        {
-            BLUE,
-            GREEN,
-            ORANGE,
-            PINK,
-            PURPLE,
-            RED,
-            YELLOW
-        }
+        
 
         private readonly float _speed;
         private readonly float _maxAcceleration;
         private readonly Vector2 _bounds;
         private Vector2 _position;
-        private PlayerColor _playerColor = PlayerColor.RED;
+        private PaintColors _playerColor;
+        private Texture2D _playerTexture2D;
         private readonly PaintCircles _paintCircles;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
+        private readonly Random _randomGenerator = new Random();
 
         private Player(float x, float y, float speed, float maxAcceleration, Vector2 bounds)
         {
@@ -37,6 +32,12 @@ namespace GJP2021.Sources.Characters
             _paintCircles = new PaintCircles();
             _periodicPaintSpawner =
                 new PaintPeriodicSpawner(PaintCircle.Red, new Color(128, 64, 32), 25, 5, 20, 0.05F, 0.1F, 5);
+            _playerColor = (PaintColors) Enum.GetValues(typeof(PaintColors))
+                .GetValue(
+                    _randomGenerator.Next(
+                        Enum.GetValues(typeof(PaintColors)).Length)
+                );
+            GetTexture();
         }
 
         public Vector2 GetPos()
@@ -90,7 +91,24 @@ namespace GJP2021.Sources.Characters
 
         private Texture2D GetTexture()
         {
-            return Kolori.TextureMap["player_" + _playerColor.ToString().ToLower()];
+            _playerTexture2D = _playerColor switch
+            {
+                PaintColors.BLUE => Kolori.TextureMap["player_blue"],
+                PaintColors.RED => Kolori.TextureMap["player_red"],
+                PaintColors.GREEN => Kolori.TextureMap["player_green"],
+                PaintColors.ORANGE => Kolori.TextureMap["player_orange"],
+                PaintColors.PINK => Kolori.TextureMap["player_pink"],
+                PaintColors.PURPLE => Kolori.TextureMap["player_purple"],
+                PaintColors.YELLOW => Kolori.TextureMap["player_yellow"],
+                _ => _playerTexture2D
+            };
+            return _playerTexture2D;
+        }
+
+        public void setColor(PaintColors playerColor)
+        {
+            _playerColor = playerColor;
+            GetTexture();
         }
 
         public void DrawShapeBatch(ShapeBatch batch)
