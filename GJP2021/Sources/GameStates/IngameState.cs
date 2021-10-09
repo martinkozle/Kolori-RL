@@ -8,14 +8,14 @@ namespace GJP2021.Sources.GameStates
 {
     public class IngameState : IGameState
     {
-        public static readonly IngameState Instance = new ();
+        public static readonly IngameState Instance = new();
         private Kolori _game;
         private static readonly Color BgColor = Color.White;
         private Player _player;
         private float _lastSpawnEnemy;
         private Random _randomGenerator;
 
-        private readonly List<Enemy> _enemies = new ();
+        private readonly List<Enemy> _enemies = new();
 
         private List<Vector2> _enemySpawnPoint;
 
@@ -24,15 +24,15 @@ namespace GJP2021.Sources.GameStates
             if (Mouse.GetState().LeftButton == ButtonState.Pressed &&
                 gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 0.1)
             {
-                _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 2.5F, _game));
-                _lastSpawnEnemy = (float)gameTime.TotalGameTime.TotalSeconds;
+                _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 130F, _game));
+                _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
             }
 
             _enemies.RemoveAll(el => el.MarkedForDelete);
 
             foreach (var enemy in _enemies)
             {
-                enemy.Update(gameTime, _player.GetPos().X, _player.GetPos().Y);
+                enemy.Update(gameTime, _player.Position.X, _player.Position.Y);
             }
 
             _player.Update(gameTime);
@@ -54,6 +54,11 @@ namespace GJP2021.Sources.GameStates
             _player.DrawPositioned(_game.SpriteBatch);
 
             _game.SpriteBatch.End();
+
+            _game.ShapeBatch.Begin();
+            //_game.ShapeBatch.DrawLine(_player.Position, _player.Position + _player.GetSpeedVector(), 2, Color.Green,
+            //    Color.Green);
+            _game.ShapeBatch.End();
         }
 
         public void Initialize(Kolori game)
@@ -62,20 +67,20 @@ namespace GJP2021.Sources.GameStates
             _game = game;
             _player = Player.Builder()
                 .SetPosition(0, 0)
-                .SetSpeed(2f)
-                .SetMaxAcceleration(6f)
+                .SetMaxSpeed(150f)
+                .SetAcceleration(450f)
                 .SetBounds(new Vector2(_game.GetWindowWidth(),
                     _game.GetWindowHeight()))
                 .Build();
             _enemySpawnPoint = new List<Vector2>
             {
-                new(-50, -50), 
-                new(-50, _game.GetWindowHeight()+50),
-                new(_game.GetWindowWidth()+50, -50),
-                new(_game.GetWindowWidth()+50, _game.GetWindowHeight()+50)
+                new(-50, -50),
+                new(-50, _game.GetWindowHeight() + 50),
+                new(_game.GetWindowWidth() + 50, -50),
+                new(_game.GetWindowWidth() + 50, _game.GetWindowHeight() + 50)
             };
 
-            _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 2.5F, _game));
+            _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 130F, _game));
         }
     }
 }

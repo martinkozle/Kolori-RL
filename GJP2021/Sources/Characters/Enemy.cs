@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace GJP2021.Sources.Characters
 {
@@ -21,7 +21,7 @@ namespace GJP2021.Sources.Characters
 
         public void Update(GameTime gameTime, float playerPosX, float playerPosY)
         {
-            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
+            var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
             var width = Math.Abs(_position.X - playerPosX);
             var height = Math.Abs(_position.Y - playerPosY);
             var h = (float) Math.Sqrt(Math.Pow(width, 2) + Math.Pow(height, 2));
@@ -52,8 +52,14 @@ namespace GJP2021.Sources.Characters
 
         public void Draw(GameTime gameTime)
         {
-            _game.SpriteBatch.Draw(Kolori.TextureMap["eraser"], _position, null,
+            var texture = GetTexture();
+            _game.SpriteBatch.Draw(GetTexture(), _position - new Vector2(texture.Width / 2F, texture.Height / 2F), null,
                 Color.White);
+        }
+
+        private Texture2D GetTexture()
+        {
+            return Kolori.TextureMap["eraser"];
         }
     }
 }
