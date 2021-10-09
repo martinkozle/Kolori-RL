@@ -25,7 +25,7 @@ namespace GJP2021.Sources
             Content.RootDirectory = "Content/Resources";
             Graphics = new GraphicsDeviceManager(this);
             IsMouseVisible = true;
-            Window.AllowUserResizing = true;
+            Window.AllowUserResizing = false;
             Window.Title = "Kolori";
         }
 
@@ -33,6 +33,10 @@ namespace GJP2021.Sources
         {
             base.Initialize();
             GameStateManager = new GameStateManager(this);
+            Graphics.IsFullScreen = false;
+            Graphics.PreferredBackBufferWidth = 800;
+            Graphics.PreferredBackBufferHeight = 800;
+            Graphics.ApplyChanges();
         }
 
         protected override void LoadContent()
@@ -41,14 +45,22 @@ namespace GJP2021.Sources
             ShapeBatch = new ShapeBatch(GraphicsDevice, Content);
             SpriteFont = Content.Load<SpriteFont>("Fonts/lunchds");
 
-            TextureMap.Add("button_normal", Content.Load<Texture2D>("Textures/button_normal"));
-            TextureMap.Add("button_hover", Content.Load<Texture2D>("Textures/button_hover"));
-            TextureMap.Add("button_pressed", Content.Load<Texture2D>("Textures/button_pressed"));
+            TextureMap.Add("start_button_normal", Content.Load<Texture2D>("Textures/Buttons/start_button_normal"));
+            TextureMap.Add("start_button_hover", Content.Load<Texture2D>("Textures/Buttons/start_button_hover"));
+            TextureMap.Add("start_button_pressed", Content.Load<Texture2D>("Textures/Buttons/start_button_pressed"));
+
+            TextureMap.Add("exit_button_normal", Content.Load<Texture2D>("Textures/Buttons/exit_button_normal"));
+            TextureMap.Add("exit_button_hover", Content.Load<Texture2D>("Textures/Buttons/exit_button_hover"));
+            TextureMap.Add("exit_button_pressed", Content.Load<Texture2D>("Textures/Buttons/exit_button_pressed"));
+
+            TextureMap.Add("logo", Content.Load<Texture2D>("Textures/kolori"));
+
             TextureMap.Add("eraser", Content.Load<Texture2D>("Textures/eraser"));
 
             foreach (var color in Enum.GetNames(typeof(Player.PlayerColor)))
             {
-                TextureMap.Add("player_" + color.ToLower(), Content.Load<Texture2D>("Textures/Player/player_" + color.ToLower()));
+                TextureMap.Add("player_" + color.ToLower(),
+                    Content.Load<Texture2D>("Textures/Player/player_" + color.ToLower()));
             }
 
             SoundMap.Add("button_press", Content.Load<SoundEffect>("Sounds/button_press"));
@@ -69,7 +81,7 @@ namespace GJP2021.Sources
         protected override void Draw(GameTime gameTime)
         {
             GameStateManager.Draw(gameTime);
-            
+
             base.Draw(gameTime);
         }
 
@@ -82,6 +94,5 @@ namespace GJP2021.Sources
         {
             return Window.ClientBounds.Height;
         }
-        
     }
 }
