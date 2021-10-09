@@ -171,6 +171,16 @@ namespace GJP2021.Sources.Characters
             _health = Math.Min(MaxHealth, amount);
         }
 
+        public void Damage(float amount)
+        {
+            _health -= amount;
+        }
+
+        public bool IsAlive()
+        {
+            return _health > 0;
+        }
+
         public static PlayerBuilder Builder()
         {
             return new();
@@ -221,11 +231,5 @@ namespace GJP2021.Sources.Characters
                 return new(_x, _y, _maxSpeed, _acceleration, _bounds);
             }
         }
-
-        public void Damage(float amount)
-        {
-            _health -= amount;
-        }
-        
     }
 }

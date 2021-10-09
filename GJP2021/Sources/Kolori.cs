@@ -56,6 +56,7 @@ namespace GJP2021.Sources
 
             TextureMap.Add("logo", Content.Load<Texture2D>("Textures/kolori"));
             TextureMap.Add("healthbar", Content.Load<Texture2D>("Textures/healthbar"));
+            TextureMap.Add("game_over", Content.Load<Texture2D>("Textures/game_over"));
 
             TextureMap.Add("eraser", Content.Load<Texture2D>("Textures/eraser"));
             TextureMap.Add("blue_bucket", Content.Load<Texture2D>("Textures/Buckets/blue_bucket"));

@@ -21,10 +21,13 @@ namespace GJP2021.Sources.GameStates
             _currentGameState.Draw(gameTime);
         }
 
-        public void SetGameState(IGameState state)
+        public void SetGameState(IGameState state, bool reset = true)
         {
             _currentGameState = state;
-            _currentGameState.Initialize();
+            if (reset)
+            {
+                _currentGameState.Initialize();
+            }
         }
 
     }
