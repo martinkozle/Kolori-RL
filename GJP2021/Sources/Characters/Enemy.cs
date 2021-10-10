@@ -7,62 +7,70 @@ namespace GJP2021.Sources.Characters
 {
     public class Enemy
     {
-        private Vector2 _position;
+        public Vector2 Position;
         private readonly float _speed;
         public bool MarkedForDeletion;
+        public bool MarkedAsKilled;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
 
 
         public Enemy(Vector2 position, float speed)
         {
             _speed = speed;
-            _position = position;
+            Position = position;
             _periodicPaintSpawner =
                 new PaintPeriodicSpawner(new Color(255, 255, 255), new Color(0, 0, 0), 0, 20, 20, 0.05F, 0.1F, 120,
                     false);
 
             MarkedForDeletion = false;
+            MarkedAsKilled = false;
         }
 
         public void Update(GameTime gameTime, Player player, PaintCircles paintCircles)
         {
             var (playerPosX, playerPosY) = player.Position;
-            _periodicPaintSpawner.Update(gameTime, paintCircles, _position);
+            _periodicPaintSpawner.Update(gameTime, paintCircles, Position);
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
-            var width = Math.Abs(_position.X - playerPosX);
-            var height = Math.Abs(_position.Y - playerPosY);
+            var width = Math.Abs(Position.X - playerPosX);
+            var height = Math.Abs(Position.Y - playerPosY);
             var h = (float) Math.Sqrt(Math.Pow(width, 2) + Math.Pow(height, 2));
-            if (Math.Abs(playerPosX - _position.X) < 20 && Math.Abs(playerPosY - _position.Y) < 20)
+            if (Math.Abs(playerPosX - Position.X) < 20 && Math.Abs(playerPosY - Position.Y) < 20)
             {
-                player.Damage(5F);
+                player.Damage(10F);
                 MarkedForDeletion = true;
             }
 
-            if (playerPosX > _position.X)
+            if (playerPosX > Position.X)
             {
-                _position.X += _speed * (width / h) * delta;
+                Position.X += _speed * (width / h) * delta;
             }
 
-            else if (playerPosX < _position.X)
+            else if (playerPosX < Position.X)
             {
-                _position.X -= _speed * (width / h) * delta;
+                Position.X -= _speed * (width / h) * delta;
             }
 
-            if (playerPosY > _position.Y)
+            if (playerPosY > Position.Y)
             {
-                _position.Y += _speed * (height / h) * delta;
+                Position.Y += _speed * (height / h) * delta;
             }
-            else if (playerPosY < _position.Y)
+            else if (playerPosY < Position.Y)
             {
-                _position.Y -= _speed * (height / h) * delta;
+                Position.Y -= _speed * (height / h) * delta;
             }
+        }
+
+        public void Kill()
+        {
+            MarkedForDeletion = true;
+            MarkedAsKilled = true;
         }
 
         public void Draw(GameTime gameTime)
         {
             var texture = GetTexture();
             Kolori.Instance.SpriteBatch.Draw(GetTexture(),
-                _position - new Vector2(texture.Width / 2F, texture.Height / 2F), null,
+                Position - new Vector2(texture.Width / 2F, texture.Height / 2F), null,
                 Color.White);
         }
 
