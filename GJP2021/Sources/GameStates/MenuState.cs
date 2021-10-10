@@ -2,6 +2,7 @@
 using GJP2021.Sources.GUI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 
 namespace GJP2021.Sources.GameStates
 {
@@ -10,6 +11,7 @@ namespace GJP2021.Sources.GameStates
         public static readonly MenuState Instance = new();
         private static readonly Color BgColor = new(9F / 255F, 10F / 255F, 20F / 255F);
         private readonly List<Button> _buttons = new();
+        private static Song _song;
 
         public void Update(GameTime gameTime)
         {
@@ -45,6 +47,10 @@ namespace GJP2021.Sources.GameStates
 
         public void Initialize()
         {
+            _song = Kolori.Instance.SongMap["bgm_start"];
+            MediaPlayer.Play(_song);
+            MediaPlayer.IsRepeating = true;
+
             var logoTexture = GetLogoTexture();
             //Start
             _buttons.Add(Button.Builder()

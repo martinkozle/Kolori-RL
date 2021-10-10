@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace GJP2021.Sources
 {
@@ -18,6 +19,7 @@ namespace GJP2021.Sources
         public GameStateManager GameStateManager;
         public Dictionary<string, Texture2D> TextureMap { get; } = new();
         public Dictionary<string, SoundEffect> SoundMap { get; } = new();
+        public Dictionary<string, Song> SongMap { get; } = new();
         public static Kolori Instance { get; private set; }
 
         public Kolori()
@@ -65,6 +67,7 @@ namespace GJP2021.Sources
             TextureMap.Add("pause_window", Content.Load<Texture2D>("Textures/GUI/pause_window"));
             TextureMap.Add("logo", Content.Load<Texture2D>("Textures/GUI/kolori"));
             TextureMap.Add("game_over", Content.Load<Texture2D>("Textures/GUI/game_over"));
+            TextureMap.Add("ability_icons", Content.Load<Texture2D>("Textures/GUI/ability_icons"));
 
             TextureMap.Add("eraser", Content.Load<Texture2D>("Textures/eraser"));
             TextureMap.Add("blue_bucket", Content.Load<Texture2D>("Textures/Buckets/blue_bucket"));
@@ -86,6 +89,12 @@ namespace GJP2021.Sources
             SoundMap.Add("teleport_ability", Content.Load<SoundEffect>("Sounds/teleport_ability"));
             SoundMap.Add("burst_ability_1", Content.Load<SoundEffect>("Sounds/burst_ability_1"));
             SoundMap.Add("burst_ability_2", Content.Load<SoundEffect>("Sounds/burst_ability_2"));
+            SoundMap.Add("player_move", Content.Load<SoundEffect>("Sounds/player_move"));
+            SoundMap.Add("death_screen", Content.Load<SoundEffect>("Sounds/death_screen"));
+            SoundMap.Add("pause_screen", Content.Load<SoundEffect>("Sounds/pause"));
+
+            SongMap.Add("bgm_loop", Content.Load<Song>("Sounds/bgm_loop"));
+            SongMap.Add("bgm_start", Content.Load<Song>("Sounds/bgm_start"));
 
             Font.Initialize(SpriteBatch, Content);
             Font.LoadSizes("Fonts/lunchds", new[] {12, 16, 24, 32, 48, 72});
