@@ -31,6 +31,7 @@ namespace GJP2021.Sources.Paint
             _color = color;
         }
 
+        public PaintCircle SpawnCircle(Vector2 position) => SpawnCircle(position.X, position.Y);
         public PaintCircle SpawnCircle(float x, float y)
         {
             var angle = (float) _random.NextDouble() * 2 * Math.PI;
@@ -44,5 +45,6 @@ namespace GJP2021.Sources.Paint
             var color = new Color(r, g, b);
             return new PaintCircle(x + xOffset, y + yOffset, radius, color, _dropDuration, _fadeDuration, _fade);
         }
+        
     }
 }

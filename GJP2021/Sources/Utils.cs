@@ -23,5 +23,11 @@ namespace GJP2021.Sources
             var (boxWidth, boxHeight) = size;
             return x >= boxX && y >= boxY && x <= boxX + boxWidth && y <= boxY + boxHeight;
         }
+        
+        public static bool IsInsideBox(Point point, int x, int y, int width, int height)
+        {
+            return IsInsideBox(point, new Vector2(x, y), new Vector2(width, height));
+        }
+        
     }
 }
