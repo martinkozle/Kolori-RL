@@ -13,7 +13,7 @@ namespace GJP2021.Sources.GameStates
 {
     public class IngameState : IGameState
     {
-        public static readonly IngameState Instance = new ();
+        public static readonly IngameState Instance = new();
 
         private static readonly Color BgColor = Color.White;
         private Player _player;
@@ -29,6 +29,7 @@ namespace GJP2021.Sources.GameStates
         public bool TimeScaleActive = false;
         public float TimeScale = 1;
         public float TimeScaleDuration = 0;
+        private PaintSpawner _enemyDeathPaintSpawner;
         private static Song _song;
 
         private List<Vector2> _enemySpawnPoint;
@@ -86,13 +87,13 @@ namespace GJP2021.Sources.GameStates
 
             if (TimeScaleActive)
             {
-                TimeScaleDuration += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                TimeScaleDuration += (float) gameTime.ElapsedGameTime.TotalSeconds;
                 if (TimeScaleDuration > 3)
                 {
                     TimeScaleActive = false;
                     TimeScale = 1;
                     TimeScaleDuration = 0;
-                } 
+                }
             }
 
             if (gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 10)
@@ -130,6 +131,14 @@ namespace GJP2021.Sources.GameStates
                 _player.Heal(10F);
             }
 
+            foreach (var enemy in Enemies.Where(enemy => enemy.MarkedForDeletion))
+            {
+                for (var i = 0; i < 3; ++i)
+                {
+                    PaintCircles.Add(_enemyDeathPaintSpawner.SpawnCircle(enemy.Position));
+                }
+            }
+
             Enemies.RemoveAll(el => el.MarkedForDeletion);
             foreach (var enemy in Enemies)
             {
@@ -145,7 +154,6 @@ namespace GJP2021.Sources.GameStates
                 bucket.Update(gameTime, _player.Position);
                 if (!bucket.MarkedForDeletion) continue;
                 _player.TrailColor = bucket.GetPaintBucketColor();
-               
             }
 
             _player.Update(gameTime, PaintCircles);
@@ -245,6 +253,7 @@ namespace GJP2021.Sources.GameStates
                 ),
                 _randomGenerator)
             );
+            _enemyDeathPaintSpawner = new PaintSpawner(Color.White, new Color(0, 0, 0), 35, 10, 15, 0.2F, 2);
             _player = Player.Builder()
                 .SetPosition(Kolori.Instance.GetWindowWidth() / 2F, Kolori.Instance.GetWindowHeight() / 2F)
                 .SetMaxSpeed(225f)
@@ -255,10 +264,10 @@ namespace GJP2021.Sources.GameStates
             PaintCircles = new PaintCircles();
             _enemySpawnPoint = new List<Vector2>
             {
-                new ( - 50, -50),
-                new ( - 50, Kolori.Instance.GetWindowHeight() + 50),
-                new (Kolori.Instance.GetWindowWidth() + 50, -50),
-                new (Kolori.Instance.GetWindowWidth() + 50, Kolori.Instance.GetWindowHeight() + 50)
+                new(-50, -50),
+                new(-50, Kolori.Instance.GetWindowHeight() + 50),
+                new(Kolori.Instance.GetWindowWidth() + 50, -50),
+                new(Kolori.Instance.GetWindowWidth() + 50, Kolori.Instance.GetWindowHeight() + 50)
             };
             _numberOfEnemies = 0;
 
