@@ -60,6 +60,31 @@ namespace GJP2021.Sources.Characters
             return new(_speedX, _speedY);
         }
 
+        public void DrawDisplay()
+        {
+            DrawHealth();
+            DrawAbility();
+        }
+
+        private void DrawAbility()
+        {
+            var texture = GetAbilityTexture();
+            var x = Kolori.Instance.GetWindowWidth() - 64 - 16;
+            var y = Kolori.Instance.GetWindowHeight() - 48 - 16;
+
+            var colorIndex = Array.IndexOf(Enum.GetValues(_trailColor.GetType()), _trailColor);
+            var colorOffset = colorIndex * 32;
+
+            //Icon slot
+            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 64, 48), Color.White);
+            
+            //Icon
+            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x + 24, y + 8),
+                new Rectangle(64, colorOffset, 32, 32), Color.White);
+        }
+
+        private static Texture2D GetAbilityTexture() => Kolori.Instance.TextureMap["ability_icons"];
+
         public void DrawHealth()
         {
             var texture = GetHealthTexture();

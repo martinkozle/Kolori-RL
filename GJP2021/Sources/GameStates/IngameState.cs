@@ -140,7 +140,7 @@ namespace GJP2021.Sources.GameStates
 
             _player.Draw();
 
-            _player.DrawHealth();
+            _player.DrawDisplay();
 
             if (_player.Paused)
             {

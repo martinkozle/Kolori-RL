@@ -65,6 +65,7 @@ namespace GJP2021.Sources
             TextureMap.Add("pause_window", Content.Load<Texture2D>("Textures/GUI/pause_window"));
             TextureMap.Add("logo", Content.Load<Texture2D>("Textures/GUI/kolori"));
             TextureMap.Add("game_over", Content.Load<Texture2D>("Textures/GUI/game_over"));
+            TextureMap.Add("ability_icons", Content.Load<Texture2D>("Textures/GUI/ability_icons"));
 
             TextureMap.Add("eraser", Content.Load<Texture2D>("Textures/eraser"));
             TextureMap.Add("blue_bucket", Content.Load<Texture2D>("Textures/Buckets/blue_bucket"));
