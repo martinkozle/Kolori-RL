@@ -90,10 +90,7 @@ namespace GJP2021.Sources.GUI
             _action.Invoke();
         }
 
-        public static ButtonBuilder Builder()
-        {
-            return new();
-        }
+        public static ButtonBuilder Builder() => new();
 
         public class ButtonBuilder
         {
@@ -128,28 +125,39 @@ namespace GJP2021.Sources.GUI
                 _y = () => y;
                 return this;
             }
-
+            public ButtonBuilder SetPosition(Vector2 position)
+            {
+                var (x, y) = position;
+                _x = () => (int)x;
+                _y = () => (int)y;
+                return this;
+            }
+            
             public ButtonBuilder CenterHorizontally(Func<int> boundaryWidth)
             {
-                _x = () => (boundaryWidth.Invoke() - _normalTexture.Width) / 2;
+                var oldX = _x;
+                _x = () => oldX.Invoke() + (boundaryWidth.Invoke() - _normalTexture.Width) / 2;
                 return this;
             }
 
             public ButtonBuilder CenterHorizontally(int boundaryWidth)
             {
-                _x = () => (boundaryWidth - _normalTexture.Width) / 2;
+                var oldX = _x;
+                _x = () => oldX.Invoke() + (boundaryWidth - _normalTexture.Width) / 2;
                 return this;
             }
 
             public ButtonBuilder CenterVertically(Func<int> boundaryHeight)
             {
-                _y = () => (boundaryHeight.Invoke() - _normalTexture.Height) / 2;
+                var oldY = _y;
+                _y = () => oldY.Invoke() + (boundaryHeight.Invoke() - _normalTexture.Height) / 2;
                 return this;
             }
 
             public ButtonBuilder CenterVertically(int boundaryHeight)
             {
-                _y = () => (boundaryHeight - _normalTexture.Height) / 2;
+                var oldY = _y;
+                _y = () => oldY.Invoke() + (boundaryHeight - _normalTexture.Height) / 2;
                 return this;
             }
 
@@ -186,6 +194,7 @@ namespace GJP2021.Sources.GUI
                 return new(_x, _y, _normalTexture, _hoveredTexture, _pressedTexture, _pressSound, _releaseSound,
                     _action);
             }
+
         }
     }
 }

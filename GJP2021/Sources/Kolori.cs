@@ -45,20 +45,26 @@ namespace GJP2021.Sources
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             DrawBatch = new DrawBatch(GraphicsDevice);
 
-            TextureMap.Add("start_button_normal", Content.Load<Texture2D>("Textures/Buttons/start_button_normal"));
-            TextureMap.Add("start_button_hover", Content.Load<Texture2D>("Textures/Buttons/start_button_hover"));
-            TextureMap.Add("start_button_pressed", Content.Load<Texture2D>("Textures/Buttons/start_button_pressed"));
-            TextureMap.Add("restart_button_normal", Content.Load<Texture2D>("Textures/Buttons/restart_button_normal"));
-            TextureMap.Add("restart_button_hover", Content.Load<Texture2D>("Textures/Buttons/restart_button_hover"));
-            TextureMap.Add("restart_button_pressed",
-                Content.Load<Texture2D>("Textures/Buttons/restart_button_pressed"));
-            TextureMap.Add("exit_button_normal", Content.Load<Texture2D>("Textures/Buttons/exit_button_normal"));
-            TextureMap.Add("exit_button_hover", Content.Load<Texture2D>("Textures/Buttons/exit_button_hover"));
-            TextureMap.Add("exit_button_pressed", Content.Load<Texture2D>("Textures/Buttons/exit_button_pressed"));
+            TextureMap.Add("start_button_normal", Content.Load<Texture2D>("Textures/GUI/Buttons/start_button_normal"));
+            TextureMap.Add("start_button_hover", Content.Load<Texture2D>("Textures/GUI/Buttons/start_button_hover"));
+            TextureMap.Add("start_button_pressed", Content.Load<Texture2D>("Textures/GUI/Buttons/start_button_pressed"));
+            TextureMap.Add("restart_button_normal", Content.Load<Texture2D>("Textures/GUI/Buttons/restart_button_normal"));
+            TextureMap.Add("restart_button_hover", Content.Load<Texture2D>("Textures/GUI/Buttons/restart_button_hover"));
+            TextureMap.Add("restart_button_pressed", Content.Load<Texture2D>("Textures/GUI/Buttons/restart_button_pressed"));
+            TextureMap.Add("resume_button_normal", Content.Load<Texture2D>("Textures/GUI/Buttons/resume_button_normal"));
+            TextureMap.Add("resume_button_hover", Content.Load<Texture2D>("Textures/GUI/Buttons/resume_button_hover"));
+            TextureMap.Add("resume_button_pressed", Content.Load<Texture2D>("Textures/GUI/Buttons/resume_button_pressed"));
+            TextureMap.Add("exit_button_normal", Content.Load<Texture2D>("Textures/GUI/Buttons/exit_button_normal"));
+            TextureMap.Add("exit_button_hover", Content.Load<Texture2D>("Textures/GUI/Buttons/exit_button_hover"));
+            TextureMap.Add("exit_button_pressed", Content.Load<Texture2D>("Textures/GUI/Buttons/exit_button_pressed"));
+            TextureMap.Add("menu_button_normal", Content.Load<Texture2D>("Textures/GUI/Buttons/menu_button_normal"));
+            TextureMap.Add("menu_button_hover", Content.Load<Texture2D>("Textures/GUI/Buttons/menu_button_hover"));
+            TextureMap.Add("menu_button_pressed", Content.Load<Texture2D>("Textures/GUI/Buttons/menu_button_pressed"));
 
-            TextureMap.Add("logo", Content.Load<Texture2D>("Textures/kolori"));
-            TextureMap.Add("healthbar", Content.Load<Texture2D>("Textures/healthbar"));
-            TextureMap.Add("game_over", Content.Load<Texture2D>("Textures/game_over"));
+            TextureMap.Add("health_bar", Content.Load<Texture2D>("Textures/GUI/health_bar"));
+            TextureMap.Add("pause_window", Content.Load<Texture2D>("Textures/GUI/pause_window"));
+            TextureMap.Add("logo", Content.Load<Texture2D>("Textures/GUI/kolori"));
+            TextureMap.Add("game_over", Content.Load<Texture2D>("Textures/GUI/game_over"));
 
             TextureMap.Add("eraser", Content.Load<Texture2D>("Textures/eraser"));
             TextureMap.Add("blue_bucket", Content.Load<Texture2D>("Textures/Buckets/blue_bucket"));
