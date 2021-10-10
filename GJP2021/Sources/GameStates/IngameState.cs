@@ -94,6 +94,7 @@ namespace GJP2021.Sources.GameStates
                 if (bucket.MarkedForDeletion)
                 {
                     _player.SetColor(bucket.GetPaintBucketColor());
+                    _player.Score += 1;
                 }
             }
 
@@ -148,7 +149,7 @@ namespace GJP2021.Sources.GameStates
                 _randomGenerator)
             );
             _player = Player.Builder()
-                .SetPosition(0, 0)
+                .SetPosition(Kolori.Instance.GetWindowWidth()/2F,Kolori.Instance.GetWindowHeight()/2F )
                 .SetMaxSpeed(225f)
                 .SetAcceleration(450f)
                 .SetBounds(new Vector2(Kolori.Instance.GetWindowWidth(),
