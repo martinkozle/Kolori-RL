@@ -27,6 +27,7 @@ namespace GJP2021.Sources.Abilities
         {
             _paintSpawner.SetColor(PaintCircle.ColorMap[player.TrailColor]);
             var max = 16 + _random.Next(17);
+            Kolori.Instance.SoundMap["burst_ability_" + (_random.Next(2) + 1)].Play();
             for (var i = 0; i < max; ++i)
             {
                 gameState.PaintCircles.Add(_paintSpawner.SpawnCircle(player.Position));

@@ -61,6 +61,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Resources/Fonts/lunchds_72.spritefont
 
+#begin Resources/Sounds/burst_ability_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Resources/Sounds/burst_ability_1.wav
+
+#begin Resources/Sounds/burst_ability_2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Resources/Sounds/burst_ability_2.wav
+
 #begin Resources/Sounds/button_press.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -73,11 +85,11 @@
 /processorParam:Quality=Best
 /build:Resources/Sounds/button_release.wav
 
-#begin Resources/Sounds/teleport.wav
+#begin Resources/Sounds/teleport_ability.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Resources/Sounds/teleport.wav
+/build:Resources/Sounds/teleport_ability.wav
 
 #begin Resources/Textures/Buckets/blue_bucket.png
 /importer:TextureImporter

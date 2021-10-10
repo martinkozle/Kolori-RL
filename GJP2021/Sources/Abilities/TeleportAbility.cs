@@ -21,7 +21,7 @@ namespace GJP2021.Sources.Abilities
             {
                 return false;
             }
-            Kolori.Instance.SoundMap["teleport"].Play();
+            Kolori.Instance.SoundMap["teleport_ability"].Play();
             player.Position = new Vector2(mouseX, mouseY);
             player.SetSpeed(0, 0);
             return true;
