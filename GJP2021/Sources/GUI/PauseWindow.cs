@@ -44,7 +44,7 @@ namespace GJP2021.Sources.GUI
                 
             foreach (var button in _buttons)
             {
-                button.DrawPositioned(Kolori.Instance.SpriteBatch);
+                button.Draw();
             }
         }
 

@@ -46,7 +46,7 @@ namespace GJP2021.Sources.Characters
             return new(_speedX, _speedY);
         }
 
-        public void DrawHealth(SpriteBatch spriteBatch)
+        public void DrawHealth()
         {
             var texture = GetHealthTexture();
             const int x = 16;
@@ -56,22 +56,22 @@ namespace GJP2021.Sources.Characters
             var colorOffset = colorIndex * 38;
 
             //Empty Health Bar
-            spriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 288, 88), Color.White);
+            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 288, 88), Color.White);
 
             //Bucket fluid
-            spriteBatch.Draw(texture, new Vector2(x + 40, y + 12), new Rectangle(238, 88 + colorOffset, 26, 36),
+            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x + 40, y + 12), new Rectangle(238, 88 + colorOffset, 26, 36),
                 Color.White);
 
             //Health
             var healthPercent = (int) Math.Floor(238F * (_health / MaxHealth));
-            spriteBatch.Draw(texture, new Vector2(x + 46, y + 46),
+            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x + 46, y + 46),
                 new Rectangle(0, 88 + colorOffset, healthPercent, 38), Color.White);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
             var texture = GetTexture();
-            spriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F), Color.White);
+            Kolori.Instance.SpriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F), Color.White);
             Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson,
                 Color.Black);
         }

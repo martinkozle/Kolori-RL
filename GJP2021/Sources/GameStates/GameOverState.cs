@@ -39,7 +39,7 @@ namespace GJP2021.Sources.GameStates
 
             foreach (var button in _buttons)
             {
-                button.DrawPositioned(Kolori.Instance.SpriteBatch);
+                button.Draw();
             }
 
             Kolori.Instance.SpriteBatch.End();
