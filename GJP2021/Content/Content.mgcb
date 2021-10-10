@@ -19,12 +19,47 @@
 /processorParam:DebugMode=Auto
 /build:Resources/AposShapesEffect.fx
 
-#begin Resources/Fonts/lunchds.spritefont
+#begin Resources/Fonts/lunchds_12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Resources/Fonts/lunchds.spritefont
+/build:Resources/Fonts/lunchds_12.spritefont
+
+#begin Resources/Fonts/lunchds_16.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Resources/Fonts/lunchds_16.spritefont
+
+#begin Resources/Fonts/lunchds_24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Resources/Fonts/lunchds_24.spritefont
+
+#begin Resources/Fonts/lunchds_32.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Resources/Fonts/lunchds_32.spritefont
+
+#begin Resources/Fonts/lunchds_48.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Resources/Fonts/lunchds_48.spritefont
+
+#begin Resources/Fonts/lunchds_72.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Resources/Fonts/lunchds_72.spritefont
 
 #begin Resources/Sounds/button_press.wav
 /importer:WavImporter
@@ -157,6 +192,42 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Resources/Textures/Buttons/exit_button_pressed.png
+
+#begin Resources/Textures/Buttons/restart_button_hover.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Resources/Textures/Buttons/restart_button_hover.png
+
+#begin Resources/Textures/Buttons/restart_button_normal.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Resources/Textures/Buttons/restart_button_normal.png
+
+#begin Resources/Textures/Buttons/restart_button_pressed.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Resources/Textures/Buttons/restart_button_pressed.png
 
 #begin Resources/Textures/Buttons/start_button_hover.png
 /importer:TextureImporter

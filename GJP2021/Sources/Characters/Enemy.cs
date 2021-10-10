@@ -21,7 +21,7 @@ namespace GJP2021.Sources.Characters
                 new PaintPeriodicSpawner(new Color(255, 255, 255), new Color(0, 0, 0), 0, 20, 20, 0.05F, 0.1F, 120, false);
 
             MarkedForDeletion = false;
-        }
+        } 
         
         public void Update(GameTime gameTime, Player player, PaintCircles paintCircles)
         {
@@ -55,6 +55,7 @@ namespace GJP2021.Sources.Characters
             {
                 _position.Y -= _speed * (height / h) * delta;
             }
+            
         }
 
         public void Draw(GameTime gameTime)
@@ -62,9 +63,10 @@ namespace GJP2021.Sources.Characters
             var texture = GetTexture();
             Kolori.Instance.SpriteBatch.Draw(GetTexture(), _position - new Vector2(texture.Width / 2F, texture.Height / 2F), null,
                 Color.White);
+            
         }
 
-        private Texture2D GetTexture()
+        private static Texture2D GetTexture()
         {
             return Kolori.Instance.TextureMap["eraser"];
         }

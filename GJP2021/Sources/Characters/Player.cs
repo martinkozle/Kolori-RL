@@ -10,18 +10,22 @@ namespace GJP2021.Sources.Characters
 {
     public class Player
     {
-        private float _speedX, _speedY;
-        private readonly float _maxSpeed, _acceleration, _dragCoefficient, _dragConstant;
+        private float _speedX;
+        private float _speedY;
+        private readonly float _maxSpeed;
+        private readonly float _acceleration;
+        private readonly float _dragCoefficient;
+        private readonly float _dragConstant;
         private readonly Vector2 _bounds;
         public Vector2 Position;
+        public int Score = 0;
         private float _health = 100F;
         public int Score = 0;
         private const float MaxHealth = 100F;
         private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["healthbar"];
         private PaintColors _playerColor;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
-        private readonly Random _randomGenerator = new ();
-        private float _timer = 0;
+        private float _timer;
 
         private Player(float x, float y, float maxSpeed, float acceleration, Vector2 bounds)
         {
@@ -64,14 +68,11 @@ namespace GJP2021.Sources.Characters
             spriteBatch.Draw(texture, new Vector2(x + 46, y + 46),
                 new Rectangle(0, 88 + colorOffset, healthPercent, 38), Color.White);
         }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             var texture = GetTexture();
-            spriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
-                Color.White);
-
-            spriteBatch.DrawString(Kolori.Instance.SpriteFont, Score.ToString(), new Vector2(10, 10), Color.Black);
+            spriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F), Color.White);
+            Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson, Color.Black);
         }
 
         public void Update(GameTime gameTime, PaintCircles paintCircles)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using GJP2021.Content;
 using GJP2021.Sources.GameStates;
 using LilyPath;
 using Microsoft.Xna.Framework;
@@ -14,7 +15,6 @@ namespace GJP2021.Sources
         public readonly GraphicsDeviceManager Graphics;
         public SpriteBatch SpriteBatch;
         public DrawBatch DrawBatch;
-        public SpriteFont SpriteFont;
         public GameStateManager GameStateManager;
         public Dictionary<string, Texture2D> TextureMap { get; } = new();
         public Dictionary<string, SoundEffect> SoundMap { get; } = new();
@@ -44,12 +44,13 @@ namespace GJP2021.Sources
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
             DrawBatch = new DrawBatch(GraphicsDevice);
-            SpriteFont = Content.Load<SpriteFont>("Fonts/lunchds");
 
             TextureMap.Add("start_button_normal", Content.Load<Texture2D>("Textures/Buttons/start_button_normal"));
             TextureMap.Add("start_button_hover", Content.Load<Texture2D>("Textures/Buttons/start_button_hover"));
             TextureMap.Add("start_button_pressed", Content.Load<Texture2D>("Textures/Buttons/start_button_pressed"));
-
+            TextureMap.Add("restart_button_normal", Content.Load<Texture2D>("Textures/Buttons/restart_button_normal"));
+            TextureMap.Add("restart_button_hover", Content.Load<Texture2D>("Textures/Buttons/restart_button_hover"));
+            TextureMap.Add("restart_button_pressed", Content.Load<Texture2D>("Textures/Buttons/restart_button_pressed"));
             TextureMap.Add("exit_button_normal", Content.Load<Texture2D>("Textures/Buttons/exit_button_normal"));
             TextureMap.Add("exit_button_hover", Content.Load<Texture2D>("Textures/Buttons/exit_button_hover"));
             TextureMap.Add("exit_button_pressed", Content.Load<Texture2D>("Textures/Buttons/exit_button_pressed"));
@@ -66,7 +67,7 @@ namespace GJP2021.Sources
             TextureMap.Add("purple_bucket", Content.Load<Texture2D>("Textures/Buckets/purple_bucket"));
             TextureMap.Add("red_bucket", Content.Load<Texture2D>("Textures/Buckets/red_bucket"));
             TextureMap.Add("yellow_bucket", Content.Load<Texture2D>("Textures/Buckets/yellow_bucket"));
-
+            
             foreach (var color in Enum.GetNames(typeof(PaintColors)))
             {
                 TextureMap.Add("player_" + color.ToLower(),
@@ -75,6 +76,9 @@ namespace GJP2021.Sources
 
             SoundMap.Add("button_press", Content.Load<SoundEffect>("Sounds/button_press"));
             SoundMap.Add("button_release", Content.Load<SoundEffect>("Sounds/button_release"));
+
+            Font.Initialize(SpriteBatch, Content);
+            Font.LoadSizes("Fonts/lunchds", new[] { 12, 16, 24, 32, 48, 72 });
         }
 
         protected override void Update(GameTime gameTime)

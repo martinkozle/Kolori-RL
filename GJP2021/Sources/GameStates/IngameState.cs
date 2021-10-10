@@ -28,6 +28,7 @@ namespace GJP2021.Sources.GameStates
             if (!_player.IsAlive())
             {
                 Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
+                GameOverState.Instance.SetFinalScore(_player.Score);
                 Initialize();
             }
 
@@ -91,11 +92,9 @@ namespace GJP2021.Sources.GameStates
             foreach (var bucket in _paintBuckets)
             {
                 bucket.Update(gameTime, _player.Position);
-                if (bucket.MarkedForDeletion)
-                {
-                    _player.SetColor(bucket.GetPaintBucketColor());
-                    _player.Score += 1;
-                }
+                if (!bucket.MarkedForDeletion) continue;
+                _player.SetColor(bucket.GetPaintBucketColor());
+                _player.Score += 1;
             }
 
             _player.Update(gameTime, _paintCircles);
@@ -126,7 +125,7 @@ namespace GJP2021.Sources.GameStates
             _player.DrawHealth(Kolori.Instance.SpriteBatch);
 
             Kolori.Instance.SpriteBatch.End();
-
+            
             //Kolori.Instance.ShapeBatch.Begin();
             //Kolori.Instance.ShapeBatch.DrawLine(_player.Position, _player.Position + _player.GetSpeedVector(), 2, Color.Green,
             //    Color.Green);
@@ -165,6 +164,7 @@ namespace GJP2021.Sources.GameStates
             };
             
             _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
+
         }
     }
 }
