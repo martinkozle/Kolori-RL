@@ -73,6 +73,12 @@
 /processorParam:Quality=Best
 /build:Resources/Sounds/button_release.wav
 
+#begin Resources/Sounds/teleport.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Resources/Sounds/teleport.wav
+
 #begin Resources/Textures/Buckets/blue_bucket.png
 /importer:TextureImporter
 /processor:TextureProcessor

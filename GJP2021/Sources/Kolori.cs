@@ -83,6 +83,7 @@ namespace GJP2021.Sources
 
             SoundMap.Add("button_press", Content.Load<SoundEffect>("Sounds/button_press"));
             SoundMap.Add("button_release", Content.Load<SoundEffect>("Sounds/button_release"));
+            SoundMap.Add("teleport", Content.Load<SoundEffect>("Sounds/teleport"));
 
             Font.Initialize(SpriteBatch, Content);
             Font.LoadSizes("Fonts/lunchds", new[] {12, 16, 24, 32, 48, 72});
