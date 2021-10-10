@@ -89,6 +89,9 @@ namespace GJP2021.Sources
             SoundMap.Add("teleport_ability", Content.Load<SoundEffect>("Sounds/teleport_ability"));
             SoundMap.Add("burst_ability_1", Content.Load<SoundEffect>("Sounds/burst_ability_1"));
             SoundMap.Add("burst_ability_2", Content.Load<SoundEffect>("Sounds/burst_ability_2"));
+            SoundMap.Add("timestop_ability", Content.Load<SoundEffect>("Sounds/timestop_ability"));
+            SoundMap.Add("shoot_ability", Content.Load<SoundEffect>("Sounds/shoot_ability"));
+            SoundMap.Add("speedup_ability", Content.Load<SoundEffect>("Sounds/speedup_ability"));
             SoundMap.Add("player_move", Content.Load<SoundEffect>("Sounds/player_move"));
             SoundMap.Add("death_screen", Content.Load<SoundEffect>("Sounds/death_screen"));
             SoundMap.Add("pause_screen", Content.Load<SoundEffect>("Sounds/pause"));

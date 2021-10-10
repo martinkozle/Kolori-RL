@@ -121,11 +121,29 @@
 /processorParam:Quality=Best
 /build:Resources/Sounds/powerup.wav
 
+#begin Resources/Sounds/shoot_ability.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Resources/Sounds/shoot_ability.wav
+
+#begin Resources/Sounds/speedup_ability.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Resources/Sounds/speedup_ability.wav
+
 #begin Resources/Sounds/teleport_ability.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Resources/Sounds/teleport_ability.wav
+
+#begin Resources/Sounds/timestop_ability.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Resources/Sounds/timestop_ability.wav
 
 #begin Resources/Textures/Buckets/blue_bucket.png
 /importer:TextureImporter
