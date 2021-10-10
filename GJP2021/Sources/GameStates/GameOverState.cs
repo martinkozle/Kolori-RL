@@ -11,7 +11,6 @@ namespace GJP2021.Sources.GameStates
         public static readonly GameOverState Instance = new();
         private static readonly Color BgColor = new(9F / 255F, 10F / 255F, 20F / 255F);
         private List<Button> _buttons;
-        private int _score;
         private string _text;
         private float _textX;
         private float _textY;
@@ -47,12 +46,6 @@ namespace GJP2021.Sources.GameStates
 
         public void Initialize()
         {
-            var logoTexture = GetLogoTexture();
-            _text = "Final Score: " + _score;
-            var textSize = Font.MeasureString("Fonts/lunchds", 48, _text);
-
-            _textX = (Kolori.Instance.GetWindowWidth() - textSize.X) / 2;
-            _textY = 64 + logoTexture.Height + 64;
             _buttons = new();
             //Start
             _buttons.Add(
@@ -87,7 +80,12 @@ namespace GJP2021.Sources.GameStates
 
         public void SetFinalScore(int playerScore)
         {
-            _score = playerScore;
+            var logoTexture = GetLogoTexture();
+            _text = "Final Score: " + playerScore;
+            var textSize = Font.MeasureString("Fonts/lunchds", 48, _text);
+
+            _textX = (Kolori.Instance.GetWindowWidth() - textSize.X) / 2;
+            _textY = 64 + logoTexture.Height + 64;
         }
     }
 }

@@ -82,6 +82,7 @@ namespace GJP2021.Sources.GameStates
                 Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
                 GameOverState.Instance.SetFinalScore(_player.Score);
                 Initialize();
+                Kolori.Instance.SoundMap["death_screen"].Play();
                 return;
             }
 
@@ -167,8 +168,9 @@ namespace GJP2021.Sources.GameStates
             {
                 Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
                 GameOverState.Instance.SetFinalScore(_player.Score);
-                Kolori.Instance.SoundMap["death_screen"].Play();
                 Initialize();
+                Kolori.Instance.SoundMap["death_screen"].Play();
+                return;
             }
 
             Kolori.Instance.GraphicsDevice.Clear(BgColor);
