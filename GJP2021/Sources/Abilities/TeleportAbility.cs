@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 namespace GJP2021.Sources.Abilities
 {
 
-    public class TeleportAbility : IAbility
+    public class TeleportAbility : Ability
     {
         protected override PaintColors AbilityColor => PaintColors.PURPLE;
         public override float PaintCost => 10;

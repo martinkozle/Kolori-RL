@@ -112,9 +112,9 @@ namespace GJP2021.Sources.Characters
             }
             else
             {
-                if (_abilityKeyDown && IAbility.Abilities.ContainsKey(_trailColor))
+                if (_abilityKeyDown && Ability.Abilities.ContainsKey(_trailColor))
                 {
-                    IAbility.Abilities[_trailColor].TryUse(this, paintCircles);
+                    Ability.Abilities[_trailColor].TryUse(this, paintCircles);
                 }
                 _abilityKeyDown = false;
             }

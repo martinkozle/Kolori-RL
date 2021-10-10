@@ -4,13 +4,13 @@ using GJP2021.Sources.Paint;
 
 namespace GJP2021.Sources.Abilities
 {
-    public abstract class IAbility
+    public abstract class Ability
     {
-        public static readonly Dictionary<PaintColors, IAbility> Abilities = new();
+        public static readonly Dictionary<PaintColors, Ability> Abilities = new();
 
         protected abstract PaintColors AbilityColor { get; }
 
-        static IAbility()
+        static Ability()
         {
             Abilities.Add(PaintColors.RED, BurstAbility.Instance);
             Abilities.Add(PaintColors.PURPLE, TeleportAbility.Instance);

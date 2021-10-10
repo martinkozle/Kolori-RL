@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 namespace GJP2021.Sources.Abilities
 {
 
-    public class BurstAbility : IAbility
+    public class BurstAbility : Ability
     {
         public static readonly BurstAbility Instance = new();
         public override float PaintCost => 20;
