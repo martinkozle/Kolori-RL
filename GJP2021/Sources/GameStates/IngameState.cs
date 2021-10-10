@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GJP2021.Sources.Characters;
 using GJP2021.Sources.GUI;
@@ -21,12 +22,44 @@ namespace GJP2021.Sources.GameStates
         private Random _randomGenerator;
         public PaintCircles PaintCircles;
         public List<Enemy> Enemies;
+        private int numberOfEnemies = 1;
         public List<PaintBucket> PaintBuckets;
         public Projectiles Projectiles;
 
         private List<Vector2> _enemySpawnPoint;
         private WindowWidget _pauseWindow;
 
+        private void spawnEnemy()
+        {
+            var sideDecision = _randomGenerator.Next(4);
+            switch (sideDecision)
+            {
+                case 0:
+                    Enemies.Add(new Enemy(new Vector2(
+                            -20,
+                            _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
+                        200F));
+                    break;
+                case 1:
+                    Enemies.Add(new Enemy(new Vector2(
+                            _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
+                            Kolori.Instance.GetWindowHeight() + 20),
+                        200F));
+                    break;
+                case 2:
+                    Enemies.Add(new Enemy(new Vector2(
+                            Kolori.Instance.GetWindowWidth() + 20,
+                            _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
+                        200F));
+                    break;
+                case 3:
+                    Enemies.Add(new Enemy(new Vector2(
+                            _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
+                            -20),
+                        200F));
+                    break;
+            }
+        }
         public void Update(GameTime gameTime)
         {
             _player.HandlePause();
@@ -44,38 +77,19 @@ namespace GJP2021.Sources.GameStates
                 Initialize();
             }
 
-            if (Mouse.GetState().LeftButton == ButtonState.Pressed &&
-                gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 0.1)
+            if (gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 10)
             {
-                var sideDecision = _randomGenerator.Next(4);
-                switch (sideDecision)
+
+                for (var i=0;i<numberOfEnemies+1;i++)
                 {
-                    case 0:
-                        Enemies.Add(new Enemy(new Vector2(
-                                -20,
-                                _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
-                            200F));
-                        break;
-                    case 1:
-                        Enemies.Add(new Enemy(new Vector2(
-                                _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
-                                Kolori.Instance.GetWindowHeight() + 20),
-                            200F));
-                        break;
-                    case 2:
-                        Enemies.Add(new Enemy(new Vector2(
-                                Kolori.Instance.GetWindowWidth() + 20,
-                                _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
-                            200F));
-                        break;
-                    case 3:
-                        Enemies.Add(new Enemy(new Vector2(
-                                _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
-                                -20),
-                            200F));
-                        break;
+                    spawnEnemy();
                 }
 
+                if (numberOfEnemies!=8)
+                {
+                    numberOfEnemies += 1;
+                }
+                
                 _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
             }
 
@@ -215,8 +229,9 @@ namespace GJP2021.Sources.GameStates
                 new(Kolori.Instance.GetWindowWidth() + 50, -50),
                 new(Kolori.Instance.GetWindowWidth() + 50, Kolori.Instance.GetWindowHeight() + 50)
             };
-
-            Enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
+            numberOfEnemies = 0;
+            
+            spawnEnemy();
         }
     }
 }
