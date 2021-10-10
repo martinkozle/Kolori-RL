@@ -14,11 +14,11 @@ namespace GJP2021.Sources.Characters
             _projectiles = new List<Projectile>();
         }
 
-        public void Update(GameTime gameTime, IngameState gameState, PaintCircles paintCircles)
+        public void Update(GameTime gameTime, IngameState gameState, PaintCircles paintCircles, float timeScale)
         {
             foreach (var projectile in _projectiles)
             {
-                projectile.Update(gameTime, gameState, paintCircles);
+                projectile.Update(gameTime, gameState, paintCircles, timeScale);
             }
 
             _projectiles.RemoveAll(p => p.IsDone());

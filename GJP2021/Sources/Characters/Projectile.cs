@@ -28,11 +28,11 @@ namespace GJP2021.Sources.Characters
                 new PaintPeriodicSpawner(color, new Color(32, 32, 32), 35, 10, 30, 0.05F, 0.1F, 30);
         }
 
-        public void Update(GameTime gameTime, IngameState gameState, PaintCircles paintCircles)
+        public void Update(GameTime gameTime, IngameState gameState, PaintCircles paintCircles, float timeScale)
         {
             _currentDuration += (float)gameTime.ElapsedGameTime.TotalSeconds;
             _periodicPaintSpawner.Update(gameTime, paintCircles, _position);
-            var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
+            var delta = (float) gameTime.ElapsedGameTime.TotalSeconds * timeScale;
             foreach (var enemy in gameState.Enemies.Where(e => Vector2.Distance(_position, e.Position) < 35))
             {
                 enemy.Kill();

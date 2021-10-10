@@ -26,11 +26,11 @@ namespace GJP2021.Sources.Characters
             MarkedAsKilled = false;
         }
 
-        public void Update(GameTime gameTime, Player player, PaintCircles paintCircles)
+        public void Update(GameTime gameTime, Player player, PaintCircles paintCircles, float timeScale)
         {
             var (playerPosX, playerPosY) = player.Position;
             _periodicPaintSpawner.Update(gameTime, paintCircles, Position);
-            var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
+            var delta = (float) gameTime.ElapsedGameTime.TotalSeconds * timeScale;
             var width = Math.Abs(Position.X - playerPosX);
             var height = Math.Abs(Position.Y - playerPosY);
             var h = (float) Math.Sqrt(Math.Pow(width, 2) + Math.Pow(height, 2));

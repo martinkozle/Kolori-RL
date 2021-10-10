@@ -17,6 +17,7 @@ namespace GJP2021.Sources.Abilities
             Abilities.Add(PaintColors.PURPLE, TeleportAbility.Instance);
             Abilities.Add(PaintColors.BLUE, ProjectileAbility.Instance);
             Abilities.Add(PaintColors.GREEN, DashAbility.Instance);
+            Abilities.Add(PaintColors.YELLOW, TimeAbility.Instance);
         }
 
         protected abstract bool Use(Player player, IngameState gameState);

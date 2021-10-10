@@ -13,11 +13,11 @@ namespace GJP2021.Sources.Paint
             _paintCircles = new List<PaintCircle>();
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, float timeScale)
         {
             foreach (var paintCircle in _paintCircles)
             {
-                paintCircle.Update(gameTime);
+                paintCircle.Update(gameTime, timeScale);
             }
 
             _paintCircles.RemoveAll(pc => pc.IsDone());
