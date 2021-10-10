@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GJP2021.Sources.Characters;
+using GJP2021.Sources.GUI;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -22,9 +23,18 @@ namespace GJP2021.Sources.GameStates
         private List<PaintBucket> _paintBuckets = new();
 
         private List<Vector2> _enemySpawnPoint;
+        private WindowWidget _pauseWindow;
 
         public void Update(GameTime gameTime)
         {
+            _player.HandlePause();
+
+            if (_player.Paused)
+            {
+                _pauseWindow.Update();
+                return;
+            }
+
             if (!_player.IsAlive())
             {
                 Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
@@ -63,8 +73,6 @@ namespace GJP2021.Sources.GameStates
                             200F));
                         break;
                 }
-
-                Console.WriteLine(sideDecision);
 
                 _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
             }
@@ -125,6 +133,11 @@ namespace GJP2021.Sources.GameStates
 
             _player.DrawHealth(Kolori.Instance.SpriteBatch);
 
+            if (_player.Paused)
+            {
+                _pauseWindow.Draw();
+            }
+
             Kolori.Instance.SpriteBatch.End();
 
             //Kolori.Instance.ShapeBatch.Begin();
@@ -135,6 +148,35 @@ namespace GJP2021.Sources.GameStates
 
         public void Initialize()
         {
+            var windowTexture = Kolori.Instance.TextureMap["pause_window"];
+            var windowBuilder = WindowWidget.Builder()
+                .CenterHorizontally(Kolori.Instance.GetWindowWidth)
+                .CenterVertically(Kolori.Instance.GetWindowHeight);
+
+            var windowX = windowBuilder.X;
+            var windowY = windowBuilder.Y;
+            
+            _pauseWindow = windowBuilder.SetTexture(windowTexture)
+                .AddButton(
+                    Button.Builder()
+                        .SetPosition(() => windowX.Invoke(), () => windowY.Invoke() + 192)
+                        .CenterHorizontally(windowTexture.Width)
+                        .SetSound("button")
+                        .SetTexture("resume")
+                        .SetAction(() => _player.Paused = false)
+                        .Build()
+                )
+                .AddButton(
+                    Button.Builder()
+                        .SetPosition(() => windowX.Invoke(), () => windowY.Invoke() + 270)
+                        .CenterHorizontally(windowTexture.Width)
+                        .SetSound("button")
+                        .SetTexture("menu")
+                        .SetAction(
+                            () => { Kolori.Instance.GameStateManager.SetGameState(MenuState.Instance); })
+                        .Build()
+                )
+                .Build();
             _enemies = new List<Enemy>();
             _paintBuckets = new List<PaintBucket>();
             _lastSpawnEnemy = 0;

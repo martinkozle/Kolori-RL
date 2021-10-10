@@ -32,4 +32,24 @@
     <ItemGroup>
       <Folder Include="Content\Resources\Textures\Buckets" />
     </ItemGroup>
+    <ItemGroup>
+      <Content Include="Content\bin\DesktopGL\Content\Resources\Textures\Buttons\exit_button_hover.xnb">
+        <Link>Content\Resources\Textures\GUI\Buttons\exit_button_hover.xnb</Link>
+      </Content>
+      <Content Include="Content\bin\DesktopGL\Content\Resources\Textures\Buttons\exit_button_normal.xnb">
+        <Link>Content\Resources\Textures\GUI\Buttons\exit_button_normal.xnb</Link>
+      </Content>
+      <Content Include="Content\bin\DesktopGL\Content\Resources\Textures\Buttons\exit_button_pressed.xnb">
+        <Link>Content\Resources\Textures\GUI\Buttons\exit_button_pressed.xnb</Link>
+      </Content>
+      <Content Include="Content\bin\DesktopGL\Content\Resources\Textures\Buttons\start_button_hover.xnb">
+        <Link>Content\Resources\Textures\GUI\Buttons\start_button_hover.xnb</Link>
+      </Content>
+      <Content Include="Content\bin\DesktopGL\Content\Resources\Textures\Buttons\start_button_normal.xnb">
+        <Link>Content\Resources\Textures\GUI\Buttons\start_button_normal.xnb</Link>
+      </Content>
+      <Content Include="Content\bin\DesktopGL\Content\Resources\Textures\Buttons\start_button_pressed.xnb">
+        <Link>Content\Resources\Textures\GUI\Buttons\start_button_pressed.xnb</Link>
+      </Content>
+    </ItemGroup>
 </Project>

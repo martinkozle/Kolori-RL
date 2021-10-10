@@ -19,10 +19,12 @@ namespace GJP2021.Sources.Characters
         public int Score = 0;
         private float _health = 100F;
         private const float MaxHealth = 100F;
-        private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["healthbar"];
+        private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["health_bar"];
         private PaintColors _playerColor;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
         private float _timer;
+        private bool _pauseKeyDown;
+        public bool Paused { get; set; }
 
         private Player(float x, float y, float maxSpeed, float acceleration, Vector2 bounds)
         {
@@ -74,12 +76,28 @@ namespace GJP2021.Sources.Characters
                 Color.Black);
         }
 
+        public void HandlePause()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.P))
+            {
+                _pauseKeyDown = true;
+            }
+            else
+            {
+                if (_pauseKeyDown)
+                {
+                    Paused = !Paused;
+                }
+                _pauseKeyDown = false;
+            }
+        }
+        
         public void Update(GameTime gameTime, PaintCircles paintCircles)
         {
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
             _periodicPaintSpawner.Update(gameTime, paintCircles, Position);
             _timer += delta;
-            if (_timer >= 0.2)
+            if (_timer >= 0.01)
             {
                 _timer = 0;
                 Damage(0.1F);
