@@ -111,10 +111,22 @@ namespace GJP2021.Sources.Characters
         public void Draw()
         {
             var texture = GetTexture();
+
             Kolori.Instance.SpriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
                 Color.White);
+
             Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson,
                 Color.Black);
+
+
+            var ability = GetAbility();
+
+            if (ability == null) return;
+            var abilityX = Kolori.Instance.GetWindowWidth() - 64 - 16;
+            var abilityY = Kolori.Instance.GetWindowHeight() - 64 - 4;
+            Utils.DrawOutlinedText("Fonts/lunchds", 24, "" + ability.PaintCost,
+                new Vector2(abilityX, abilityY), Color.Crimson,
+                Color.Black, Utils.HorizontalFontAlignment.RIGHT, Utils.VerticalFontAlignment.CENTER);
         }
 
         public void HandlePause()
@@ -142,13 +154,19 @@ namespace GJP2021.Sources.Characters
             }
             else
             {
-                if (_abilityKeyDown && Ability.Abilities.ContainsKey(_trailColor))
+                var ability = GetAbility();
+                if (_abilityKeyDown && ability != null)
                 {
-                    Ability.Abilities[_trailColor].TryUse(this, gameState);
+                    ability.TryUse(this, gameState);
                 }
 
                 _abilityKeyDown = false;
             }
+        }
+
+        private Ability GetAbility()
+        {
+            return Ability.Abilities.ContainsKey(_trailColor) ? Ability.Abilities[_trailColor] : null;
         }
 
         public void Update(GameTime gameTime, PaintCircles paintCircles)
