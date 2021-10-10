@@ -19,7 +19,7 @@ namespace GJP2021.Sources.Paint
             {
                 paintCircle.Update(gameTime);
             }
-            
+
             _paintCircles.RemoveAll(pc => pc.IsDone());
         }
 

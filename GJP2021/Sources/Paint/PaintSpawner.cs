@@ -11,7 +11,8 @@ namespace GJP2021.Sources.Paint
         private readonly Random _random;
         private readonly Color _colorRanges;
 
-        public PaintSpawner(Color color, Color colorRanges, float maxDistance, float minSize, float maxSize, float dropDuration = 0.2f,
+        public PaintSpawner(Color color, Color colorRanges, float maxDistance, float minSize, float maxSize,
+            float dropDuration = 0.2f,
             float fadeDuration = 5, bool fade = true)
         {
             _color = color;

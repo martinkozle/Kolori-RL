@@ -29,6 +29,5 @@ namespace GJP2021.Sources.GameStates
                 _currentGameState.Initialize();
             }
         }
-
     }
 }

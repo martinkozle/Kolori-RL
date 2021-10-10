@@ -7,12 +7,14 @@ namespace GJP2021.Sources.Paint
         private readonly PaintSpawner _paintSpawner;
         private readonly float _period;
         private float _timeSinceLastSpawn;
-        
-        public PaintPeriodicSpawner(Color color, Color colorRanges, float maxDistance, float minSize, float maxSize, float period,
-            float dropDuration, float fadeDuration, bool fade=true)
+
+        public PaintPeriodicSpawner(Color color, Color colorRanges, float maxDistance, float minSize, float maxSize,
+            float period,
+            float dropDuration, float fadeDuration, bool fade = true)
         {
             _period = period;
-            _paintSpawner = new PaintSpawner(color, colorRanges, maxDistance, minSize, maxSize, dropDuration, fadeDuration, fade);
+            _paintSpawner = new PaintSpawner(color, colorRanges, maxDistance, minSize, maxSize, dropDuration,
+                fadeDuration, fade);
             _timeSinceLastSpawn = 0;
         }
 

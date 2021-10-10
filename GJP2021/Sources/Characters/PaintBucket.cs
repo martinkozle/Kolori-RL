@@ -7,7 +7,6 @@ namespace GJP2021.Sources.Characters
 {
     public class PaintBucket
     {
-
         private Vector2 _position;
         private PaintColors _color;
         private Random _randomGenerator;
@@ -48,7 +47,8 @@ namespace GJP2021.Sources.Characters
         public void Draw(GameTime gameTime)
         {
             var texture = GetTexture();
-            Kolori.Instance.SpriteBatch.Draw(texture, _position - new Vector2(texture.Width / 2F, texture.Height / 2F),Color.White);
+            Kolori.Instance.SpriteBatch.Draw(texture, _position - new Vector2(texture.Width / 2F, texture.Height / 2F),
+                Color.White);
         }
     }
 }

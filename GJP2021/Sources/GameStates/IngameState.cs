@@ -10,7 +10,7 @@ namespace GJP2021.Sources.GameStates
     public class IngameState : IGameState
     {
         public static readonly IngameState Instance = new();
-        
+
         private static readonly Color BgColor = Color.White;
         private Player _player;
         private float _lastSpawnEnemy;
@@ -47,12 +47,12 @@ namespace GJP2021.Sources.GameStates
                     case 1:
                         _enemies.Add(new Enemy(new Vector2(
                                 _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
-                                Kolori.Instance.GetWindowHeight()+20),
+                                Kolori.Instance.GetWindowHeight() + 20),
                             200F));
                         break;
                     case 2:
                         _enemies.Add(new Enemy(new Vector2(
-                                Kolori.Instance.GetWindowWidth()+20,
+                                Kolori.Instance.GetWindowWidth() + 20,
                                 _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
                             200F));
                         break;
@@ -63,8 +63,9 @@ namespace GJP2021.Sources.GameStates
                             200F));
                         break;
                 }
+
                 Console.WriteLine(sideDecision);
-                
+
                 _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
             }
 
@@ -125,16 +126,16 @@ namespace GJP2021.Sources.GameStates
             _player.DrawHealth(Kolori.Instance.SpriteBatch);
 
             Kolori.Instance.SpriteBatch.End();
-            
+
             //Kolori.Instance.ShapeBatch.Begin();
             //Kolori.Instance.ShapeBatch.DrawLine(_player.Position, _player.Position + _player.GetSpeedVector(), 2, Color.Green,
             //    Color.Green);
             //Kolori.Instance.ShapeBatch.End();
         }
-        
+
         public void Initialize()
         {
-            _enemies = new List<Enemy>(); 
+            _enemies = new List<Enemy>();
             _paintBuckets = new List<PaintBucket>();
             _lastSpawnEnemy = 0;
             _lastSpawnBucket = 0;
@@ -148,7 +149,7 @@ namespace GJP2021.Sources.GameStates
                 _randomGenerator)
             );
             _player = Player.Builder()
-                .SetPosition(Kolori.Instance.GetWindowWidth()/2F,Kolori.Instance.GetWindowHeight()/2F )
+                .SetPosition(Kolori.Instance.GetWindowWidth() / 2F, Kolori.Instance.GetWindowHeight() / 2F)
                 .SetMaxSpeed(225f)
                 .SetAcceleration(450f)
                 .SetBounds(new Vector2(Kolori.Instance.GetWindowWidth(),
@@ -162,9 +163,8 @@ namespace GJP2021.Sources.GameStates
                 new(Kolori.Instance.GetWindowWidth() + 50, -50),
                 new(Kolori.Instance.GetWindowWidth() + 50, Kolori.Instance.GetWindowHeight() + 50)
             };
-            
-            _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
 
+            _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
         }
     }
 }

@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics;
-using System.Net.Mime;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,7 +18,6 @@ namespace GJP2021.Sources.Characters
         public Vector2 Position;
         public int Score = 0;
         private float _health = 100F;
-        public int Score = 0;
         private const float MaxHealth = 100F;
         private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["healthbar"];
         private PaintColors _playerColor;
@@ -44,7 +41,7 @@ namespace GJP2021.Sources.Characters
 
         public Vector2 GetSpeedVector()
         {
-            return new (_speedX, _speedY);
+            return new(_speedX, _speedY);
         }
 
         public void DrawHealth(SpriteBatch spriteBatch)
@@ -68,11 +65,13 @@ namespace GJP2021.Sources.Characters
             spriteBatch.Draw(texture, new Vector2(x + 46, y + 46),
                 new Rectangle(0, 88 + colorOffset, healthPercent, 38), Color.White);
         }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             var texture = GetTexture();
             spriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F), Color.White);
-            Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson, Color.Black);
+            Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson,
+                Color.Black);
         }
 
         public void Update(GameTime gameTime, PaintCircles paintCircles)
@@ -190,7 +189,7 @@ namespace GJP2021.Sources.Characters
 
         public static PlayerBuilder Builder()
         {
-            return new ();
+            return new();
         }
 
         public class PlayerBuilder
@@ -235,7 +234,7 @@ namespace GJP2021.Sources.Characters
 
             public Player Build()
             {
-                return new (_x, _y, _maxSpeed, _acceleration, _bounds);
+                return new(_x, _y, _maxSpeed, _acceleration, _bounds);
             }
         }
     }

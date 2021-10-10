@@ -5,7 +5,8 @@ namespace GJP2021.Sources
 {
     public static class Utils
     {
-        public static void DrawOutlinedText(string font, int size, string text, Vector2 position, Color frontColor, Color backColor)
+        public static void DrawOutlinedText(string font, int size, string text, Vector2 position, Color frontColor,
+            Color backColor)
         {
             Font.DrawString(font, size, text, position + new Vector2(1, 1), backColor);
             Font.DrawString(font, size, text, position + new Vector2(-1, 1), backColor);

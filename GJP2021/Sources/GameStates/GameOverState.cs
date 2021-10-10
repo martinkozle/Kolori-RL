@@ -34,7 +34,7 @@ namespace GJP2021.Sources.GameStates
 
             var logoX = (Kolori.Instance.GetWindowWidth() - logoTexture.Width) / 2;
             Kolori.Instance.SpriteBatch.Draw(logoTexture, new Vector2(logoX, 64), Color.White);
-            
+
             Utils.DrawOutlinedText("Fonts/lunchds", 48, _text, new Vector2(_textX, _textY), Color.Crimson, Color.Black);
 
             foreach (var button in _buttons)
@@ -47,7 +47,6 @@ namespace GJP2021.Sources.GameStates
 
         public void Initialize()
         {
-
             var logoTexture = GetLogoTexture();
             _text = "Final Score: " + _score;
             var textSize = Font.MeasureString("Fonts/lunchds", 48, _text);
@@ -90,6 +89,5 @@ namespace GJP2021.Sources.GameStates
         {
             _score = playerScore;
         }
-        
     }
 }

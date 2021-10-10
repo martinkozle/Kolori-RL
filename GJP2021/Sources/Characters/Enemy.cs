@@ -18,11 +18,12 @@ namespace GJP2021.Sources.Characters
             _speed = speed;
             _position = position;
             _periodicPaintSpawner =
-                new PaintPeriodicSpawner(new Color(255, 255, 255), new Color(0, 0, 0), 0, 20, 20, 0.05F, 0.1F, 120, false);
+                new PaintPeriodicSpawner(new Color(255, 255, 255), new Color(0, 0, 0), 0, 20, 20, 0.05F, 0.1F, 120,
+                    false);
 
             MarkedForDeletion = false;
-        } 
-        
+        }
+
         public void Update(GameTime gameTime, Player player, PaintCircles paintCircles)
         {
             var (playerPosX, playerPosY) = player.Position;
@@ -55,15 +56,14 @@ namespace GJP2021.Sources.Characters
             {
                 _position.Y -= _speed * (height / h) * delta;
             }
-            
         }
 
         public void Draw(GameTime gameTime)
         {
             var texture = GetTexture();
-            Kolori.Instance.SpriteBatch.Draw(GetTexture(), _position - new Vector2(texture.Width / 2F, texture.Height / 2F), null,
+            Kolori.Instance.SpriteBatch.Draw(GetTexture(),
+                _position - new Vector2(texture.Width / 2F, texture.Height / 2F), null,
                 Color.White);
-            
         }
 
         private static Texture2D GetTexture()

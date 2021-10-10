@@ -8,5 +8,4 @@ namespace GJP2021.Sources.GameStates
         void Draw(GameTime gameTime);
         void Initialize();
     }
-    
 }

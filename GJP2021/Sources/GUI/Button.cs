@@ -18,7 +18,8 @@ namespace GJP2021.Sources.GUI
         private readonly Func<int> _y;
         public Texture2D CurrentTexture { get; private set; }
 
-        private Button(Func<int> x, Func<int> y, Texture2D normalTexture, Texture2D hoveredTexture, Texture2D pressedTexture, SoundEffect pressSound, SoundEffect releaseSound, Action action)
+        private Button(Func<int> x, Func<int> y, Texture2D normalTexture, Texture2D hoveredTexture,
+            Texture2D pressedTexture, SoundEffect pressSound, SoundEffect releaseSound, Action action)
         {
             _x = x;
             _y = y;
@@ -37,17 +38,22 @@ namespace GJP2021.Sources.GUI
             {
                 return;
             }
+
             var mouseState = Mouse.GetState();
-            if (Utils.IsInsideBox(mouseState.Position, GetPosition(), new Vector2(CurrentTexture.Width, CurrentTexture.Height)))
+            if (Utils.IsInsideBox(mouseState.Position, GetPosition(),
+                new Vector2(CurrentTexture.Width, CurrentTexture.Height)))
             {
                 if (mouseState.LeftButton == ButtonState.Released)
                 {
-                    if (CurrentTexture == _pressedTexture) {
+                    if (CurrentTexture == _pressedTexture)
+                    {
                         _releaseSound.Play();
                         Click();
                     }
+
                     CurrentTexture = _hoveredTexture;
-                } else if (CurrentTexture == _hoveredTexture)
+                }
+                else if (CurrentTexture == _hoveredTexture)
                 {
                     _pressSound.Play();
                     CurrentTexture = _pressedTexture;
@@ -59,16 +65,18 @@ namespace GJP2021.Sources.GUI
                 {
                     _releaseSound.Play();
                 }
+
                 CurrentTexture = _normalTexture;
             }
         }
-        
+
         public void DrawPositioned(SpriteBatch spriteBatch)
         {
             if (CurrentTexture == null)
             {
                 return;
             }
+
             spriteBatch.Draw(CurrentTexture, GetPosition(), Color.White);
         }
 
@@ -104,9 +112,9 @@ namespace GJP2021.Sources.GUI
                 _y = () => 0;
                 _pressSound = null;
                 _releaseSound = null;
-                _action = () => {};
+                _action = () => { };
             }
-            
+
             public ButtonBuilder SetPosition(Func<int> x, Func<int> y)
             {
                 _x = x;
@@ -120,7 +128,7 @@ namespace GJP2021.Sources.GUI
                 _y = () => y;
                 return this;
             }
-            
+
             public ButtonBuilder CenterHorizontally(Func<int> boundaryWidth)
             {
                 _x = () => (boundaryWidth.Invoke() - _normalTexture.Width) / 2;
@@ -144,7 +152,7 @@ namespace GJP2021.Sources.GUI
                 _y = () => (boundaryHeight - _normalTexture.Height) / 2;
                 return this;
             }
-            
+
             public ButtonBuilder SetSound(string soundName)
             {
                 if (!Kolori.Instance.SoundMap.ContainsKey(soundName + "_release") ||
@@ -175,9 +183,9 @@ namespace GJP2021.Sources.GUI
 
             public Button Build()
             {
-                return new(_x, _y, _normalTexture, _hoveredTexture, _pressedTexture, _pressSound, _releaseSound, _action);
+                return new(_x, _y, _normalTexture, _hoveredTexture, _pressedTexture, _pressSound, _releaseSound,
+                    _action);
             }
-
         }
     }
 }

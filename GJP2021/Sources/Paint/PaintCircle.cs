@@ -60,6 +60,7 @@ namespace GJP2021.Sources.Paint
             {
                 _alpha = Math.Max((_fadeDuration - _currentDuration) / _fadeDuration, 0);
             }
+
             _currentRadius = _radius * Math.Min(1, _currentDuration / _dropDuration);
         }
 
