@@ -7,6 +7,7 @@ using GJP2021.Sources.GUI;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace GJP2021.Sources.GameStates
 {
@@ -28,6 +29,7 @@ namespace GJP2021.Sources.GameStates
         public bool TimeScaleActive = false;
         public float TimeScale = 1;
         public float TimeScaleDuration = 0;
+        private static Song _song;
 
         private List<Vector2> _enemySpawnPoint;
         private WindowWidget _pauseWindow;
@@ -157,6 +159,7 @@ namespace GJP2021.Sources.GameStates
             {
                 Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
                 GameOverState.Instance.SetFinalScore(_player.Score);
+                Kolori.Instance.SoundMap["death_screen"].Play();
                 Initialize();
             }
 
@@ -195,6 +198,10 @@ namespace GJP2021.Sources.GameStates
 
         public void Initialize()
         {
+            _song = Kolori.Instance.SongMap["bgm_loop"];
+            MediaPlayer.Play(_song);
+            MediaPlayer.IsRepeating = true;
+
             var windowTexture = Kolori.Instance.TextureMap["pause_window"];
             var windowBuilder = WindowWidget.Builder()
                 .CenterHorizontally(Kolori.Instance.GetWindowWidth)
