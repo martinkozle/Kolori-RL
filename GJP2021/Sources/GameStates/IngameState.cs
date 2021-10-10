@@ -34,7 +34,36 @@ namespace GJP2021.Sources.GameStates
             if (Mouse.GetState().LeftButton == ButtonState.Pressed &&
                 gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 0.1)
             {
-                _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
+                var sideDecision = _randomGenerator.Next(4);
+                switch (sideDecision)
+                {
+                    case 0:
+                        _enemies.Add(new Enemy(new Vector2(
+                                -20,
+                                _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
+                            200F));
+                        break;
+                    case 1:
+                        _enemies.Add(new Enemy(new Vector2(
+                                _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
+                                Kolori.Instance.GetWindowHeight()+20),
+                            200F));
+                        break;
+                    case 2:
+                        _enemies.Add(new Enemy(new Vector2(
+                                Kolori.Instance.GetWindowWidth()+20,
+                                _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
+                            200F));
+                        break;
+                    case 3:
+                        _enemies.Add(new Enemy(new Vector2(
+                                _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
+                                -20),
+                            200F));
+                        break;
+                }
+                Console.WriteLine(sideDecision);
+                
                 _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
             }
 
@@ -133,7 +162,7 @@ namespace GJP2021.Sources.GameStates
                 new(Kolori.Instance.GetWindowWidth() + 50, -50),
                 new(Kolori.Instance.GetWindowWidth() + 50, Kolori.Instance.GetWindowHeight() + 50)
             };
-
+            
             _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
         }
     }
