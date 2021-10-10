@@ -25,6 +25,9 @@ namespace GJP2021.Sources.GameStates
         private int _numberOfEnemies = 1;
         public List<PaintBucket> PaintBuckets;
         public Projectiles Projectiles;
+        public bool TimeScaleActive = false;
+        public float TimeScale = 1;
+        public float TimeScaleDuration = 0;
 
         private List<Vector2> _enemySpawnPoint;
         private WindowWidget _pauseWindow;
@@ -79,6 +82,17 @@ namespace GJP2021.Sources.GameStates
                 return;
             }
 
+            if (TimeScaleActive)
+            {
+                TimeScaleDuration += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (TimeScaleDuration > 3)
+                {
+                    TimeScaleActive = false;
+                    TimeScale = 1;
+                    TimeScaleDuration = 0;
+                } 
+            }
+
             if (gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 10)
             {
                 for (var i = 0; i < _numberOfEnemies + 1; i++)
@@ -117,13 +131,13 @@ namespace GJP2021.Sources.GameStates
             Enemies.RemoveAll(el => el.MarkedForDeletion);
             foreach (var enemy in Enemies)
             {
-                enemy.Update(gameTime, _player, PaintCircles);
+                enemy.Update(gameTime, _player, PaintCircles, TimeScale);
             }
 
             _player.HandleAbility(this);
-            Projectiles.Update(gameTime, this, PaintCircles);
+            Projectiles.Update(gameTime, this, PaintCircles, TimeScale);
 
-            PaintCircles.Update(gameTime);
+            PaintCircles.Update(gameTime, TimeScale);
             foreach (var bucket in PaintBuckets)
             {
                 bucket.Update(gameTime, _player.Position);

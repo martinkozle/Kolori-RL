@@ -53,9 +53,9 @@ namespace GJP2021.Sources.Paint
             return _currentDuration >= _fadeDuration;
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, float timeScale)
         {
-            _currentDuration += (float) gameTime.ElapsedGameTime.TotalSeconds;
+            _currentDuration += (float) gameTime.ElapsedGameTime.TotalSeconds * timeScale;
             if (_fade)
             {
                 _alpha = Math.Max((_fadeDuration - _currentDuration) / _fadeDuration, 0);
