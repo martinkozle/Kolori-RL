@@ -1,5 +1,6 @@
 using System;
 using GJP2021.Sources.Abilities;
+using GJP2021.Sources.GameStates;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,6 +28,7 @@ namespace GJP2021.Sources.Characters
         private bool _pauseKeyDown;
         private bool _abilityKeyDown;
         public bool Paused { get; set; }
+
         public PaintColors TrailColor
         {
             get => _trailColor;
@@ -71,7 +73,8 @@ namespace GJP2021.Sources.Characters
             Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 288, 88), Color.White);
 
             //Bucket fluid
-            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x + 40, y + 12), new Rectangle(238, 88 + colorOffset, 26, 36),
+            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x + 40, y + 12),
+                new Rectangle(238, 88 + colorOffset, 26, 36),
                 Color.White);
 
             //Health
@@ -83,7 +86,8 @@ namespace GJP2021.Sources.Characters
         public void Draw()
         {
             var texture = GetTexture();
-            Kolori.Instance.SpriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F), Color.White);
+            Kolori.Instance.SpriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
+                Color.White);
             Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson,
                 Color.Black);
         }
@@ -100,11 +104,12 @@ namespace GJP2021.Sources.Characters
                 {
                     Paused = !Paused;
                 }
+
                 _pauseKeyDown = false;
             }
         }
 
-        public void HandleAbility(PaintCircles paintCircles)
+        public void HandleAbility(IngameState gameState)
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Space))
             {
@@ -114,12 +119,13 @@ namespace GJP2021.Sources.Characters
             {
                 if (_abilityKeyDown && Ability.Abilities.ContainsKey(_trailColor))
                 {
-                    Ability.Abilities[_trailColor].TryUse(this, paintCircles);
+                    Ability.Abilities[_trailColor].TryUse(this, gameState);
                 }
+
                 _abilityKeyDown = false;
             }
         }
-        
+
         public void Update(GameTime gameTime, PaintCircles paintCircles)
         {
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
@@ -152,6 +158,12 @@ namespace GJP2021.Sources.Characters
 
             Position.Y = Math.Clamp(Position.Y, w, _bounds.Y - w);
             Position.X = Math.Clamp(Position.X, h, _bounds.X - h);
+        }
+
+        public void SetSpeed(float speedX = 0F, float speedY = 0F)
+        {
+            _speedX = speedX;
+            _speedY = speedY;
         }
 
         private void HandleAcceleration(GameTime gameTime)
@@ -204,10 +216,10 @@ namespace GJP2021.Sources.Characters
         }
 
         private Texture2D GetTexture() => Kolori.Instance.TextureMap["player_" + _trailColor.ToString().ToLower()];
-        
-        private void Heal(float amount)
+
+        public void Heal(float amount)
         {
-            Health = Math.Min(MaxHealth, amount);
+            Health = Math.Min(MaxHealth, Health + amount);
         }
 
         public void Damage(float amount)

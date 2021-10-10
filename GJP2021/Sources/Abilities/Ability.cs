@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GJP2021.Sources.Characters;
+using GJP2021.Sources.GameStates;
 using GJP2021.Sources.Paint;
 
 namespace GJP2021.Sources.Abilities
@@ -16,7 +17,7 @@ namespace GJP2021.Sources.Abilities
             Abilities.Add(PaintColors.PURPLE, TeleportAbility.Instance);
         }
 
-        protected abstract bool Use(Player player, PaintCircles paintCircles);
+        protected abstract bool Use(Player player, IngameState gameState);
 
 
         private protected bool CanUse(Player player)
@@ -26,9 +27,9 @@ namespace GJP2021.Sources.Abilities
 
         public abstract float PaintCost { get; }
 
-        public void TryUse(Player player, PaintCircles paintCircles)
+        public void TryUse(Player player, IngameState gameState)
         {
-            if (CanUse(player) && Use(player, paintCircles))
+            if (CanUse(player) && Use(player, gameState))
             {
                 player.Damage(PaintCost);
             }

@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using GJP2021.Sources.Characters;
+using GJP2021.Sources.GameStates;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 
 namespace GJP2021.Sources.Abilities
 {
-
     public class BurstAbility : Ability
     {
         public static readonly BurstAbility Instance = new();
@@ -15,21 +16,29 @@ namespace GJP2021.Sources.Abilities
             150, 30, 70, 0.5F, 30);
 
         private readonly Random _random = new();
-        private BurstAbility() {}
+
+        private BurstAbility()
+        {
+        }
 
         protected override PaintColors AbilityColor => PaintColors.RED;
 
-        protected override bool Use(Player player, PaintCircles paintCircles)
+        protected override bool Use(Player player, IngameState gameState)
         {
             _paintSpawner.SetColor(PaintCircle.ColorMap[player.TrailColor]);
             var max = 16 + _random.Next(17);
             for (var i = 0; i < max; ++i)
             {
-                paintCircles.Add(_paintSpawner.SpawnCircle(player.Position));
+                gameState.PaintCircles.Add(_paintSpawner.SpawnCircle(player.Position));
             }
+
+            foreach (var enemy in gameState.Enemies.Where(enemy =>
+                Vector2.Distance(enemy.Position, player.Position) < 150))
+            {
+                enemy.Kill();
+            }
+
             return true;
         }
-        
     }
-    
 }
