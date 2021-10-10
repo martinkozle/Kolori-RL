@@ -12,7 +12,7 @@ namespace GJP2021.Sources.GameStates
 {
     public class IngameState : IGameState
     {
-        public static readonly IngameState Instance = new();
+        public static readonly IngameState Instance = new ();
 
         private static readonly Color BgColor = Color.White;
         private Player _player;
@@ -22,7 +22,7 @@ namespace GJP2021.Sources.GameStates
         private Random _randomGenerator;
         public PaintCircles PaintCircles;
         public List<Enemy> Enemies;
-        private int numberOfEnemies = 1;
+        private int _numberOfEnemies = 1;
         public List<PaintBucket> PaintBuckets;
         public Projectiles Projectiles;
 
@@ -60,6 +60,7 @@ namespace GJP2021.Sources.GameStates
                     break;
             }
         }
+
         public void Update(GameTime gameTime)
         {
             _player.HandlePause();
@@ -79,35 +80,36 @@ namespace GJP2021.Sources.GameStates
 
             if (gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 10)
             {
-
-                for (var i=0;i<numberOfEnemies+1;i++)
+                for (var i = 0; i < _numberOfEnemies + 1; i++)
                 {
                     spawnEnemy();
                 }
 
-                if (numberOfEnemies!=8)
+                if (_numberOfEnemies != 8)
                 {
-                    numberOfEnemies += 1;
+                    _numberOfEnemies += 1;
                 }
-                
+
                 _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
             }
 
-            if (Mouse.GetState().RightButton == ButtonState.Pressed &&
-                gameTime.TotalGameTime.TotalSeconds - _lastSpawnBucket >= 0.1)
+            if (gameTime.TotalGameTime.TotalSeconds - _lastSpawnBucket >= 10)
             {
                 PaintBuckets.Add(new PaintBucket(
                     new Vector2(
-                        _randomGenerator.Next(32, Kolori.Instance.GetWindowWidth()-32),
-                        _randomGenerator.Next(32, Kolori.Instance.GetWindowHeight()-32)
+                        _randomGenerator.Next(40, Kolori.Instance.GetWindowWidth() - 40),
+                        _randomGenerator.Next(40, Kolori.Instance.GetWindowHeight() - 40)
                     ),
                     _randomGenerator)
                 );
+
+
                 _lastSpawnBucket = (float) gameTime.TotalGameTime.TotalSeconds;
             }
 
             foreach (var enemy in Enemies.Where(enemy => enemy.MarkedAsKilled))
             {
+                _player.Score += 1;
                 _player.Heal(10F);
             }
 
@@ -126,7 +128,7 @@ namespace GJP2021.Sources.GameStates
                 bucket.Update(gameTime, _player.Position);
                 if (!bucket.MarkedForDeletion) continue;
                 _player.TrailColor = bucket.GetPaintBucketColor();
-                _player.Score += 1;
+               
             }
 
             _player.Update(gameTime, PaintCircles);
@@ -209,8 +211,8 @@ namespace GJP2021.Sources.GameStates
             //_paintBucket=new PaintBucket(new Vector2(100,100),_randomGenerator,Kolori.Instance);
             PaintBuckets.Add(new PaintBucket(
                 new Vector2(
-                    _randomGenerator.Next(0, Kolori.Instance.GetWindowHeight()),
-                    _randomGenerator.Next(0, Kolori.Instance.GetWindowHeight())
+                    _randomGenerator.Next(40, Kolori.Instance.GetWindowWidth() + 40),
+                    _randomGenerator.Next(40, Kolori.Instance.GetWindowHeight() + 40)
                 ),
                 _randomGenerator)
             );
@@ -224,13 +226,13 @@ namespace GJP2021.Sources.GameStates
             PaintCircles = new PaintCircles();
             _enemySpawnPoint = new List<Vector2>
             {
-                new(-50, -50),
-                new(-50, Kolori.Instance.GetWindowHeight() + 50),
-                new(Kolori.Instance.GetWindowWidth() + 50, -50),
-                new(Kolori.Instance.GetWindowWidth() + 50, Kolori.Instance.GetWindowHeight() + 50)
+                new ( - 50, -50),
+                new ( - 50, Kolori.Instance.GetWindowHeight() + 50),
+                new (Kolori.Instance.GetWindowWidth() + 50, -50),
+                new (Kolori.Instance.GetWindowWidth() + 50, Kolori.Instance.GetWindowHeight() + 50)
             };
-            numberOfEnemies = 0;
-            
+            _numberOfEnemies = 0;
+
             spawnEnemy();
         }
     }
