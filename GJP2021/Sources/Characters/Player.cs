@@ -29,8 +29,10 @@ namespace GJP2021.Sources.Characters
         private PaintColors _trailColor;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
         private float _timer;
+        private float _timerSound;
         private bool _pauseKeyDown;
         private bool _abilityKeyDown;
+        private Random _random;
         public bool Paused { get; set; }
 
         public PaintColors TrailColor
@@ -57,6 +59,7 @@ namespace GJP2021.Sources.Characters
             _periodicPaintSpawner =
                 new PaintPeriodicSpawner(PaintCircle.Red, new Color(32, 32, 32), 35, 10, 30, 0.05F, 0.1F, 30);
             _trailColor = PaintColors.RED;
+            _random = new();
         }
 
         public Vector2 GetSpeedVector()
@@ -141,9 +144,10 @@ namespace GJP2021.Sources.Characters
 
         public void HandlePause()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.P))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 _pauseKeyDown = true;
+                Kolori.Instance.SoundMap["pause_screen"].Play();
             }
             else
             {
@@ -188,6 +192,13 @@ namespace GJP2021.Sources.Characters
             {
                 _timer = 0;
                 Damage(0.1F);
+            }
+
+            if (_timerSound >= 0.7)
+            {
+                _timerSound = 0;
+                Kolori.Instance.SoundMap["player_move"].Play((float)Math.Clamp(_random.NextDouble(), 0.2, 0.8), (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8), (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8));
+
             }
 
             if (_speedBoostActive)
