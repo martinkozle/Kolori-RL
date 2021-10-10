@@ -83,8 +83,8 @@ namespace GJP2021.Sources.GameStates
             {
                 PaintBuckets.Add(new PaintBucket(
                     new Vector2(
-                        _randomGenerator.Next(0, Kolori.Instance.GetWindowHeight()),
-                        _randomGenerator.Next(0, Kolori.Instance.GetWindowHeight())
+                        _randomGenerator.Next(32, Kolori.Instance.GetWindowWidth()-32),
+                        _randomGenerator.Next(32, Kolori.Instance.GetWindowHeight()-32)
                     ),
                     _randomGenerator)
                 );
