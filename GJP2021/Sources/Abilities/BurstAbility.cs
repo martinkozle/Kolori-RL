@@ -9,7 +9,7 @@ namespace GJP2021.Sources.Abilities
     public class BurstAbility : IAbility
     {
         public static readonly BurstAbility Instance = new();
-        public override int PaintCost => 20;
+        public override float PaintCost => 20;
 
         private readonly PaintSpawner _paintSpawner = new(PaintCircle.ColorMap[PaintColors.RED], new Color(64, 64, 64),
             150, 30, 70, 0.5F, 30);
@@ -17,7 +17,9 @@ namespace GJP2021.Sources.Abilities
         private readonly Random _random = new();
         private BurstAbility() {}
 
-        protected override void Use(Player player, PaintCircles paintCircles)
+        protected override PaintColors AbilityColor => PaintColors.RED;
+
+        protected override bool Use(Player player, PaintCircles paintCircles)
         {
             _paintSpawner.SetColor(PaintCircle.ColorMap[player.TrailColor]);
             var max = 16 + _random.Next(17);
@@ -25,12 +27,7 @@ namespace GJP2021.Sources.Abilities
             {
                 paintCircles.Add(_paintSpawner.SpawnCircle(player.Position));
             }
-            player.Damage(PaintCost);
-        }
-
-        public override bool CanUse(Player player)
-        {
-            return player.TrailColor == PaintColors.RED && player.Health >= PaintCost + 5;
+            return true;
         }
         
     }

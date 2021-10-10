@@ -8,20 +8,29 @@ namespace GJP2021.Sources.Abilities
     {
         public static readonly Dictionary<PaintColors, IAbility> Abilities = new();
 
+        protected abstract PaintColors AbilityColor { get; }
+
         static IAbility()
         {
             Abilities.Add(PaintColors.RED, BurstAbility.Instance);
+            Abilities.Add(PaintColors.PURPLE, TeleportAbility.Instance);
         }
-        
-        protected abstract void Use(Player player, PaintCircles paintCircles);
-        public abstract bool CanUse(Player player);
-        public abstract int PaintCost { get; }
+
+        protected abstract bool Use(Player player, PaintCircles paintCircles);
+
+
+        private protected bool CanUse(Player player)
+        {
+            return AbilityColor == player.TrailColor && player.Health >= PaintCost + 5;
+        }
+
+        public abstract float PaintCost { get; }
 
         public void TryUse(Player player, PaintCircles paintCircles)
         {
-            if (CanUse(player))
+            if (CanUse(player) && Use(player, paintCircles))
             {
-                Use(player, paintCircles);
+                player.Damage(PaintCost);
             }
         }
     }
