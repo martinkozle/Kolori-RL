@@ -17,6 +17,10 @@ namespace GJP2021.Sources.Characters
         private readonly float _dragCoefficient;
         private readonly float _dragConstant;
         private readonly Vector2 _bounds;
+        private float _speedBoostMultiplier = 1;
+        private float _speedBoostCurrentDuration = 0;
+        private float _speedBoostDuration = 0;
+        private bool _speedBoostActive = false;
         public Vector2 Position;
         public int Score = 0;
         public float Health { get; private set; } = 100F;
@@ -137,6 +141,15 @@ namespace GJP2021.Sources.Characters
                 Damage(0.1F);
             }
 
+            if (_speedBoostActive)
+            {
+                _speedBoostCurrentDuration += delta;
+                if (_speedBoostCurrentDuration >= _speedBoostDuration)
+                {
+                    EndSpeedBoost();
+                }
+            }
+            
             HandleAcceleration(gameTime);
 
             Position.X += _speedX * delta;
@@ -207,12 +220,30 @@ namespace GJP2021.Sources.Characters
                 };
             }
 
-            _speedX += ax * delta;
-            _speedY += ay * delta;
+            _speedX += ax * _speedBoostMultiplier * delta;
+            _speedY += ay * _speedBoostMultiplier * delta;
             var biasX = Math.Abs(_speedX) / (float) Math.Sqrt(_speedX * _speedX + _speedY * _speedY);
             var biasY = Math.Abs(_speedY) / (float) Math.Sqrt(_speedX * _speedX + _speedY * _speedY);
-            _speedX = Math.Clamp(_speedX, -_maxSpeed * biasX, _maxSpeed * biasX);
-            _speedY = Math.Clamp(_speedY, -_maxSpeed * biasY, _maxSpeed * biasY);
+            _speedX = Math.Clamp(_speedX, -_maxSpeed * _speedBoostMultiplier * biasX,
+                _maxSpeed * _speedBoostMultiplier * biasX);
+            _speedY = Math.Clamp(_speedY, -_maxSpeed * _speedBoostMultiplier * biasY,
+                _maxSpeed * _speedBoostMultiplier * biasY);
+        }
+
+        public void SetSpeedBoost(float multiplier, float duration)
+        {
+            _speedBoostMultiplier = multiplier;
+            _speedBoostDuration = duration;
+            _speedBoostCurrentDuration = 0;
+            _speedBoostActive = true;
+        }
+
+        public void EndSpeedBoost()
+        {
+            _speedBoostActive = false;
+            _speedBoostMultiplier = 1;
+            _speedBoostCurrentDuration = 0;
+            _speedBoostDuration = 0;
         }
 
         private Texture2D GetTexture() => Kolori.Instance.TextureMap["player_" + _trailColor.ToString().ToLower()];
