@@ -15,6 +15,7 @@ namespace GJP2021.Sources.Abilities
         {
             Abilities.Add(PaintColors.RED, BurstAbility.Instance);
             Abilities.Add(PaintColors.PURPLE, TeleportAbility.Instance);
+            Abilities.Add(PaintColors.BLUE, ProjectileAbility.Instance);
         }
 
         protected abstract bool Use(Player player, IngameState gameState);
