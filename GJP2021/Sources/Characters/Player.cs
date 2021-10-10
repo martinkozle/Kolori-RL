@@ -1,4 +1,5 @@
 using System;
+using GJP2021.Sources.Abilities;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,14 +18,25 @@ namespace GJP2021.Sources.Characters
         private readonly Vector2 _bounds;
         public Vector2 Position;
         public int Score = 0;
-        private float _health = 100F;
+        public float Health { get; private set; } = 100F;
         private const float MaxHealth = 100F;
         private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["health_bar"];
-        private PaintColors _playerColor;
+        private PaintColors _trailColor;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
         private float _timer;
         private bool _pauseKeyDown;
+        private bool _abilityKeyDown;
         public bool Paused { get; set; }
+        public PaintColors TrailColor
+        {
+            get => _trailColor;
+            set
+            {
+                Heal(MaxHealth);
+                _trailColor = value;
+                _periodicPaintSpawner.SetColor(PaintCircle.ColorMap[_trailColor]);
+            }
+        }
 
         private Player(float x, float y, float maxSpeed, float acceleration, Vector2 bounds)
         {
@@ -38,7 +50,7 @@ namespace GJP2021.Sources.Characters
             _dragConstant = 80;
             _periodicPaintSpawner =
                 new PaintPeriodicSpawner(PaintCircle.Red, new Color(32, 32, 32), 35, 10, 30, 0.05F, 0.1F, 120);
-            _playerColor = PaintColors.RED;
+            _trailColor = PaintColors.RED;
         }
 
         public Vector2 GetSpeedVector()
@@ -52,7 +64,7 @@ namespace GJP2021.Sources.Characters
             const int x = 16;
             var y = Kolori.Instance.GetWindowHeight() - 92 - 16;
 
-            var colorIndex = Array.IndexOf(Enum.GetValues(_playerColor.GetType()), _playerColor);
+            var colorIndex = Array.IndexOf(Enum.GetValues(_trailColor.GetType()), _trailColor);
             var colorOffset = colorIndex * 38;
 
             //Empty Health Bar
@@ -63,7 +75,7 @@ namespace GJP2021.Sources.Characters
                 Color.White);
 
             //Health
-            var healthPercent = (int) Math.Floor(238F * (_health / MaxHealth));
+            var healthPercent = (int) Math.Floor(238F * (Health / MaxHealth));
             Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x + 46, y + 46),
                 new Rectangle(0, 88 + colorOffset, healthPercent, 38), Color.White);
         }
@@ -89,6 +101,22 @@ namespace GJP2021.Sources.Characters
                     Paused = !Paused;
                 }
                 _pauseKeyDown = false;
+            }
+        }
+
+        public void HandleAbility(PaintCircles paintCircles)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                _abilityKeyDown = true;
+            }
+            else
+            {
+                if (_abilityKeyDown && IAbility.Abilities.ContainsKey(_trailColor))
+                {
+                    IAbility.Abilities[_trailColor].TryUse(this, paintCircles);
+                }
+                _abilityKeyDown = false;
             }
         }
         
@@ -148,29 +176,23 @@ namespace GJP2021.Sources.Characters
             if (mx == 0)
             {
                 _speedX -= _speedX * (1 - _dragCoefficient) * delta;
-                switch (_speedX)
+                _speedX = _speedX switch
                 {
-                    case > 0:
-                        _speedX = Math.Max(0, _speedX - _dragConstant * delta);
-                        break;
-                    case < 0:
-                        _speedX = Math.Min(0, _speedX + _dragConstant * delta);
-                        break;
-                }
+                    > 0 => Math.Max(0, _speedX - _dragConstant * delta),
+                    < 0 => Math.Min(0, _speedX + _dragConstant * delta),
+                    _ => _speedX
+                };
             }
 
             if (my == 0)
             {
                 _speedY -= _speedY * (1 - _dragCoefficient) * delta;
-                switch (_speedY)
+                _speedY = _speedY switch
                 {
-                    case > 0:
-                        _speedY = Math.Max(0, _speedY - _dragConstant * delta);
-                        break;
-                    case < 0:
-                        _speedY = Math.Min(0, _speedY + _dragConstant * delta);
-                        break;
-                }
+                    > 0 => Math.Max(0, _speedY - _dragConstant * delta),
+                    < 0 => Math.Min(0, _speedY + _dragConstant * delta),
+                    _ => _speedY
+                };
             }
 
             _speedX += ax * delta;
@@ -181,28 +203,21 @@ namespace GJP2021.Sources.Characters
             _speedY = Math.Clamp(_speedY, -_maxSpeed * biasY, _maxSpeed * biasY);
         }
 
-        private Texture2D GetTexture() => Kolori.Instance.TextureMap["player_" + _playerColor.ToString().ToLower()];
-
-        public void SetColor(PaintColors playerColor)
-        {
-            Heal(MaxHealth);
-            _playerColor = playerColor;
-            _periodicPaintSpawner.SetColor(PaintCircle.ColorMap[playerColor]);
-        }
-
+        private Texture2D GetTexture() => Kolori.Instance.TextureMap["player_" + _trailColor.ToString().ToLower()];
+        
         private void Heal(float amount)
         {
-            _health = Math.Min(MaxHealth, amount);
+            Health = Math.Min(MaxHealth, amount);
         }
 
         public void Damage(float amount)
         {
-            _health -= amount;
+            Health -= amount;
         }
 
         public bool IsAlive()
         {
-            return _health > 0;
+            return Health > 0;
         }
 
         public static PlayerBuilder Builder()

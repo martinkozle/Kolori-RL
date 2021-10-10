@@ -97,12 +97,14 @@ namespace GJP2021.Sources.GameStates
                 enemy.Update(gameTime, _player, _paintCircles);
             }
 
+            _player.HandleAbility(_paintCircles);
+            
             _paintCircles.Update(gameTime);
             foreach (var bucket in _paintBuckets)
             {
                 bucket.Update(gameTime, _player.Position);
                 if (!bucket.MarkedForDeletion) continue;
-                _player.SetColor(bucket.GetPaintBucketColor());
+                _player.TrailColor = bucket.GetPaintBucketColor();
                 _player.Score += 1;
             }
 
