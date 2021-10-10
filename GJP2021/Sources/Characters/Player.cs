@@ -118,7 +118,10 @@ namespace GJP2021.Sources.Characters
             Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson,
                 Color.Black);
 
-            Utils.DrawOutlinedText("Fonts/lunchds", 24, "[ " + (int)Health + " / " + (int)MaxHealth + " ]",
+            var healthDigits = Math.Floor(Math.Log10(Health)) + 1;
+            var spaces = new string(' ', (int) Math.Max(0, 3 - healthDigits));
+            var healthString = "[" + (int)Health + spaces + "|" + (int) MaxHealth + "]";
+            Utils.DrawOutlinedText("Fonts/lunchds", 24, healthString,
                 new Vector2(90 + 16, Kolori.Instance.GetWindowHeight() - 92 - 16 + 5), Color.Crimson,
                 Color.Black);
 
@@ -126,7 +129,7 @@ namespace GJP2021.Sources.Characters
 
             if (ability == null) return;
             var abilityX = Kolori.Instance.GetWindowWidth() - 64 - 16;
-            var abilityY = Kolori.Instance.GetWindowHeight() - 48 - 10;
+            var abilityY = Kolori.Instance.GetWindowHeight() - 48 - 16 - 5;
             Utils.DrawOutlinedText("Fonts/lunchds", 24, "" + ability.PaintCost,
                 new Vector2(abilityX, abilityY), Color.Crimson,
                 Color.Black, Utils.HorizontalFontAlignment.RIGHT, Utils.VerticalFontAlignment.CENTER);
