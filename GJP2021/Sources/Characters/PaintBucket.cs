@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,11 +17,13 @@ namespace GJP2021.Sources.Characters
         {
             _position = position;
             _randomGenerator = randomGenerator;
-            _color = (PaintColors) Enum.GetValues(typeof(PaintColors))
-                .GetValue(
-                    randomGenerator.Next(
-                        Enum.GetValues(typeof(PaintColors)).Length)
-                );
+            _color = new List<PaintColors>{
+                PaintColors.BLUE,
+                PaintColors.GREEN,
+                PaintColors.PURPLE,
+                PaintColors.RED,
+                PaintColors.YELLOW
+            }[randomGenerator.Next(5)];
             MarkedForDeletion = false;
         }
 
