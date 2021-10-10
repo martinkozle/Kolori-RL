@@ -64,6 +64,31 @@ namespace GJP2021.Sources.Characters
             return new(_speedX, _speedY);
         }
 
+        public void DrawDisplay()
+        {
+            DrawHealth();
+            DrawAbility();
+        }
+
+        private void DrawAbility()
+        {
+            var texture = GetAbilityTexture();
+            var x = Kolori.Instance.GetWindowWidth() - 64 - 16;
+            var y = Kolori.Instance.GetWindowHeight() - 48 - 16;
+
+            var colorIndex = Array.IndexOf(Enum.GetValues(_trailColor.GetType()), _trailColor);
+            var colorOffset = colorIndex * 32;
+
+            //Icon slot
+            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 64, 48), Color.White);
+            
+            //Icon
+            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x + 24, y + 8),
+                new Rectangle(64, colorOffset, 32, 32), Color.White);
+        }
+
+        private static Texture2D GetAbilityTexture() => Kolori.Instance.TextureMap["ability_icons"];
+
         public void DrawHealth()
         {
             var texture = GetHealthTexture();
@@ -90,10 +115,25 @@ namespace GJP2021.Sources.Characters
         public void Draw()
         {
             var texture = GetTexture();
+
             Kolori.Instance.SpriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
                 Color.White);
+
             Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson,
                 Color.Black);
+
+            Utils.DrawOutlinedText("Fonts/lunchds", 24, "[ " + (int)Health + " / " + (int)MaxHealth + " ]",
+                new Vector2(90 + 16, Kolori.Instance.GetWindowHeight() - 92 - 16 + 5), Color.Crimson,
+                Color.Black);
+
+            var ability = GetAbility();
+
+            if (ability == null) return;
+            var abilityX = Kolori.Instance.GetWindowWidth() - 64 - 16;
+            var abilityY = Kolori.Instance.GetWindowHeight() - 48 - 10;
+            Utils.DrawOutlinedText("Fonts/lunchds", 24, "" + ability.PaintCost,
+                new Vector2(abilityX, abilityY), Color.Crimson,
+                Color.Black, Utils.HorizontalFontAlignment.RIGHT, Utils.VerticalFontAlignment.CENTER);
         }
 
         public void HandlePause()
@@ -121,13 +161,19 @@ namespace GJP2021.Sources.Characters
             }
             else
             {
-                if (_abilityKeyDown && Ability.Abilities.ContainsKey(_trailColor))
+                var ability = GetAbility();
+                if (_abilityKeyDown && ability != null)
                 {
-                    Ability.Abilities[_trailColor].TryUse(this, gameState);
+                    ability.TryUse(this, gameState);
                 }
 
                 _abilityKeyDown = false;
             }
+        }
+
+        private Ability GetAbility()
+        {
+            return Ability.Abilities.ContainsKey(_trailColor) ? Ability.Abilities[_trailColor] : null;
         }
 
         public void Update(GameTime gameTime, PaintCircles paintCircles)
