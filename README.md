@@ -21,7 +21,3 @@ martinkozle
 BananaMe
 AnixDrone
 zodiuxus
-
-
-![player_purple.png](:/362e0c8a1f2a4883b091b5abce1efdf3)
-
