@@ -118,12 +118,15 @@ namespace GJP2021.Sources.Characters
             Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson,
                 Color.Black);
 
+            Utils.DrawOutlinedText("Fonts/lunchds", 24, "[ " + (int)Health + " / " + (int)MaxHealth + " ]",
+                new Vector2(90 + 16, Kolori.Instance.GetWindowHeight() - 92 - 16 + 5), Color.Crimson,
+                Color.Black);
 
             var ability = GetAbility();
 
             if (ability == null) return;
             var abilityX = Kolori.Instance.GetWindowWidth() - 64 - 16;
-            var abilityY = Kolori.Instance.GetWindowHeight() - 64 - 4;
+            var abilityY = Kolori.Instance.GetWindowHeight() - 48 - 10;
             Utils.DrawOutlinedText("Fonts/lunchds", 24, "" + ability.PaintCost,
                 new Vector2(abilityX, abilityY), Color.Crimson,
                 Color.Black, Utils.HorizontalFontAlignment.RIGHT, Utils.VerticalFontAlignment.CENTER);
