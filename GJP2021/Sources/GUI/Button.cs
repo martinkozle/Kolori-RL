@@ -70,14 +70,14 @@ namespace GJP2021.Sources.GUI
             }
         }
 
-        public void DrawPositioned(SpriteBatch spriteBatch)
+        public void Draw()
         {
             if (CurrentTexture == null)
             {
                 return;
             }
 
-            spriteBatch.Draw(CurrentTexture, GetPosition(), Color.White);
+            Kolori.Instance.SpriteBatch.Draw(CurrentTexture, GetPosition(), Color.White);
         }
 
         private Vector2 GetPosition()

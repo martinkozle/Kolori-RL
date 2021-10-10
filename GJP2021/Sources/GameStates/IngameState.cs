@@ -129,9 +129,9 @@ namespace GJP2021.Sources.GameStates
                 enemy.Draw(gameTime);
             }
 
-            _player.Draw(Kolori.Instance.SpriteBatch);
+            _player.Draw();
 
-            _player.DrawHealth(Kolori.Instance.SpriteBatch);
+            _player.DrawHealth();
 
             if (_player.Paused)
             {
