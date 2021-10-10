@@ -76,6 +76,7 @@ namespace GJP2021.Sources.GameStates
                 Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
                 GameOverState.Instance.SetFinalScore(_player.Score);
                 Initialize();
+                return;
             }
 
             if (gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 10)
@@ -138,6 +139,13 @@ namespace GJP2021.Sources.GameStates
 
         public void Draw(GameTime gameTime)
         {
+            if (!_player.IsAlive())
+            {
+                Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
+                GameOverState.Instance.SetFinalScore(_player.Score);
+                Initialize();
+            }
+
             Kolori.Instance.GraphicsDevice.Clear(BgColor);
 
             PaintCircles.Draw(Kolori.Instance.DrawBatch);
