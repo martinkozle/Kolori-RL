@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Net.Mime;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +20,7 @@ namespace GJP2021.Sources.Characters
         public Vector2 Position;
         public int Score = 0;
         private float _health = 100F;
+        public int Score = 0;
         private const float MaxHealth = 100F;
         private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["healthbar"];
         private PaintColors _playerColor;
@@ -36,11 +39,12 @@ namespace GJP2021.Sources.Characters
             _dragConstant = 80;
             _periodicPaintSpawner =
                 new PaintPeriodicSpawner(PaintCircle.Red, new Color(32, 32, 32), 35, 10, 30, 0.05F, 0.1F, 120);
-            _playerColor = PaintColors.RED;        }
+            _playerColor = PaintColors.RED;
+        }
 
         public Vector2 GetSpeedVector()
         {
-            return new(_speedX, _speedY);
+            return new (_speedX, _speedY);
         }
 
         public void DrawHealth(SpriteBatch spriteBatch)

@@ -100,7 +100,6 @@ namespace GJP2021.Sources.GameStates
             _player.Update(gameTime, _paintCircles);
 
             _paintBuckets.RemoveAll(pb => pb.MarkedForDeletion);
-            
         }
 
         public void Draw(GameTime gameTime)
@@ -165,7 +164,7 @@ namespace GJP2021.Sources.GameStates
             };
             
             _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
-            
+
         }
     }
 }
