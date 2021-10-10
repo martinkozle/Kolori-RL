@@ -1,25 +1,18 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using GJP2021.Content;
+using Microsoft.Xna.Framework;
 
 namespace GJP2021.Sources
 {
     public static class Utils
     {
-        public static void DrawOutlinedText(SpriteBatch spriteBatch, SpriteFont font, string text, Vector2 position,
-            Color backColor, Color frontColor, float scale = 1F)
+        public static void DrawOutlinedText(string font, int size, string text, Vector2 position, Color frontColor, Color backColor)
         {
-            var origin = Vector2.Zero;
+            Font.DrawString(font, size, text, position + new Vector2(1, 1), backColor);
+            Font.DrawString(font, size, text, position + new Vector2(-1, 1), backColor);
+            Font.DrawString(font, size, text, position + new Vector2(1, -1), backColor);
+            Font.DrawString(font, size, text, position + new Vector2(1, -1), backColor);
 
-            spriteBatch.DrawString(font, text, position + new Vector2(1 * scale, 1 * scale), backColor, 0, origin,
-                scale, SpriteEffects.None, 1f);
-            spriteBatch.DrawString(font, text, position + new Vector2(-1 * scale, 1 * scale), backColor, 0, origin,
-                scale, SpriteEffects.None, 1f);
-            spriteBatch.DrawString(font, text, position + new Vector2(-1 * scale, -1 * scale), backColor, 0, origin,
-                scale, SpriteEffects.None, 1f);
-            spriteBatch.DrawString(font, text, position + new Vector2(1 * scale, -1 * scale), backColor, 0, origin,
-                scale, SpriteEffects.None, 1f);
-
-            spriteBatch.DrawString(font, text, position, frontColor, 0, origin, scale, SpriteEffects.None, 0f);
+            Font.DrawString(font, size, text, position, frontColor);
         }
 
         public static bool IsInsideBox(Point point, Vector2 position, Vector2 size)

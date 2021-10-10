@@ -18,8 +18,6 @@ namespace GJP2021.Sources.GameStates
 
         private Random _randomGenerator;
         private PaintCircles _paintCircles;
-
-
         private List<Enemy> _enemies = new();
         private List<PaintBucket> _paintBuckets = new();
 
@@ -30,15 +28,46 @@ namespace GJP2021.Sources.GameStates
             if (!_player.IsAlive())
             {
                 Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
+                GameOverState.Instance.SetFinalScore(_player.Score);
                 Initialize();
             }
 
             if (Mouse.GetState().LeftButton == ButtonState.Pressed &&
                 gameTime.TotalGameTime.TotalSeconds - _lastSpawnEnemy >= 0.1)
             {
-                _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 130F));
+                var sideDecision = _randomGenerator.Next(4);
+                switch (sideDecision)
+                {
+                    case 0:
+                        _enemies.Add(new Enemy(new Vector2(
+                                -20,
+                                _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
+                            200F));
+                        break;
+                    case 1:
+                        _enemies.Add(new Enemy(new Vector2(
+                                _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
+                                Kolori.Instance.GetWindowHeight()+20),
+                            200F));
+                        break;
+                    case 2:
+                        _enemies.Add(new Enemy(new Vector2(
+                                Kolori.Instance.GetWindowWidth()+20,
+                                _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
+                            200F));
+                        break;
+                    case 3:
+                        _enemies.Add(new Enemy(new Vector2(
+                                _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
+                                -20),
+                            200F));
+                        break;
+                }
+                Console.WriteLine(sideDecision);
+                
                 _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
             }
+
             if (Mouse.GetState().RightButton == ButtonState.Pressed &&
                 gameTime.TotalGameTime.TotalSeconds - _lastSpawnBucket >= 0.1)
             {
@@ -54,25 +83,22 @@ namespace GJP2021.Sources.GameStates
 
             _enemies.RemoveAll(el => el.MarkedForDeletion);
 
-            _player.Update(gameTime, _paintCircles);
-            
             foreach (var enemy in _enemies)
             {
                 enemy.Update(gameTime, _player, _paintCircles);
             }
-            
+
             _paintCircles.Update(gameTime);
-            foreach (var bucket in _paintBuckets )
+            foreach (var bucket in _paintBuckets)
             {
-                bucket.Update(gameTime,_player.Position);
-                if (bucket.MarkedForDeletion)
-                {
-                    _player.SetColor(bucket.GetPaintBucketColor());
-                }
-                
+                bucket.Update(gameTime, _player.Position);
+                if (!bucket.MarkedForDeletion) continue;
+                _player.SetColor(bucket.GetPaintBucketColor());
+                _player.Score += 1;
             }
+
             _player.Update(gameTime, _paintCircles);
-            
+
             _paintBuckets.RemoveAll(pb => pb.MarkedForDeletion);
             
         }
@@ -81,10 +107,10 @@ namespace GJP2021.Sources.GameStates
         {
             Kolori.Instance.GraphicsDevice.Clear(BgColor);
 
-            _paintCircles.Draw(Kolori.Instance.ShapeBatch);
-            
+            _paintCircles.Draw(Kolori.Instance.DrawBatch);
+
             Kolori.Instance.SpriteBatch.Begin();
-            
+
             foreach (var bucket in _paintBuckets)
             {
                 bucket.Draw(gameTime);
@@ -96,11 +122,11 @@ namespace GJP2021.Sources.GameStates
             }
 
             _player.Draw(Kolori.Instance.SpriteBatch);
-            
-            _player.DrawHealth(Kolori.Instance.SpriteBatch);
-            
-            Kolori.Instance.SpriteBatch.End();
 
+            _player.DrawHealth(Kolori.Instance.SpriteBatch);
+
+            Kolori.Instance.SpriteBatch.End();
+            
             //Kolori.Instance.ShapeBatch.Begin();
             //Kolori.Instance.ShapeBatch.DrawLine(_player.Position, _player.Position + _player.GetSpeedVector(), 2, Color.Green,
             //    Color.Green);
@@ -123,8 +149,8 @@ namespace GJP2021.Sources.GameStates
                 _randomGenerator)
             );
             _player = Player.Builder()
-                .SetPosition(0, 0)
-                .SetMaxSpeed(150f)
+                .SetPosition(Kolori.Instance.GetWindowWidth()/2F,Kolori.Instance.GetWindowHeight()/2F )
+                .SetMaxSpeed(225f)
                 .SetAcceleration(450f)
                 .SetBounds(new Vector2(Kolori.Instance.GetWindowWidth(),
                     Kolori.Instance.GetWindowHeight()))
@@ -137,8 +163,9 @@ namespace GJP2021.Sources.GameStates
                 new(Kolori.Instance.GetWindowWidth() + 50, -50),
                 new(Kolori.Instance.GetWindowWidth() + 50, Kolori.Instance.GetWindowHeight() + 50)
             };
-
-            _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 130F));
+            
+            _enemies.Add(new Enemy(_enemySpawnPoint[_randomGenerator.Next(0, 4)], 200F));
+            
         }
     }
 }

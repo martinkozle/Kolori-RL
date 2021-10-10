@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Apos.Shapes;
+using LilyPath;
 using Microsoft.Xna.Framework;
 
 namespace GJP2021.Sources.Paint
@@ -17,16 +17,24 @@ namespace GJP2021.Sources.Paint
         private readonly float _b;
         private readonly float _dropDuration;
         private readonly float _fadeDuration;
+        private readonly bool _fade;
         private float _alpha;
         private float _currentDuration;
         private float _currentRadius;
 
         static PaintCircle()
         {
-            ColorMap.Add(PaintColors.RED, new Color(230, 10, 0));
+            ColorMap.Add(PaintColors.BLUE, new Color(66, 191, 232));
+            ColorMap.Add(PaintColors.GREEN, new Color(168, 202, 88));
+            ColorMap.Add(PaintColors.ORANGE, new Color(235, 136, 45));
+            ColorMap.Add(PaintColors.PINK, new Color(255, 94, 135));
+            ColorMap.Add(PaintColors.PURPLE, new Color(141, 51, 184));
+            ColorMap.Add(PaintColors.RED, new Color(211, 24, 28));
+            ColorMap.Add(PaintColors.YELLOW, new Color(252, 192, 47));
         }
-        
-        public PaintCircle(float x, float y, float radius, Color color, float dropDuration = 0.05f, float fadeDuration = 5)
+
+        public PaintCircle(float x, float y, float radius, Color color, float dropDuration = 0.05f,
+            float fadeDuration = 5, bool fade = true)
         {
             _center = new Vector2(x, y);
             _radius = radius;
@@ -36,11 +44,9 @@ namespace GJP2021.Sources.Paint
             _b = color.B / 255F;
             _dropDuration = dropDuration;
             _fadeDuration = fadeDuration;
+            _fade = fade;
             _currentDuration = 0;
         }
-
-        public PaintCircle(float x, float y, float radius, float r, float g, float b) : 
-            this(x, y, radius, new Color(r, g, b, 1)) { }
 
         public bool IsDone()
         {
@@ -50,14 +56,19 @@ namespace GJP2021.Sources.Paint
         public void Update(GameTime gameTime)
         {
             _currentDuration += (float) gameTime.ElapsedGameTime.TotalSeconds;
-            _alpha = Math.Max((_fadeDuration - _currentDuration) / _fadeDuration, 0);
+            if (_fade)
+            {
+                _alpha = Math.Max((_fadeDuration - _currentDuration) / _fadeDuration, 0);
+            }
             _currentRadius = _radius * Math.Min(1, _currentDuration / _dropDuration);
         }
 
-        public void Draw(ShapeBatch batch)
+        public void Draw(DrawBatch batch)
         {
             var color = new Color(_r, _g, _b, _alpha);
-            batch.DrawCircle(_center, _currentRadius, color, color);
+            // batch.DrawCircle(_center, _currentRadius, color, Color.White); 
+            // batch.FillCircle(_center, _currentRadius, color);
+            batch.FillCircle(new SolidColorBrush(color), _center, _currentRadius);
         }
     }
 }

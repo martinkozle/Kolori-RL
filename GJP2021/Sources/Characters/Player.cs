@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,17 +8,21 @@ namespace GJP2021.Sources.Characters
 {
     public class Player
     {
-        private float _speedX, _speedY;
-        private readonly float _maxSpeed, _acceleration, _dragCoefficient, _dragConstant;
+        private float _speedX;
+        private float _speedY;
+        private readonly float _maxSpeed;
+        private readonly float _acceleration;
+        private readonly float _dragCoefficient;
+        private readonly float _dragConstant;
         private readonly Vector2 _bounds;
         public Vector2 Position;
+        public int Score = 0;
         private float _health = 100F;
         private const float MaxHealth = 100F;
         private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["healthbar"];
         private PaintColors _playerColor;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
-        private readonly Random _randomGenerator = new();
-        private float _timer = 0;
+        private float _timer;
 
         private Player(float x, float y, float maxSpeed, float acceleration, Vector2 bounds)
         {
@@ -32,13 +35,8 @@ namespace GJP2021.Sources.Characters
             _dragCoefficient = 0.5f;
             _dragConstant = 80;
             _periodicPaintSpawner =
-                new PaintPeriodicSpawner(PaintCircle.Red, new Color(128, 64, 32), 35, 10, 30, 0.05F, 0.1F, 120);
-            _playerColor = (PaintColors) Enum.GetValues(typeof(PaintColors))
-                .GetValue(
-                    _randomGenerator.Next(
-                        Enum.GetValues(typeof(PaintColors)).Length)
-                );
-        }
+                new PaintPeriodicSpawner(PaintCircle.Red, new Color(32, 32, 32), 35, 10, 30, 0.05F, 0.1F, 120);
+            _playerColor = PaintColors.RED;        }
 
         public Vector2 GetSpeedVector()
         {
@@ -56,20 +54,21 @@ namespace GJP2021.Sources.Characters
 
             //Empty Health Bar
             spriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 288, 88), Color.White);
-            
+
             //Bucket fluid
-            spriteBatch.Draw(texture, new Vector2(x + 40, y + 12), new Rectangle(238, 88 + colorOffset, 26, 36), Color.White);
-            
+            spriteBatch.Draw(texture, new Vector2(x + 40, y + 12), new Rectangle(238, 88 + colorOffset, 26, 36),
+                Color.White);
+
             //Health
             var healthPercent = (int) Math.Floor(238F * (_health / MaxHealth));
-            spriteBatch.Draw(texture, new Vector2(x + 46, y + 46), new Rectangle(0, 88 + colorOffset, healthPercent, 38), Color.White);
+            spriteBatch.Draw(texture, new Vector2(x + 46, y + 46),
+                new Rectangle(0, 88 + colorOffset, healthPercent, 38), Color.White);
         }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             var texture = GetTexture();
-            spriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
-                Color.White);
+            spriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F), Color.White);
+            Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson, Color.Black);
         }
 
         public void Update(GameTime gameTime, PaintCircles paintCircles)
@@ -160,13 +159,14 @@ namespace GJP2021.Sources.Characters
             _speedX = Math.Clamp(_speedX, -_maxSpeed * biasX, _maxSpeed * biasX);
             _speedY = Math.Clamp(_speedY, -_maxSpeed * biasY, _maxSpeed * biasY);
         }
-        
+
         private Texture2D GetTexture() => Kolori.Instance.TextureMap["player_" + _playerColor.ToString().ToLower()];
-        
+
         public void SetColor(PaintColors playerColor)
         {
             Heal(MaxHealth);
             _playerColor = playerColor;
+            _periodicPaintSpawner.SetColor(PaintCircle.ColorMap[playerColor]);
         }
 
         private void Heal(float amount)
@@ -186,7 +186,7 @@ namespace GJP2021.Sources.Characters
 
         public static PlayerBuilder Builder()
         {
-            return new();
+            return new ();
         }
 
         public class PlayerBuilder
@@ -231,7 +231,7 @@ namespace GJP2021.Sources.Characters
 
             public Player Build()
             {
-                return new(_x, _y, _maxSpeed, _acceleration, _bounds);
+                return new (_x, _y, _maxSpeed, _acceleration, _bounds);
             }
         }
     }
