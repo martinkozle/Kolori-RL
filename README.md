@@ -2,7 +2,7 @@
 A small game made as part of the 1st phase in Game Jam Plus 2021.
 ***
 Goal of the game is for the player (blob) to hold out for as long as possible, while avoding the Erasers. Throughout the game the player can pick up buckets of various colors (purple, blue, green, yellow, and red) and gain power ups as well as change the players color and paint trail. Some of the bucket power ups can kill the Erasers that respawn over time.
-Paint bar deplets when the player takes damage, the player uses the current power up and over time for a small amount.
+Paint bar depletes when the player takes damage, the player uses the current power up and over time for a small amount.
  * Purple bucket - Teleportation, player teleports to the cursor's location
  * Blue bucket - Projectile blast, player shoots blue at the direction of the curser, killing erasers
  * Red bucket - bomb blast, player makes a red splash with a large AoE killing erasers around the player
