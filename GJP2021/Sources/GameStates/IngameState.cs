@@ -22,6 +22,7 @@ namespace GJP2021.Sources.GameStates
         public PaintCircles PaintCircles;
         public List<Enemy> Enemies;
         public List<PaintBucket> PaintBuckets;
+        public Projectiles Projectiles;
 
         private List<Vector2> _enemySpawnPoint;
         private WindowWidget _pauseWindow;
@@ -95,6 +96,7 @@ namespace GJP2021.Sources.GameStates
             {
                 _player.Heal(10F);
             }
+
             Enemies.RemoveAll(el => el.MarkedForDeletion);
             foreach (var enemy in Enemies)
             {
@@ -102,6 +104,7 @@ namespace GJP2021.Sources.GameStates
             }
 
             _player.HandleAbility(this);
+            Projectiles.Update(gameTime, this, PaintCircles);
 
             PaintCircles.Update(gameTime);
             foreach (var bucket in PaintBuckets)
@@ -185,6 +188,7 @@ namespace GJP2021.Sources.GameStates
                 .Build();
             Enemies = new List<Enemy>();
             PaintBuckets = new List<PaintBucket>();
+            Projectiles = new Projectiles();
             _lastSpawnEnemy = 0;
             _lastSpawnBucket = 0;
             _randomGenerator = new Random();

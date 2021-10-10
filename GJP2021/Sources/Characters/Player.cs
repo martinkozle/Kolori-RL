@@ -51,7 +51,7 @@ namespace GJP2021.Sources.Characters
             _dragCoefficient = 0.5f;
             _dragConstant = 80;
             _periodicPaintSpawner =
-                new PaintPeriodicSpawner(PaintCircle.Red, new Color(32, 32, 32), 35, 10, 30, 0.05F, 0.1F, 120);
+                new PaintPeriodicSpawner(PaintCircle.Red, new Color(32, 32, 32), 35, 10, 30, 0.05F, 0.1F, 30);
             _trailColor = PaintColors.RED;
         }
 
