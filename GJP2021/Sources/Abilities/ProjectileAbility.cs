@@ -15,6 +15,7 @@ namespace GJP2021.Sources.Abilities
 
         protected override bool Use(Player player, IngameState gameState)
         {
+            Kolori.Instance.SoundMap["shoot_ability"].Play();
             var mousePos = Mouse.GetState().Position;
             var (mouseX, mouseY) = Mouse.GetState().Position;
             var (a, b) = (new Vector2(mouseX, mouseY) - player.Position);

@@ -14,6 +14,7 @@ namespace GJP2021.Sources.Abilities
             gameState.TimeScaleActive = true;
             gameState.TimeScale = 0.5F;
             gameState.TimeScaleDuration = 0;
+            Kolori.Instance.SoundMap["timestop_ability"].Play();
             return true;
         }
 

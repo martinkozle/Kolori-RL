@@ -11,6 +11,7 @@ namespace GJP2021.Sources.Abilities
 
         protected override bool Use(Player player, IngameState gameState)
         {
+            Kolori.Instance.SoundMap["speedup_ability"].Play();
             player.SetSpeedBoost(3, 1);
             return true;
         }
