@@ -6,14 +6,24 @@ namespace GJP2021.Sources.Paint
     public class PaintSpawner
     {
         private Color _color;
-        private readonly float _maxDistance, _minSize, _maxSize, _dropDuration, _fadeDuration;
+        private readonly float _maxDistance;
+        private readonly float _minSize;
+        private readonly float _maxSize;
+        private readonly float _dropDuration;
+        private readonly float _fadeDuration;
         private readonly bool _fade;
         private readonly Random _random;
         private readonly Color _colorRanges;
 
-        public PaintSpawner(Color color, Color colorRanges, float maxDistance, float minSize, float maxSize,
+        public PaintSpawner(
+            Color color,
+            Color colorRanges,
+            float maxDistance,
+            float minSize,
+            float maxSize,
             float dropDuration = 0.2f,
-            float fadeDuration = 5, bool fade = true)
+            float fadeDuration = 5,
+            bool fade = true)
         {
             _color = color;
             _maxDistance = maxDistance;
@@ -32,6 +42,7 @@ namespace GJP2021.Sources.Paint
         }
 
         public PaintCircle SpawnCircle(Vector2 position) => SpawnCircle(position.X, position.Y);
+
         public PaintCircle SpawnCircle(float x, float y)
         {
             var angle = (float) _random.NextDouble() * 2 * Math.PI;
@@ -45,6 +56,5 @@ namespace GJP2021.Sources.Paint
             var color = new Color(r, g, b);
             return new PaintCircle(x + xOffset, y + yOffset, radius, color, _dropDuration, _fadeDuration, _fade);
         }
-        
     }
 }

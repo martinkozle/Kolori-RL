@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,14 +8,12 @@ namespace GJP2021.Sources.Characters
     public class PaintBucket
     {
         private Vector2 _position;
-        private PaintColors _color;
-        private Random _randomGenerator;
+        private readonly PaintColors _color;
         public bool MarkedForDeletion;
 
         public PaintBucket(Vector2 position, Random randomGenerator)
         {
             _position = position;
-            _randomGenerator = randomGenerator;
             _color = new List<PaintColors>{
                 PaintColors.BLUE,
                 PaintColors.GREEN,
@@ -37,7 +34,7 @@ namespace GJP2021.Sources.Characters
             return _color;
         }
 
-        public void Update(GameTime gameTime, Vector2 playerPos)
+        public void Update(Vector2 playerPos)
         {
             var (playerX, playerY) = playerPos;
             var (x, y) = new Vector2(Math.Abs(_position.X - playerX), Math.Abs(_position.Y - playerY));
@@ -47,10 +44,12 @@ namespace GJP2021.Sources.Characters
             }
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw()
         {
             var texture = GetTexture();
-            Kolori.Instance.SpriteBatch.Draw(texture, _position - new Vector2(texture.Width / 2F, texture.Height / 2F),
+            Kolori.Instance.SpriteBatch.Draw(
+                texture,
+                _position - new Vector2(texture.Width / 2F, texture.Height / 2F),
                 Color.White);
         }
     }

@@ -10,10 +10,17 @@ namespace GJP2021.Sources.Abilities
     public class BurstAbility : Ability
     {
         public static readonly BurstAbility Instance = new();
+
         public override float PaintCost => 20;
 
-        private readonly PaintSpawner _paintSpawner = new(PaintCircle.ColorMap[PaintColors.RED], new Color(64, 64, 64),
-            150, 30, 70, 0.5F, 30);
+        private readonly PaintSpawner _paintSpawner = new(
+            PaintCircle.ColorMap[PaintColors.RED],
+            new Color(64, 64, 64),
+            150,
+            30,
+            70,
+            0.5F,
+            30);
 
         private readonly Random _random = new();
 

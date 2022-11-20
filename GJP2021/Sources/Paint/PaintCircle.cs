@@ -9,7 +9,6 @@ namespace GJP2021.Sources.Paint
     {
         public static readonly Color Red = new(230, 0, 0);
         public static readonly Dictionary<PaintColors, Color> ColorMap = new();
-
         private readonly Vector2 _center;
         private readonly float _radius;
         private readonly float _r;
@@ -33,8 +32,14 @@ namespace GJP2021.Sources.Paint
             ColorMap.Add(PaintColors.YELLOW, new Color(252, 192, 47));
         }
 
-        public PaintCircle(float x, float y, float radius, Color color, float dropDuration = 0.05f,
-            float fadeDuration = 5, bool fade = true)
+        public PaintCircle(
+            float x,
+            float y,
+            float radius,
+            Color color,
+            float dropDuration = 0.05f,
+            float fadeDuration = 5,
+            bool fade = true)
         {
             _center = new Vector2(x, y);
             _radius = radius;

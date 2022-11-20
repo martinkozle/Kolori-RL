@@ -3,7 +3,6 @@ using System.Linq;
 using GJP2021.Sources.GameStates;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace GJP2021.Sources.Characters
 {
@@ -15,7 +14,6 @@ namespace GJP2021.Sources.Characters
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
         private readonly float _duration;
         private float _currentDuration;
-
 
         public Projectile(Color color, Vector2 position, float speed, float angle, float duration)
         {
@@ -40,7 +38,7 @@ namespace GJP2021.Sources.Characters
 
             _position.X += _speed * (float)Math.Cos(_angle) * delta;
             _position.Y += _speed * (float)Math.Sin(_angle) * delta;
-            
+
             foreach (var enemy in gameState.Enemies.Where(e => Vector2.Distance(_position, e.Position) <= 35))
             {
                 enemy.Kill();

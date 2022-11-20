@@ -6,7 +6,6 @@ using LilyPath;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 namespace GJP2021.Sources
@@ -17,6 +16,7 @@ namespace GJP2021.Sources
         public SpriteBatch SpriteBatch;
         public DrawBatch DrawBatch;
         public GameStateManager GameStateManager;
+
         public Dictionary<string, Texture2D> TextureMap { get; } = new();
         public Dictionary<string, SoundEffect> SoundMap { get; } = new();
         public Dictionary<string, Song> SongMap { get; } = new();
@@ -80,7 +80,8 @@ namespace GJP2021.Sources
 
             foreach (var color in Enum.GetNames(typeof(PaintColors)))
             {
-                TextureMap.Add("player_" + color.ToLower(),
+                TextureMap.Add(
+                    "player_" + color.ToLower(),
                     Content.Load<Texture2D>("Textures/Player/player_" + color.ToLower()));
             }
 
@@ -100,7 +101,7 @@ namespace GJP2021.Sources
             SongMap.Add("bgm_start", Content.Load<Song>("Sounds/bgm_start"));
 
             Font.Initialize(SpriteBatch, Content);
-            Font.LoadSizes("Fonts/lunchds", new[] {12, 16, 24, 32, 48, 72});
+            Font.LoadSizes("Fonts/lunchds", new[] { 12, 16, 24, 32, 48, 72 });
         }
 
         protected override void Update(GameTime gameTime)
