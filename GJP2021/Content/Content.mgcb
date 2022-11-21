@@ -13,12 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin Resources/AposShapesEffect.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:Resources/AposShapesEffect.fx
-
 #begin Resources/Fonts/lunchds_12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

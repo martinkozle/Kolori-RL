@@ -19,7 +19,7 @@ namespace GJP2021.Sources.GUI
             _texture = texture;
             _buttons = buttons;
         }
-        
+
         public void Update()
         {
             if (_texture == null)
@@ -41,7 +41,7 @@ namespace GJP2021.Sources.GUI
             }
 
             Kolori.Instance.SpriteBatch.Draw(_texture, GetPosition(), Color.White);
-                
+
             foreach (var button in _buttons)
             {
                 button.Draw();
@@ -49,14 +49,15 @@ namespace GJP2021.Sources.GUI
         }
 
         private Vector2 GetPosition() => new(_x.Invoke(), _y.Invoke());
-
         public static WindowWidgetBuilder Builder() => new();
 
         public class WindowWidgetBuilder
         {
             private Texture2D _texture;
+
             public Func<int> X { get; private set; }
             public Func<int> Y { get; private set; }
+
             private readonly List<Button> _buttons;
 
             internal WindowWidgetBuilder()

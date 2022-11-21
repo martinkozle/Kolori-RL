@@ -7,6 +7,7 @@ namespace GJP2021.Sources.Abilities
     {
         protected override PaintColors AbilityColor => PaintColors.YELLOW;
         public override float PaintCost => 10;
+
         public static readonly TimeAbility Instance = new();
 
         protected override bool Use(Player player, IngameState gameState)
@@ -17,7 +18,5 @@ namespace GJP2021.Sources.Abilities
             Kolori.Instance.SoundMap["timestop_ability"].Play();
             return true;
         }
-
-        
     }
 }

@@ -46,9 +46,9 @@ namespace GJP2021.Sources.GameStates
 
         public void Initialize()
         {
-            _buttons = new();
-            //Start
-            _buttons.Add(
+            _buttons = new()
+            {
+                //Start
                 Button.Builder()
                     .SetPosition(0, Kolori.Instance.GetWindowHeight() - 128 - 64 - 16 - 64)
                     .CenterHorizontally(Kolori.Instance.GetWindowWidth)
@@ -56,11 +56,9 @@ namespace GJP2021.Sources.GameStates
                     .SetSound("button")
                     .SetTexture("restart")
                     .SetAction(
-                        () => { Kolori.Instance.GameStateManager.SetGameState(IngameState.Instance); })
-                    .Build()
-            );
-            //Exit
-            _buttons.Add(
+                        () => Kolori.Instance.GameStateManager.SetGameState(IngameState.Instance))
+                    .Build(),
+                //Exit
                 Button.Builder()
                     .SetPosition(0, Kolori.Instance.GetWindowHeight() - 128 - 64)
                     .CenterHorizontally(Kolori.Instance.GetWindowWidth)
@@ -68,9 +66,9 @@ namespace GJP2021.Sources.GameStates
                     .SetSound("button")
                     .SetTexture("exit")
                     .SetAction(
-                        () => { Kolori.Instance.Exit(); })
+                        () => Kolori.Instance.Exit())
                     .Build()
-            );
+            };
         }
 
         private static Texture2D GetLogoTexture()

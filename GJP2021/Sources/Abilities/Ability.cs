@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using GJP2021.Sources.Characters;
 using GJP2021.Sources.GameStates;
-using GJP2021.Sources.Paint;
 
 namespace GJP2021.Sources.Abilities
 {
@@ -22,7 +21,6 @@ namespace GJP2021.Sources.Abilities
 
         protected abstract bool Use(Player player, IngameState gameState);
 
-
         private protected bool CanUse(Player player)
         {
             return AbilityColor == player.TrailColor && player.Health >= PaintCost + 5;
@@ -38,5 +36,4 @@ namespace GJP2021.Sources.Abilities
             }
         }
     }
-    
 }

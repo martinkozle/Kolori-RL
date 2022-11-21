@@ -13,13 +13,20 @@ namespace GJP2021.Sources.Characters
         public bool MarkedAsKilled;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
 
-
         public Enemy(Vector2 position, float speed)
         {
             _speed = speed;
             Position = position;
             _periodicPaintSpawner =
-                new PaintPeriodicSpawner(new Color(255, 255, 255), new Color(0, 0, 0), 0, 20, 20, 0.05F, 0.1F, 30,
+                new PaintPeriodicSpawner(
+                    new Color(255, 255, 255),
+                    new Color(0, 0, 0),
+                    0,
+                    20,
+                    20,
+                    0.05F,
+                    0.1F,
+                    30,
                     false);
 
             MarkedForDeletion = false;
@@ -44,7 +51,6 @@ namespace GJP2021.Sources.Characters
             {
                 Position.X += _speed * (width / h) * delta;
             }
-
             else if (playerPosX < Position.X)
             {
                 Position.X -= _speed * (width / h) * delta;
@@ -66,11 +72,13 @@ namespace GJP2021.Sources.Characters
             MarkedAsKilled = true;
         }
 
-        public void Draw(GameTime gameTime)
+        public void Draw()
         {
             var texture = GetTexture();
-            Kolori.Instance.SpriteBatch.Draw(GetTexture(),
-                Position - new Vector2(texture.Width / 2F, texture.Height / 2F), null,
+            Kolori.Instance.SpriteBatch.Draw(
+                GetTexture(),
+                Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
+                null,
                 Color.White);
         }
 

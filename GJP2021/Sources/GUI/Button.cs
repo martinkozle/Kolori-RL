@@ -16,10 +16,18 @@ namespace GJP2021.Sources.GUI
         private readonly Action _action;
         private readonly Func<int> _x;
         private readonly Func<int> _y;
+
         public Texture2D CurrentTexture { get; private set; }
 
-        private Button(Func<int> x, Func<int> y, Texture2D normalTexture, Texture2D hoveredTexture,
-            Texture2D pressedTexture, SoundEffect pressSound, SoundEffect releaseSound, Action action)
+        private Button(
+            Func<int> x,
+            Func<int> y,
+            Texture2D normalTexture,
+            Texture2D hoveredTexture,
+            Texture2D pressedTexture,
+            SoundEffect pressSound,
+            SoundEffect releaseSound,
+            Action action)
         {
             _x = x;
             _y = y;
@@ -40,7 +48,9 @@ namespace GJP2021.Sources.GUI
             }
 
             var mouseState = Mouse.GetState();
-            if (Utils.IsInsideBox(mouseState.Position, GetPosition(),
+            if (Utils.IsInsideBox(
+                mouseState.Position,
+                GetPosition(),
                 new Vector2(CurrentTexture.Width, CurrentTexture.Height)))
             {
                 if (mouseState.LeftButton == ButtonState.Released)
@@ -125,6 +135,7 @@ namespace GJP2021.Sources.GUI
                 _y = () => y;
                 return this;
             }
+
             public ButtonBuilder SetPosition(Vector2 position)
             {
                 var (x, y) = position;
@@ -132,7 +143,7 @@ namespace GJP2021.Sources.GUI
                 _y = () => (int)y;
                 return this;
             }
-            
+
             public ButtonBuilder CenterHorizontally(Func<int> boundaryWidth)
             {
                 var oldX = _x;
@@ -164,7 +175,11 @@ namespace GJP2021.Sources.GUI
             public ButtonBuilder SetSound(string soundName)
             {
                 if (!Kolori.Instance.SoundMap.ContainsKey(soundName + "_release") ||
-                    !Kolori.Instance.SoundMap.ContainsKey(soundName + "_press")) return this;
+                    !Kolori.Instance.SoundMap.ContainsKey(soundName + "_press"))
+                {
+                    return this;
+                }
+
                 _pressSound = Kolori.Instance.SoundMap[soundName + "_press"];
                 _releaseSound = Kolori.Instance.SoundMap[soundName + "_release"];
 
@@ -175,7 +190,11 @@ namespace GJP2021.Sources.GUI
             {
                 if (!Kolori.Instance.TextureMap.ContainsKey(textureName + "_button_normal") ||
                     !Kolori.Instance.TextureMap.ContainsKey(textureName + "_button_hover") ||
-                    !Kolori.Instance.TextureMap.ContainsKey(textureName + "_button_pressed")) return this;
+                    !Kolori.Instance.TextureMap.ContainsKey(textureName + "_button_pressed"))
+                {
+                    return this;
+                }
+
                 _normalTexture = Kolori.Instance.TextureMap[textureName + "_button_normal"];
                 _hoveredTexture = Kolori.Instance.TextureMap[textureName + "_button_hover"];
                 _pressedTexture = Kolori.Instance.TextureMap[textureName + "_button_pressed"];
@@ -191,10 +210,16 @@ namespace GJP2021.Sources.GUI
 
             public Button Build()
             {
-                return new(_x, _y, _normalTexture, _hoveredTexture, _pressedTexture, _pressSound, _releaseSound,
+                return new(
+                    _x,
+                    _y,
+                    _normalTexture,
+                    _hoveredTexture,
+                    _pressedTexture,
+                    _pressSound,
+                    _releaseSound,
                     _action);
             }
-
         }
     }
 }

@@ -60,7 +60,7 @@ namespace GJP2021.Sources.GameStates
                 .SetSound("button")
                 .SetTexture("start")
                 .SetAction(
-                    () => { Kolori.Instance.GameStateManager.SetGameState(IngameState.Instance); })
+                    () => Kolori.Instance.GameStateManager.SetGameState(IngameState.Instance))
                 .Build()
             );
 
@@ -72,7 +72,7 @@ namespace GJP2021.Sources.GameStates
                 .SetSound("button")
                 .SetTexture("exit")
                 .SetAction(
-                    () => { Kolori.Instance.Exit(); })
+                    () => Kolori.Instance.Exit())
                 .Build()
             );
         }

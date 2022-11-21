@@ -1,13 +1,19 @@
-﻿using System;
-using GJP2021.Content;
+﻿using GJP2021.Content;
 using Microsoft.Xna.Framework;
 
 namespace GJP2021.Sources
 {
     public static class Utils
     {
-        public static void DrawOutlinedText(string font, int size, string text, Vector2 position, Color frontColor,
-            Color backColor, HorizontalFontAlignment horizontalFontAlignment = HorizontalFontAlignment.LEFT, VerticalFontAlignment verticalFontAlignment = VerticalFontAlignment.TOP)
+        public static void DrawOutlinedText(
+            string font,
+            int size,
+            string text,
+            Vector2 position,
+            Color frontColor,
+            Color backColor,
+            HorizontalFontAlignment horizontalFontAlignment = HorizontalFontAlignment.LEFT,
+            VerticalFontAlignment verticalFontAlignment = VerticalFontAlignment.TOP)
         {
             var (x, y) = Font.MeasureString(font, size, text);
 
@@ -42,7 +48,7 @@ namespace GJP2021.Sources
             var (boxWidth, boxHeight) = size;
             return x >= boxX && y >= boxY && x <= boxX + boxWidth && y <= boxY + boxHeight;
         }
-        
+
         public static bool IsInsideBox(Point point, int x, int y, int width, int height)
         {
             return IsInsideBox(point, new Vector2(x, y), new Vector2(width, height));

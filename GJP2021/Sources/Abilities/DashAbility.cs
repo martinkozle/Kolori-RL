@@ -7,6 +7,7 @@ namespace GJP2021.Sources.Abilities
     {
         protected override PaintColors AbilityColor => PaintColors.GREEN;
         public override float PaintCost => 5F;
+
         public static readonly DashAbility Instance = new();
 
         protected override bool Use(Player player, IngameState gameState)

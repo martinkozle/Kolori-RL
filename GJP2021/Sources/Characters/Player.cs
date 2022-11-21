@@ -23,21 +23,27 @@ namespace GJP2021.Sources.Characters
         private bool _speedBoostActive = false;
         public Vector2 Position;
         public int Score = 0;
+
         public float Health { get; private set; } = 100F;
+
         private const float MaxHealth = 100F;
+
         private static Texture2D GetHealthTexture() => Kolori.Instance.TextureMap["health_bar"];
+
         private PaintColors _trailColor;
         private readonly PaintPeriodicSpawner _periodicPaintSpawner;
         private float _timer;
         private float _timerSound;
         private bool _pauseKeyDown;
         private bool _abilityKeyDown;
-        private Random _random;
+        private readonly Random _random;
+
         public bool Paused { get; set; }
 
         public PaintColors TrailColor
         {
             get => _trailColor;
+
             set
             {
                 Heal(MaxHealth);
@@ -84,10 +90,13 @@ namespace GJP2021.Sources.Characters
 
             //Icon slot
             Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 64, 48), Color.White);
-            
+
             //Icon
-            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x + 24, y + 8),
-                new Rectangle(64, colorOffset, 32, 32), Color.White);
+            Kolori.Instance.SpriteBatch.Draw(
+                texture,
+                new Vector2(x + 24, y + 8),
+                new Rectangle(64, colorOffset, 32, 32),
+                Color.White);
         }
 
         private static Texture2D GetAbilityTexture() => Kolori.Instance.TextureMap["ability_icons"];
@@ -105,41 +114,67 @@ namespace GJP2021.Sources.Characters
             Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 288, 88), Color.White);
 
             //Bucket fluid
-            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x + 40, y + 12),
+            Kolori.Instance.SpriteBatch.Draw(
+                texture,
+                new Vector2(x + 40, y + 12),
                 new Rectangle(238, 88 + colorOffset, 26, 36),
                 Color.White);
 
             //Health
             var healthPercent = (int) Math.Floor(238F * (Health / MaxHealth));
-            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x + 46, y + 46),
-                new Rectangle(0, 88 + colorOffset, healthPercent, 38), Color.White);
+            Kolori.Instance.SpriteBatch.Draw(
+                texture,
+                new Vector2(x + 46, y + 46),
+                new Rectangle(0, 88 + colorOffset, healthPercent, 38),
+                Color.White);
         }
 
         public void Draw()
         {
             var texture = GetTexture();
 
-            Kolori.Instance.SpriteBatch.Draw(texture, Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
+            Kolori.Instance.SpriteBatch.Draw(
+                texture,
+                Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
                 Color.White);
 
-            Utils.DrawOutlinedText("Fonts/lunchds", 24, "Score: " + Score, new Vector2(10, 10), Color.Crimson,
+            Utils.DrawOutlinedText(
+                "Fonts/lunchds",
+                24,
+                "Score: " + Score,
+                new Vector2(10, 10),
+                Color.Crimson,
                 Color.Black);
 
             var healthDigits = Math.Floor(Math.Log10(Health)) + 1;
             var spaces = new string(' ', (int) Math.Max(0, 3 - healthDigits));
             var healthString = "[" + (int)Health + spaces + "|" + (int) MaxHealth + "]";
-            Utils.DrawOutlinedText("Fonts/lunchds", 24, healthString,
-                new Vector2(90 + 16, Kolori.Instance.GetWindowHeight() - 92 - 16 + 5), Color.Crimson,
+            Utils.DrawOutlinedText(
+                "Fonts/lunchds",
+                24,
+                healthString,
+                new Vector2(90 + 16, Kolori.Instance.GetWindowHeight() - 92 - 16 + 5),
+                Color.Crimson,
                 Color.Black);
 
             var ability = GetAbility();
 
-            if (ability == null) return;
+            if (ability == null)
+            {
+                return;
+            }
+
             var abilityX = Kolori.Instance.GetWindowWidth() - 64 - 16;
             var abilityY = Kolori.Instance.GetWindowHeight() - 48 - 16 - 5;
-            Utils.DrawOutlinedText("Fonts/lunchds", 24, "" + ability.PaintCost,
-                new Vector2(abilityX, abilityY), Color.Crimson,
-                Color.Black, Utils.HorizontalFontAlignment.RIGHT, Utils.VerticalFontAlignment.CENTER);
+            Utils.DrawOutlinedText(
+                "Fonts/lunchds",
+                24,
+                "" + ability.PaintCost,
+                new Vector2(abilityX, abilityY),
+                Color.Crimson,
+                Color.Black,
+                Utils.HorizontalFontAlignment.RIGHT,
+                Utils.VerticalFontAlignment.CENTER);
         }
 
         public void HandlePause()
@@ -197,8 +232,10 @@ namespace GJP2021.Sources.Characters
             if (_timerSound >= 0.7)
             {
                 _timerSound = 0;
-                Kolori.Instance.SoundMap["player_move"].Play((float)Math.Clamp(_random.NextDouble(), 0.2, 0.8), (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8), (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8));
-
+                Kolori.Instance.SoundMap["player_move"].Play(
+                    (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8),
+                    (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8),
+                    (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8));
             }
 
             if (_speedBoostActive)
@@ -209,7 +246,7 @@ namespace GJP2021.Sources.Characters
                     EndSpeedBoost();
                 }
             }
-            
+
             HandleAcceleration(gameTime);
 
             Position.X += _speedX * delta;
@@ -228,7 +265,6 @@ namespace GJP2021.Sources.Characters
                 _speedX = 0;
             }
 
-
             Position.Y = Math.Clamp(Position.Y, w, _bounds.Y - w);
             Position.X = Math.Clamp(Position.X, h, _bounds.X - h);
         }
@@ -243,10 +279,10 @@ namespace GJP2021.Sources.Characters
         {
             var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
             var keyState = Keyboard.GetState();
-            var a = keyState.IsKeyDown(Keys.A);
-            var w = keyState.IsKeyDown(Keys.W);
-            var s = keyState.IsKeyDown(Keys.S);
-            var d = keyState.IsKeyDown(Keys.D);
+            var a = keyState.IsKeyDown(Keys.A) || keyState.IsKeyDown(Keys.Left);
+            var w = keyState.IsKeyDown(Keys.W) || keyState.IsKeyDown(Keys.Up);
+            var s = keyState.IsKeyDown(Keys.S) || keyState.IsKeyDown(Keys.Down);
+            var d = keyState.IsKeyDown(Keys.D) || keyState.IsKeyDown(Keys.Right);
             var mx = Convert.ToInt32(d) - Convert.ToInt32(a);
             var my = Convert.ToInt32(s) - Convert.ToInt32(w);
             var diagonalBias = 1F;
@@ -284,9 +320,13 @@ namespace GJP2021.Sources.Characters
             _speedY += ay * _speedBoostMultiplier * delta;
             var biasX = Math.Abs(_speedX) / (float) Math.Sqrt(_speedX * _speedX + _speedY * _speedY);
             var biasY = Math.Abs(_speedY) / (float) Math.Sqrt(_speedX * _speedX + _speedY * _speedY);
-            _speedX = Math.Clamp(_speedX, -_maxSpeed * _speedBoostMultiplier * biasX,
+            _speedX = Math.Clamp(
+                _speedX,
+                -_maxSpeed * _speedBoostMultiplier * biasX,
                 _maxSpeed * _speedBoostMultiplier * biasX);
-            _speedY = Math.Clamp(_speedY, -_maxSpeed * _speedBoostMultiplier * biasY,
+            _speedY = Math.Clamp(
+                _speedY,
+                -_maxSpeed * _speedBoostMultiplier * biasY,
                 _maxSpeed * _speedBoostMultiplier * biasY);
         }
 
@@ -332,7 +372,8 @@ namespace GJP2021.Sources.Characters
         {
             private float _x;
             private float _y;
-            private float _maxSpeed, _acceleration;
+            private float _maxSpeed;
+            private float _acceleration;
             private Vector2 _bounds;
 
             internal PlayerBuilder()
