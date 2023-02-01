@@ -49,5 +49,18 @@ namespace GJP2021.Sources.Characters
         {
             return _currentDuration >= _duration;
         }
+
+        internal object ToDict()
+        {
+            return new
+            {
+                _position.X,
+                _position.Y,
+                _angle,
+                _speed,
+                _duration,
+                _currentDuration
+            };
+        }
     }
 }

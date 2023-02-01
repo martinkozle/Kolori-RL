@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GJP2021.Sources.GameStates;
 using GJP2021.Sources.Paint;
 using Microsoft.Xna.Framework;
@@ -27,6 +28,11 @@ namespace GJP2021.Sources.Characters
         public void Add(Projectile projectile)
         {
             _projectiles.Add(projectile);
+        }
+
+        internal dynamic ToDict()
+        {
+            return _projectiles.ConvertAll(p => p.ToDict());
         }
     }
 }

@@ -43,7 +43,6 @@ namespace GJP2021.Sources.Characters
         public PaintColors TrailColor
         {
             get => _trailColor;
-
             set
             {
                 Heal(MaxHealth);
@@ -62,8 +61,16 @@ namespace GJP2021.Sources.Characters
             _speedY = 0;
             _dragCoefficient = 0.5f;
             _dragConstant = 80;
-            _periodicPaintSpawner =
-                new PaintPeriodicSpawner(PaintCircle.Red, new Color(32, 32, 32), 35, 10, 30, 0.05F, 0.1F, 30);
+            _periodicPaintSpawner = new PaintPeriodicSpawner(
+                PaintCircle.Red,
+                new Color(32, 32, 32),
+                35,
+                10,
+                30,
+                0.05F,
+                0.1F,
+                30
+            );
             _trailColor = PaintColors.RED;
             _random = new();
         }
@@ -89,14 +96,20 @@ namespace GJP2021.Sources.Characters
             var colorOffset = colorIndex * 32;
 
             //Icon slot
-            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 64, 48), Color.White);
+            Kolori.Instance.SpriteBatch.Draw(
+                texture,
+                new Vector2(x, y),
+                new Rectangle(0, 0, 64, 48),
+                Color.White
+            );
 
             //Icon
             Kolori.Instance.SpriteBatch.Draw(
                 texture,
                 new Vector2(x + 24, y + 8),
                 new Rectangle(64, colorOffset, 32, 32),
-                Color.White);
+                Color.White
+            );
         }
 
         private static Texture2D GetAbilityTexture() => Kolori.Instance.TextureMap["ability_icons"];
@@ -111,22 +124,29 @@ namespace GJP2021.Sources.Characters
             var colorOffset = colorIndex * 38;
 
             //Empty Health Bar
-            Kolori.Instance.SpriteBatch.Draw(texture, new Vector2(x, y), new Rectangle(0, 0, 288, 88), Color.White);
+            Kolori.Instance.SpriteBatch.Draw(
+                texture,
+                new Vector2(x, y),
+                new Rectangle(0, 0, 288, 88),
+                Color.White
+            );
 
             //Bucket fluid
             Kolori.Instance.SpriteBatch.Draw(
                 texture,
                 new Vector2(x + 40, y + 12),
                 new Rectangle(238, 88 + colorOffset, 26, 36),
-                Color.White);
+                Color.White
+            );
 
             //Health
-            var healthPercent = (int) Math.Floor(238F * (Health / MaxHealth));
+            var healthPercent = (int)Math.Floor(238F * (Health / MaxHealth));
             Kolori.Instance.SpriteBatch.Draw(
                 texture,
                 new Vector2(x + 46, y + 46),
                 new Rectangle(0, 88 + colorOffset, healthPercent, 38),
-                Color.White);
+                Color.White
+            );
         }
 
         public void Draw()
@@ -136,7 +156,8 @@ namespace GJP2021.Sources.Characters
             Kolori.Instance.SpriteBatch.Draw(
                 texture,
                 Position - new Vector2(texture.Width / 2F, texture.Height / 2F),
-                Color.White);
+                Color.White
+            );
 
             Utils.DrawOutlinedText(
                 "Fonts/lunchds",
@@ -144,18 +165,20 @@ namespace GJP2021.Sources.Characters
                 "Score: " + Score,
                 new Vector2(10, 10),
                 Color.Crimson,
-                Color.Black);
+                Color.Black
+            );
 
             var healthDigits = Math.Floor(Math.Log10(Health)) + 1;
-            var spaces = new string(' ', (int) Math.Max(0, 3 - healthDigits));
-            var healthString = "[" + (int)Health + spaces + "|" + (int) MaxHealth + "]";
+            var spaces = new string(' ', (int)Math.Max(0, 3 - healthDigits));
+            var healthString = "[" + (int)Health + spaces + "|" + (int)MaxHealth + "]";
             Utils.DrawOutlinedText(
                 "Fonts/lunchds",
                 24,
                 healthString,
                 new Vector2(90 + 16, Kolori.Instance.GetWindowHeight() - 92 - 16 + 5),
                 Color.Crimson,
-                Color.Black);
+                Color.Black
+            );
 
             var ability = GetAbility();
 
@@ -174,7 +197,8 @@ namespace GJP2021.Sources.Characters
                 Color.Crimson,
                 Color.Black,
                 Utils.HorizontalFontAlignment.RIGHT,
-                Utils.VerticalFontAlignment.CENTER);
+                Utils.VerticalFontAlignment.CENTER
+            );
         }
 
         public void HandlePause()
@@ -197,30 +221,41 @@ namespace GJP2021.Sources.Characters
 
         public void HandleAbility(IngameState gameState)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (gameState.Controls.UseAbility)
             {
-                _abilityKeyDown = true;
+                var ability = GetAbility();
+                ability?.TryUse(this, gameState);
+                gameState.Controls.UseAbility = false;
             }
             else
             {
-                var ability = GetAbility();
-                if (_abilityKeyDown && ability != null)
+                if (gameState.Controls.IsKeyDown(Keys.Space))
                 {
-                    ability.TryUse(this, gameState);
+                    _abilityKeyDown = true;
                 }
+                else
+                {
+                    var ability = GetAbility();
+                    if (_abilityKeyDown && ability != null)
+                    {
+                        ability.TryUse(this, gameState);
+                    }
 
-                _abilityKeyDown = false;
+                    _abilityKeyDown = false;
+                }
             }
         }
 
         private Ability GetAbility()
         {
-            return Ability.Abilities.ContainsKey(_trailColor) ? Ability.Abilities[_trailColor] : null;
+            return Ability.Abilities.ContainsKey(_trailColor)
+                ? Ability.Abilities[_trailColor]
+                : null;
         }
 
-        public void Update(GameTime gameTime, PaintCircles paintCircles)
+        public void Update(GameTime gameTime, IngameState ingameState, PaintCircles paintCircles)
         {
-            var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
             _periodicPaintSpawner.Update(gameTime, paintCircles, Position);
             _timer += delta;
             if (_timer >= 0.01)
@@ -235,7 +270,8 @@ namespace GJP2021.Sources.Characters
                 Kolori.Instance.SoundMap["player_move"].Play(
                     (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8),
                     (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8),
-                    (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8));
+                    (float)Math.Clamp(_random.NextDouble(), 0.2, 0.8)
+                );
             }
 
             if (_speedBoostActive)
@@ -247,7 +283,7 @@ namespace GJP2021.Sources.Characters
                 }
             }
 
-            HandleAcceleration(gameTime);
+            HandleAcceleration(gameTime, ingameState);
 
             Position.X += _speedX * delta;
             Position.Y += _speedY * delta;
@@ -275,20 +311,20 @@ namespace GJP2021.Sources.Characters
             _speedY = speedY;
         }
 
-        private void HandleAcceleration(GameTime gameTime)
+        private void HandleAcceleration(GameTime gameTime, IngameState ingameState)
         {
-            var delta = (float) gameTime.ElapsedGameTime.TotalSeconds;
-            var keyState = Keyboard.GetState();
-            var a = keyState.IsKeyDown(Keys.A) || keyState.IsKeyDown(Keys.Left);
-            var w = keyState.IsKeyDown(Keys.W) || keyState.IsKeyDown(Keys.Up);
-            var s = keyState.IsKeyDown(Keys.S) || keyState.IsKeyDown(Keys.Down);
-            var d = keyState.IsKeyDown(Keys.D) || keyState.IsKeyDown(Keys.Right);
+            var delta = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            var controls = ingameState.Controls;
+            var a = controls.IsKeyDown(Keys.A) || controls.IsKeyDown(Keys.Left);
+            var w = controls.IsKeyDown(Keys.W) || controls.IsKeyDown(Keys.Up);
+            var s = controls.IsKeyDown(Keys.S) || controls.IsKeyDown(Keys.Down);
+            var d = controls.IsKeyDown(Keys.D) || controls.IsKeyDown(Keys.Right);
             var mx = Convert.ToInt32(d) - Convert.ToInt32(a);
             var my = Convert.ToInt32(s) - Convert.ToInt32(w);
             var diagonalBias = 1F;
             if (mx != 0 && my != 0)
             {
-                diagonalBias = 1 / (float) Math.Sqrt(2);
+                diagonalBias = 1 / (float)Math.Sqrt(2);
             }
 
             var ax = _acceleration * mx * diagonalBias;
@@ -318,16 +354,18 @@ namespace GJP2021.Sources.Characters
 
             _speedX += ax * _speedBoostMultiplier * delta;
             _speedY += ay * _speedBoostMultiplier * delta;
-            var biasX = Math.Abs(_speedX) / (float) Math.Sqrt(_speedX * _speedX + _speedY * _speedY);
-            var biasY = Math.Abs(_speedY) / (float) Math.Sqrt(_speedX * _speedX + _speedY * _speedY);
+            var biasX = Math.Abs(_speedX) / (float)Math.Sqrt(_speedX * _speedX + _speedY * _speedY);
+            var biasY = Math.Abs(_speedY) / (float)Math.Sqrt(_speedX * _speedX + _speedY * _speedY);
             _speedX = Math.Clamp(
                 _speedX,
                 -_maxSpeed * _speedBoostMultiplier * biasX,
-                _maxSpeed * _speedBoostMultiplier * biasX);
+                _maxSpeed * _speedBoostMultiplier * biasX
+            );
             _speedY = Math.Clamp(
                 _speedY,
                 -_maxSpeed * _speedBoostMultiplier * biasY,
-                _maxSpeed * _speedBoostMultiplier * biasY);
+                _maxSpeed * _speedBoostMultiplier * biasY
+            );
         }
 
         public void SetSpeedBoost(float multiplier, float duration)
@@ -346,7 +384,8 @@ namespace GJP2021.Sources.Characters
             _speedBoostDuration = 0;
         }
 
-        private Texture2D GetTexture() => Kolori.Instance.TextureMap["player_" + _trailColor.ToString().ToLower()];
+        private Texture2D GetTexture() =>
+            Kolori.Instance.TextureMap["player_" + _trailColor.ToString().ToLower()];
 
         public void Heal(float amount)
         {
@@ -366,6 +405,25 @@ namespace GJP2021.Sources.Characters
         public static PlayerBuilder Builder()
         {
             return new();
+        }
+
+        internal dynamic ToDict()
+        {
+            return new
+            {
+                Position = new { Position.X, Position.Y },
+                Speed = new { _speedX, _speedY },
+                SpeedBoost = new
+                {
+                    _speedBoostMultiplier,
+                    _speedBoostCurrentDuration,
+                    _speedBoostDuration,
+                    _speedBoostActive
+                },
+                TrailColor = TrailColor.ToString(),
+                Score,
+                Health,
+            };
         }
 
         public class PlayerBuilder

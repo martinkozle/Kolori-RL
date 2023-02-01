@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using GJP2021.Sources.Characters;
 using GJP2021.Sources.GUI;
 using GJP2021.Sources.Paint;
@@ -13,7 +14,7 @@ namespace GJP2021.Sources.GameStates
     {
         public static readonly IngameState Instance = new();
         private static readonly Color BgColor = Color.White;
-        private Player _player;
+        public Player Player;
         private float _lastSpawnEnemy;
         private float _lastSpawnBucket;
         private Random _randomGenerator;
@@ -28,6 +29,22 @@ namespace GJP2021.Sources.GameStates
         private PaintSpawner _enemyDeathPaintSpawner;
         private static Song _song;
         private WindowWidget _pauseWindow;
+        public Controls Controls = new();
+
+        public object ToDict()
+        {
+            return new
+            {
+                Player = Player.ToDict(),
+                NumberOfEnemies = _numberOfEnemies,
+                Enemies = Enemies.ConvertAll(enemy => enemy.ToDict()),
+                PaintBuckets = PaintBuckets.ConvertAll(bucket => bucket.ToDict()),
+                Projectiles = Projectiles.ToDict(),
+                TimeScaleActive,
+                TimeScale,
+                TimeScaleDuration
+            };
+        }
 
         private void SpawnEnemy()
         {
@@ -35,61 +52,77 @@ namespace GJP2021.Sources.GameStates
             switch (sideDecision)
             {
                 case 0:
-                    {
-                        Enemies.Add(new Enemy(
+                {
+                    Enemies.Add(
+                        new Enemy(
                             new Vector2(
                                 -20,
-                                _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
-                            200F));
-                        break;
-                    }
+                                _randomGenerator.Next(Kolori.Instance.GetWindowHeight())
+                            ),
+                            200F
+                        )
+                    );
+                    break;
+                }
 
                 case 1:
-                    {
-                        Enemies.Add(new Enemy(
+                {
+                    Enemies.Add(
+                        new Enemy(
                             new Vector2(
                                 _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
-                                Kolori.Instance.GetWindowHeight() + 20),
-                            200F));
-                        break;
-                    }
+                                Kolori.Instance.GetWindowHeight() + 20
+                            ),
+                            200F
+                        )
+                    );
+                    break;
+                }
 
                 case 2:
-                    {
-                        Enemies.Add(new Enemy(
+                {
+                    Enemies.Add(
+                        new Enemy(
                             new Vector2(
                                 Kolori.Instance.GetWindowWidth() + 20,
-                                _randomGenerator.Next(Kolori.Instance.GetWindowHeight())),
-                            200F));
-                        break;
-                    }
+                                _randomGenerator.Next(Kolori.Instance.GetWindowHeight())
+                            ),
+                            200F
+                        )
+                    );
+                    break;
+                }
 
                 case 3:
-                    {
-                        Enemies.Add(new Enemy(
+                {
+                    Enemies.Add(
+                        new Enemy(
                             new Vector2(
                                 _randomGenerator.Next(Kolori.Instance.GetWindowWidth()),
-                                -20),
-                            200F));
-                        break;
-                    }
+                                -20
+                            ),
+                            200F
+                        )
+                    );
+                    break;
+                }
             }
         }
 
         public void Update(GameTime gameTime)
         {
-            _player.HandlePause();
+            Player.HandlePause();
 
-            if (_player.Paused)
+            if (Player.Paused)
             {
                 _pauseWindow.Update();
                 return;
             }
 
-            if (!_player.IsAlive())
+            if (!Player.IsAlive())
             {
                 Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
-                GameOverState.Instance.SetFinalScore(_player.Score);
+                GameOverState.Instance.SetFinalScore(Player.Score);
                 Initialize();
                 Kolori.Instance.SoundMap["death_screen"].Play();
                 return;
@@ -97,7 +130,7 @@ namespace GJP2021.Sources.GameStates
 
             if (TimeScaleActive)
             {
-                TimeScaleDuration += (float) gameTime.ElapsedGameTime.TotalSeconds;
+                TimeScaleDuration += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (TimeScaleDuration > 3)
                 {
                     TimeScaleActive = false;
@@ -118,26 +151,28 @@ namespace GJP2021.Sources.GameStates
                     _numberOfEnemies++;
                 }
 
-                _lastSpawnEnemy = (float) gameTime.TotalGameTime.TotalSeconds;
+                _lastSpawnEnemy = (float)gameTime.TotalGameTime.TotalSeconds;
             }
 
             if (gameTime.TotalGameTime.TotalSeconds - _lastSpawnBucket >= 10)
             {
-                PaintBuckets.Add(new PaintBucket(
-                    new Vector2(
-                        _randomGenerator.Next(40, Kolori.Instance.GetWindowWidth() - 40),
-                        _randomGenerator.Next(40, Kolori.Instance.GetWindowHeight() - 40)
-                    ),
-                    _randomGenerator)
+                PaintBuckets.Add(
+                    new PaintBucket(
+                        new Vector2(
+                            _randomGenerator.Next(40, Kolori.Instance.GetWindowWidth() - 40),
+                            _randomGenerator.Next(40, Kolori.Instance.GetWindowHeight() - 40)
+                        ),
+                        _randomGenerator
+                    )
                 );
 
-                _lastSpawnBucket = (float) gameTime.TotalGameTime.TotalSeconds;
+                _lastSpawnBucket = (float)gameTime.TotalGameTime.TotalSeconds;
             }
 
             foreach (var enemy in Enemies.Where(enemy => enemy.MarkedAsKilled))
             {
-                _player.Score++;
-                _player.Heal(10F);
+                Player.Score++;
+                Player.Heal(10F);
             }
 
             foreach (var enemy in Enemies.Where(enemy => enemy.MarkedForDeletion))
@@ -151,35 +186,35 @@ namespace GJP2021.Sources.GameStates
             Enemies.RemoveAll(el => el.MarkedForDeletion);
             foreach (var enemy in Enemies)
             {
-                enemy.Update(gameTime, _player, PaintCircles, TimeScale);
+                enemy.Update(gameTime, Player, PaintCircles, TimeScale);
             }
 
-            _player.HandleAbility(this);
+            Player.HandleAbility(this);
             Projectiles.Update(gameTime, this, PaintCircles, TimeScale);
 
             PaintCircles.Update(gameTime, TimeScale);
             foreach (var bucket in PaintBuckets)
             {
-                bucket.Update(_player.Position);
+                bucket.Update(Player.Position);
                 if (!bucket.MarkedForDeletion)
                 {
                     continue;
                 }
 
-                _player.TrailColor = bucket.GetPaintBucketColor();
+                Player.TrailColor = bucket.GetPaintBucketColor();
             }
 
-            _player.Update(gameTime, PaintCircles);
+            Player.Update(gameTime, Instance, PaintCircles);
 
             PaintBuckets.RemoveAll(pb => pb.MarkedForDeletion);
         }
 
         public void Draw(GameTime gameTime)
         {
-            if (!_player.IsAlive())
+            if (!Player.IsAlive())
             {
                 Kolori.Instance.GameStateManager.SetGameState(GameOverState.Instance);
-                GameOverState.Instance.SetFinalScore(_player.Score);
+                GameOverState.Instance.SetFinalScore(Player.Score);
                 Initialize();
                 Kolori.Instance.SoundMap["death_screen"].Play();
                 return;
@@ -201,11 +236,11 @@ namespace GJP2021.Sources.GameStates
                 enemy.Draw();
             }
 
-            _player.Draw();
+            Player.Draw();
 
-            _player.DrawDisplay();
+            Player.DrawDisplay();
 
-            if (_player.Paused)
+            if (Player.Paused)
             {
                 _pauseWindow.Draw();
             }
@@ -225,31 +260,36 @@ namespace GJP2021.Sources.GameStates
             MediaPlayer.IsRepeating = true;
 
             var windowTexture = Kolori.Instance.TextureMap["pause_window"];
-            var windowBuilder = WindowWidget.Builder()
+            var windowBuilder = WindowWidget
+                .Builder()
                 .CenterHorizontally(Kolori.Instance.GetWindowWidth)
                 .CenterVertically(Kolori.Instance.GetWindowHeight);
 
             var windowX = windowBuilder.X;
             var windowY = windowBuilder.Y;
 
-            _pauseWindow = windowBuilder.SetTexture(windowTexture)
+            _pauseWindow = windowBuilder
+                .SetTexture(windowTexture)
                 .AddButton(
-                    Button.Builder()
+                    Button
+                        .Builder()
                         .SetPosition(() => windowX.Invoke(), () => windowY.Invoke() + 192)
                         .CenterHorizontally(windowTexture.Width)
                         .SetSound("button")
                         .SetTexture("resume")
-                        .SetAction(() => _player.Paused = false)
+                        .SetAction(() => Player.Paused = false)
                         .Build()
                 )
                 .AddButton(
-                    Button.Builder()
+                    Button
+                        .Builder()
                         .SetPosition(() => windowX.Invoke(), () => windowY.Invoke() + 270)
                         .CenterHorizontally(windowTexture.Width)
                         .SetSound("button")
                         .SetTexture("menu")
                         .SetAction(
-                            () => Kolori.Instance.GameStateManager.SetGameState(MenuState.Instance))
+                            () => Kolori.Instance.GameStateManager.SetGameState(MenuState.Instance)
+                        )
                         .Build()
                 )
                 .Build();
@@ -260,21 +300,35 @@ namespace GJP2021.Sources.GameStates
             _lastSpawnBucket = 0;
             _randomGenerator = new Random();
             //_paintBucket=new PaintBucket(new Vector2(100,100),_randomGenerator,Kolori.Instance);
-            PaintBuckets.Add(new PaintBucket(
-                new Vector2(
-                    _randomGenerator.Next(40, Kolori.Instance.GetWindowWidth() + 40),
-                    _randomGenerator.Next(40, Kolori.Instance.GetWindowHeight() + 40)
-                ),
-                _randomGenerator)
+            PaintBuckets.Add(
+                new PaintBucket(
+                    new Vector2(
+                        _randomGenerator.Next(40, Kolori.Instance.GetWindowWidth() + 40),
+                        _randomGenerator.Next(40, Kolori.Instance.GetWindowHeight() + 40)
+                    ),
+                    _randomGenerator
+                )
             );
-            _enemyDeathPaintSpawner = new PaintSpawner(Color.White, new Color(0, 0, 0), 35, 10, 15, 0.2F, 2);
-            _player = Player.Builder()
-                .SetPosition(Kolori.Instance.GetWindowWidth() / 2F, Kolori.Instance.GetWindowHeight() / 2F)
+            _enemyDeathPaintSpawner = new PaintSpawner(
+                Color.White,
+                new Color(0, 0, 0),
+                35,
+                10,
+                15,
+                0.2F,
+                2
+            );
+            Player = Player
+                .Builder()
+                .SetPosition(
+                    Kolori.Instance.GetWindowWidth() / 2F,
+                    Kolori.Instance.GetWindowHeight() / 2F
+                )
                 .SetMaxSpeed(225f)
                 .SetAcceleration(450f)
-                .SetBounds(new Vector2(
-                    Kolori.Instance.GetWindowWidth(),
-                    Kolori.Instance.GetWindowHeight()))
+                .SetBounds(
+                    new Vector2(Kolori.Instance.GetWindowWidth(), Kolori.Instance.GetWindowHeight())
+                )
                 .Build();
             PaintCircles = new PaintCircles();
             _numberOfEnemies = 0;

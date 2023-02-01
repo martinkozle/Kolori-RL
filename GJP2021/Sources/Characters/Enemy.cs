@@ -86,5 +86,17 @@ namespace GJP2021.Sources.Characters
         {
             return Kolori.Instance.TextureMap["eraser"];
         }
+
+        internal object ToDict()
+        {
+            return new
+            {
+                Position = new
+                {
+                    Position.X,
+                    Position.Y
+                },
+            };
+        }
     }
 }

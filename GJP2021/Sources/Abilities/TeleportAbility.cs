@@ -14,8 +14,9 @@ namespace GJP2021.Sources.Abilities
 
         protected override bool Use(Player player, IngameState gameState)
         {
-            var mousePos = Mouse.GetState().Position;
-            var (mouseX, mouseY) = Mouse.GetState().Position;
+            var controls = gameState.Controls;
+            var mousePos = controls.GetMouseState().Position;
+            var (mouseX, mouseY) = mousePos;
             if (!Utils.IsInsideBox(mousePos, mouseX, mouseY, Kolori.Instance.GetWindowWidth(), Kolori.Instance.GetWindowHeight()))
             {
                 return false;

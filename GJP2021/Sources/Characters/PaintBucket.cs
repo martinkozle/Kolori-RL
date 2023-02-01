@@ -14,13 +14,14 @@ namespace GJP2021.Sources.Characters
         public PaintBucket(Vector2 position, Random randomGenerator)
         {
             _position = position;
-            _color = new List<PaintColors>{
-                PaintColors.BLUE,
+            _color = new List<PaintColors>
+            {
+                // PaintColors.BLUE,
                 PaintColors.GREEN,
-                PaintColors.PURPLE,
+                // PaintColors.PURPLE,
                 PaintColors.RED,
                 PaintColors.YELLOW
-            }[randomGenerator.Next(5)];
+            }[randomGenerator.Next(3)];
             MarkedForDeletion = false;
         }
 
@@ -37,7 +38,10 @@ namespace GJP2021.Sources.Characters
         public void Update(Vector2 playerPos)
         {
             var (playerX, playerY) = playerPos;
-            var (x, y) = new Vector2(Math.Abs(_position.X - playerX), Math.Abs(_position.Y - playerY));
+            var (x, y) = new Vector2(
+                Math.Abs(_position.X - playerX),
+                Math.Abs(_position.Y - playerY)
+            );
             if (x < 20 && y < 20)
             {
                 MarkedForDeletion = true;
@@ -50,7 +54,17 @@ namespace GJP2021.Sources.Characters
             Kolori.Instance.SpriteBatch.Draw(
                 texture,
                 _position - new Vector2(texture.Width / 2F, texture.Height / 2F),
-                Color.White);
+                Color.White
+            );
+        }
+
+        internal object ToDict()
+        {
+            return new
+            {
+                Position = new { _position.X, _position.Y },
+                Color = _color.ToString().ToLower(),
+            };
         }
     }
 }
